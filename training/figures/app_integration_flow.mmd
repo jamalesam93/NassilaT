@@ -1,0 +1,39 @@
+flowchart TB
+  subgraph input [ManuscriptAuditInput]
+    Passage[PassageWindow]
+    Excerpt[SourceExcerpt_OA_or_Abstract]
+    Doc[PDF_DOCX_future]
+  end
+  subgraph prep [AppDeterministic]
+    Router[task_router_by_task_id]
+    Chunk[selectSourceChunksForGrounding]
+    Overlap[scorePassageAgainstSource]
+    Prompt[buildPrompt_for_task]
+  end
+  subgraph ring [OneRing_LocalLLM]
+    LMStudio[LMStudio_single_GGUF_slot]
+    Tasks[l3_grounding_doc_extract_etc]
+  end
+  subgraph guard [AppGuardrails]
+    Parse[parseGroundingJson_plus_repair]
+    Verdict[passageVerdictFromGroundingClaims]
+    Rollup[rollupPassageFromSites]
+  end
+  subgraph out [Report]
+    L3[layers.passage]
+    Evidence[evidence_snippets]
+  end
+  Passage --> Router
+  Excerpt --> Router
+  Doc -.->|future doc_extract| Router
+  Router --> Chunk
+  Chunk --> Prompt
+  Passage --> Prompt
+  Prompt -->|"TASK l3_grounding"| LMStudio
+  LMStudio --> Tasks
+  Tasks --> Parse
+  Parse --> Verdict
+  Overlap --> Verdict
+  Verdict --> Rollup
+  Rollup --> L3
+  Parse --> Evidence

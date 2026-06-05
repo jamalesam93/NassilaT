@@ -1,0 +1,18 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Training artifacts (generated on Vast or locally)
+training/outputs/
+*.log
+
+# Secrets
+.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db

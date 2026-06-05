@@ -1,0 +1,31 @@
+flowchart LR
+  subgraph data [Dataset_OneRing_facets]
+    JSONL[JSONLRecords_by_task]
+    Val[validate_dataset.py]
+  end
+  subgraph train [TrainingGPU]
+    HF[HF_Gemma4_E4B_IT]
+    QLoRA[QLoRA_Adapter]
+  end
+  subgraph exportNode [Export]
+    Merge[MergeOptional]
+    GGUF[GGUF_Q6_K]
+  end
+  subgraph runtime [LocalRuntime_One_GGUF]
+    LM[LMStudioServer]
+    App[Nassila_task_router]
+  end
+  subgraph evalNode [Evaluation]
+    Pred[predictions.jsonl]
+    Metrics[evaluate_outputs.py]
+  end
+  JSONL --> Val
+  Val --> QLoRA
+  HF --> QLoRA
+  QLoRA --> Merge
+  Merge --> GGUF
+  GGUF --> LM
+  LM --> App
+  App --> Pred
+  Pred --> Metrics
+  Metrics --> JSONL
