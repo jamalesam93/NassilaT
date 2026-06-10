@@ -1,0 +1,3 @@
+# Phase 1.5 corpus pipeline (PC-only; install alongside requirements.txt)
+-r requirements.txt
+tqdm>=4.66.0

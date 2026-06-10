@@ -136,6 +136,7 @@ def train_with_unsloth(chat_file: Path, output_dir: Path) -> None:
         fp16=False,
         bf16=True,
         report_to="none",
+        save_strategy="no",
     )
 
     trainer = SFTTrainer(
@@ -236,6 +237,7 @@ def train_with_peft(chat_file: Path, output_dir: Path) -> None:
         save_steps=50,
         bf16=True,
         report_to="none",
+        save_strategy="no",
     )
 
     trainer = SFTTrainer(
