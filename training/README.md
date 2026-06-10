@@ -30,7 +30,10 @@ Hugging Face E4B IT  →  QLoRA training  →  adapter  →  export Q6_K GGUF  �
 | Step | Document | What you do |
 |------|----------|-------------|
 | 1 | [TRAINING_GUIDE.md](./TRAINING_GUIDE.md) | Full walkthrough: environment, data, train, export, test |
-| 1.1 | [PHASE1_VAST_4090_WALKTHROUGH.md](./PHASE1_VAST_4090_WALKTHROUGH.md) | Phase 1: Vast AI setup (RTX 4090), HF `hf auth login`, QLoRA smoke run |
+| 1.1 | [CORPUS_PIPELINE.md](./CORPUS_PIPELINE.md) | Phase 1.5: merge JSON exports, backfill abstracts (PC) |
+| 1.2 | [PHASE2_TRAINING_GUIDE.md](./PHASE2_TRAINING_GUIDE.md) | **Phase 2 step-by-step** (labels → Vast → GGUF → eval) |
+| 1.2b | [PHASE2_VAST_WALKTHROUGH.md](./PHASE2_VAST_WALKTHROUGH.md) | Phase 2 Vast commands (condensed) |
+| 1.3 | [PHASE1_VAST_4090_WALKTHROUGH.md](./PHASE1_VAST_4090_WALKTHROUGH.md) | Phase 1: Vast smoke QLoRA |
 | 2 | [DATASET_SCHEMA.md](./DATASET_SCHEMA.md) | Exact JSONL formats for each task |
 | 3 | [EVALUATION_GUIDE.md](./EVALUATION_GUIDE.md) | Metrics and pass/fail thresholds |
 | 4 | [LM_STUDIO_INTEGRATION.md](./LM_STUDIO_INTEGRATION.md) | Serve model locally; point Nassila at it |

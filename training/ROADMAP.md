@@ -13,6 +13,7 @@
 | **0** | Baseline eval | `l3_grounding` | Stock Gemma 4 E4B Q6_K | E4B |
 | **0.5** | App guardrails | — | JSON repair, retry, caps | — (app code) |
 | **1** | Cloud QLoRA setup | `l3_grounding` | Smoke LoRA on Vast | E4B |
+| **1.5** | Paper corpus (PC) | — | `paper_corpus_enriched.jsonl` | — |
 | **2** | L3 dataset + train | `l3_grounding` | `nassila-grounding-e4b-v1` | E4B |
 | **3** | Manuscript ingest | `doc_extract` | Facet or agent merge | E4B → 12B |
 | **3b** | Cited PDF text | `source_pdf_extract` | Same | E4B |
@@ -43,30 +44,42 @@ Implemented in Nassila engine/renderer:
 
 ---
 
-## Phase 1 — Environment + smoke QLoRA (next)
+## Phase 1 — Environment + smoke QLoRA (complete)
 
 **Goal:** Prove 4-bit load + one training step on cloud GPU.
 
 | Step | Doc |
 |------|-----|
 | Vast + RTX 4090 + WSL2 | [`PHASE1_VAST_4090_WALKTHROUGH.md`](./PHASE1_VAST_4090_WALKTHROUGH.md) |
-| Full phase guide | [`TRAINING_GUIDE.md`](./TRAINING_GUIDE.md) §3 |
-| Checklist | [`PHASE1_CHECKLIST.md`](./PHASE1_CHECKLIST.md) |
 
-**Exit:** `train_lora.py --max_steps 1` succeeds; adapter saved.
+**Exit:** Smoke adapter saved (HF `nassila-grounding-phase1-smoke`).
+
+---
+
+## Phase 1.5 — Paper corpus (PC-only, in progress)
+
+**Goal:** Merge JSON exports, backfill abstracts, grow library as you add more JSON files.
+
+| Step | Doc / script |
+|------|----------------|
+| Ingest | [`CORPUS_PIPELINE.md`](./CORPUS_PIPELINE.md), `scripts/build_paper_corpus.py` |
+| Abstract backfill | `scripts/enrich_corpus_abstracts.py` |
+| Fulltext PDF fetch | **Deferred** — separate sprint before Phase 3b |
+
+**Exit:** `data/paper_corpus_enriched.jsonl` with ≥2,000 papers abstract ≥120 chars.
 
 ---
 
 ## Phase 2 — L3 production model (v1 ship)
 
-**Goal:** `nassila-grounding-e4b-v1` beats baseline on eval harness.
+**Goal:** `nassila-grounding-e4b-v1` beats baseline on eval harness. **Abstract-only** `source_excerpt`.
 
 | Step | Action |
 |------|--------|
-| Dataset | Expand `data/l3_grounding_samples.jsonl` (target 200–500 rows) |
-| Train | QLoRA on Vast; export GGUF Q6_K |
-| Eval | [`EVALUATION_GUIDE.md`](./EVALUATION_GUIDE.md) — JSON ≥99%, expect ≥90% |
-| Publish | HF repo; app preset + version bump **1.2.0** |
+| Labels | `scripts/generate_l3_from_corpus.py` → `l3_grounding_train.jsonl` (300–500 rows, tier up if needed) |
+| Train | [`PHASE2_VAST_WALKTHROUGH.md`](./PHASE2_VAST_WALKTHROUGH.md) — QLoRA + `export_gguf.py` |
+| Eval | [`EVALUATION_GUIDE.md`](./EVALUATION_GUIDE.md) — JSON ≥95–99%, expect ≥90% |
+| Publish | [`HF_PUBLISH.md`](./HF_PUBLISH.md); app preset + version bump **1.2.0** |
 
 ---
 
@@ -114,4 +127,6 @@ Train each task with its JSONL ([`DATASET_SCHEMA.md`](./DATASET_SCHEMA.md)), eva
 | [`README.md`](./README.md) | Training pack index |
 | [`DATASET_SCHEMA.md`](./DATASET_SCHEMA.md) | JSONL per task |
 | [`LM_STUDIO_INTEGRATION.md`](./LM_STUDIO_INTEGRATION.md) | Inference + presets |
-| [`PHASE1_VAST_4090_WALKTHROUGH.md`](./PHASE1_VAST_4090_WALKTHROUGH.md) | Vast walkthrough |
+| [`PHASE1_VAST_4090_WALKTHROUGH.md`](./PHASE1_VAST_4090_WALKTHROUGH.md) | Phase 1 Vast walkthrough |
+| [`CORPUS_PIPELINE.md`](./CORPUS_PIPELINE.md) | Phase 1.5 corpus ingest |
+| [`PHASE2_VAST_WALKTHROUGH.md`](./PHASE2_VAST_WALKTHROUGH.md) | Phase 2 production train |
