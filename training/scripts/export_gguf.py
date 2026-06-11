@@ -20,7 +20,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 TRAINING_DIR = SCRIPT_DIR.parent
 
 BASE_MODEL = "google/gemma-4-E4B-it"
-MAX_SEQ_LENGTH = 4096
+MAX_SEQ_LENGTH = 1536
 
 
 def export_unsloth(adapter_dir: Path, out_dir: Path, quant: str) -> None:
