@@ -32,9 +32,10 @@ from validate_dataset import build_grounding_user_prompt, load_jsonl  # noqa: E4
 
 # --- Configuration (edit before running) ---
 BASE_MODEL = "google/gemma-4-E4B-it"
-MAX_SEQ_LENGTH = 4096
-LORA_R = 32
-LORA_ALPHA = 64
+# 1536 fits RTX 4090 (24 GB) with gradient checkpointing; raise on 48 GB+ GPUs.
+MAX_SEQ_LENGTH = 1536
+LORA_R = 16
+LORA_ALPHA = 32
 LORA_DROPOUT = 0.05
 LEARNING_RATE = 2e-4
 NUM_EPOCHS = 2
@@ -107,6 +108,8 @@ def train_with_unsloth(chat_file: Path, output_dir: Path) -> None:
             "up_proj",
             "down_proj",
         ],
+        # Recompute activations during backward instead of storing them — saves VRAM.
+        use_gradient_checkpointing="unsloth",
     )
 
     dataset = load_dataset("json", data_files=str(chat_file), split="train")
