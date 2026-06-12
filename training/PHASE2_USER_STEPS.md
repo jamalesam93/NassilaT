@@ -20,10 +20,12 @@
 
 1. ~~Label QA~~ · ~~baseline eval~~ · ~~Vast train~~ · ~~tuned eval (NO-GO)~~ · ~~HF publish (v1)~~
 
-### v1.1 (next)
+### v1.1 — Phase 2.2 (in progress)
 
-1. ~~**Label spot-check**~~ — done (104/105 perfect; row 70 generalization acceptable — see below)
-2. **Vast re-train** — same QLoRA recipe on `l3_grounding_train.jsonl` (700 rows); tag artifact **v1.1**
-3. **GGUF export** — manual merge + llama.cpp (see [PHASE2_VAST_WALKTHROUGH.md](./PHASE2_VAST_WALKTHROUGH.md))
+**Walkthrough:** [PHASE2_2_V1_1_WALKTHROUGH.md](./PHASE2_2_V1_1_WALKTHROUGH.md)
+
+1. ~~**Label spot-check**~~ — done (104/105 perfect; row 70 generalization acceptable)
+2. **Vast re-train** — `train_qlora_gemma4_e4b.py` → `outputs/nassila-grounding-e4b-v1.1`
+3. **GGUF export** — `merge_adapter_gemma4.py` + llama.cpp Q6_K (not `export_gguf.py`)
 4. **Tuned eval** — targets: expect ≥90%, quotes ≥98%, false supported ≤5%
-5. **HF publish** — adapter + GGUF as v1.1 (or overwrite with version note in README)
+5. **HF publish** — `nassila-grounding-e4b-v1.1` + `-adapter` repos
