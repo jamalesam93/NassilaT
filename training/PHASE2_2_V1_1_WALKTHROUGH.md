@@ -1,48 +1,78 @@
-# Phase 2.2 — Retrain v1.1 (700 rows) + GGUF export
+# Phase 2.2 — v1.1 on Vast (train → eval → download only if pass)
 
-**Prerequisite:** Phase 2.1 committed on `main` (`l3_grounding_train.jsonl` = 700 rows).
+One linear checklist. **Everything through go/no-go runs on Vast.** Your PC download (~6 GB) happens **only after eval passes**.
 
-**Goal:** `nassila-grounding-e4b-v1.1` — same QLoRA recipe as v1, new labels with paraphrase-supported rows.
+**Prerequisite:** `l3_grounding_train.jsonl` = 700 rows on `main` (Phase 2.1).
 
-**Eval targets (go/no-go):** expect pass ≥90% · quote validity ≥98% · false supported ≤5%
+**Go/no-go targets:** expect pass ≥90% · quote validity ≥98% · false supported ≤5%
 
 ---
 
-## Part 0 — PC sanity check (optional, 1 min)
+## The big picture
 
-```powershell
-cd training
-python scripts/validate_dataset.py data/l3_grounding_train.jsonl
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  ALL ON VAST (uses Vast bandwidth, not your home connection)    │
+├─────────────────────────────────────────────────────────────────┤
+│  A. Setup          clone repo, install deps                       │
+│  B. Train          → LoRA adapter (~100 MB)                     │
+│  C. Merge          adapter + base → full HF weights (~15 GB)    │
+│  D. Build GGUF     llama.cpp convert + Q6_K (~6 GB)             │
+│  E. Eval           llama-server + eval scripts → report.json    │
+│  F. Upload HF      optional backup (still from Vast)            │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                    eval passed?
+                    ┌────┴────┐
+                   NO        YES
+                    │          │
+            destroy instance   G. Download GGUF to PC (download manager)
+            (no home download) H. LM Studio + Nassila on PC
 ```
 
-Expect `OK: 700 record(s)`.
+### What training produces vs what eval needs
+
+| Artifact | After step | Size | Can eval use it directly? |
+|----------|------------|------|---------------------------|
+| LoRA adapter | **B. Train** | ~100 MB | **No** |
+| Merged HF weights | **C. Merge** | ~15 GB | **No** (not for our eval scripts) |
+| Q6_K GGUF | **D. Build GGUF** | ~6 GB | **Yes** — this is what `llama-server` loads |
+
+**You cannot skip C and D.** Training alone does not give a runnable model for eval.  
+**You can skip G** until eval passes — that is the bandwidth-saving part.
+
+### What uses your home internet
+
+| Action | Uses home bandwidth? |
+|--------|----------------------|
+| SSH into Vast | Tiny |
+| Train / merge / GGUF / eval on Vast | **No** |
+| `hf upload` from Vast | **No** |
+| Download GGUF to PC | **Yes (~6 GB)** — only after **GO** |
+| HF Inference / “run in cloud” button | Not available for custom GGUF |
 
 ---
 
-## Part 1 — Rent Vast
+## Step A — Rent Vast and setup (once per instance)
+
+**Rent**
 
 | Setting | Value |
 |---------|-------|
-| Template | **PyTorch NGC (CUDA 13)** |
-| GPU | **1× RTX A6000 48 GB** (recommended; 4090 24 GB may OOM) |
-| Disk | **100 GB** |
+| Template | PyTorch NGC (CUDA 13) |
+| GPU | RTX A6000 48 GB |
+| Disk | 100 GB |
 
-After SSH:
+**Reuse your v1 instance if still running** — base model may already be cached (saves time on Vast).
 
 ```bash
-nvidia-smi   # CUDA 12.4+ or 13.x required
+nvidia-smi                                    # need CUDA 12.4+ or 13.x
 sudo bash -c 'printf "nameserver 8.8.8.8\nnameserver 1.1.1.1\n" > /etc/resolv.conf'
-```
 
----
-
-## Part 2 — Clone + deps
-
-```bash
 git clone https://github.com/jamalesam93/NassilaT.git ~/nassila
-cd ~/nassila
-git pull   # if reusing instance: cd ~/nassila && git pull
+# reusing instance:  cd ~/nassila && git pull
 
+cd ~/nassila
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -U pip
@@ -52,54 +82,53 @@ pip install -U "huggingface_hub[cli]"
 export HF_TOKEN="hf_your_write_token"
 ```
 
+**llama.cpp** (skip if already built on this instance from v1):
+
+```bash
+cd ~
+git clone https://github.com/ggerganov/llama.cpp.git
+cd llama.cpp && cmake -B build && cmake --build build -j
+```
+
 ---
 
-## Part 3 — Train (QLoRA)
+## Step B — Train
 
 ```bash
 cd ~/nassila/training
+source ~/nassila/.venv/bin/activate
+
 python scripts/train_qlora_gemma4_e4b.py \
   --train-file data/l3_grounding_train.jsonl \
   --output-dir outputs/nassila-grounding-e4b-v1.1
 ```
 
-**Expect:** ~175 steps (700 rows × 2 epochs, effective batch 8). ~10–20 min on A6000.
-
-**Output:** `outputs/nassila-grounding-e4b-v1.1/lora_adapter/`
-
-| Hyperparameter | Value |
-|----------------|-------|
-| `MAX_SEQ_LENGTH` | 1536 |
-| `LORA_R` | 16 |
-| `NUM_EPOCHS` | 2 |
-| `BATCH_SIZE` × `GRAD_ACCUM` | 1 × 8 |
-| Gradient checkpointing | `unsloth` |
+- **Time:** ~10–20 min on A6000 (~175 steps)
+- **Output:** `outputs/nassila-grounding-e4b-v1.1/lora_adapter/`
+- **Do not use** `export_gguf.py` — broken for Gemma 4
 
 ---
 
-## Part 4 — Export GGUF (manual path — required for Gemma 4)
-
-`export_gguf.py` (Unsloth `save_pretrained_gguf`) is **broken for Gemma 4** — use merge + llama.cpp.
-
-### 4a — Merge adapter → bf16 HF
+## Step C — Merge adapter into full weights
 
 ```bash
 cd ~/nassila/training
+
 python scripts/merge_adapter_gemma4.py \
   --adapter-dir outputs/nassila-grounding-e4b-v1.1/lora_adapter \
   --out-dir exports/hf-merged-v1.1-bf16
 ```
 
-Expect ~15 GB, multi-shard `safetensors` + `config.json`.
+- **Output:** `exports/hf-merged-v1.1-bf16/` (~15 GB, `config.json` + shards)
+- **Required** before GGUF conversion
 
-### 4b — llama.cpp convert + quantize
+---
+
+## Step D — Convert to GGUF (Q6_K)
 
 ```bash
-cd ~
-git clone https://github.com/ggerganov/llama.cpp.git
-cd llama.cpp && cmake -B build && cmake --build build -j --config Release
-
 cd ~/nassila/training
+
 python ~/llama.cpp/convert_hf_to_gguf.py exports/hf-merged-v1.1-bf16 \
   --outfile exports/nassila-grounding-e4b-v1.1-f16.gguf \
   --outtype f16
@@ -110,13 +139,74 @@ python ~/llama.cpp/convert_hf_to_gguf.py exports/hf-merged-v1.1-bf16 \
   Q6_K
 ```
 
-Expect Q6_K ~5.8–6.2 GB.
+- **Final file:** `exports/nassila-grounding-e4b-v1.1-q6_k.gguf` (~6 GB)
+- This is the file you will eventually load in LM Studio — but eval it on Vast first
 
 ---
 
-## Part 5 — Upload Hugging Face
+## Step E — Eval on Vast (go/no-go)
 
-**Option A (recommended):** separate v1.1 repos for A/B vs v1.
+### Terminal 1 — start server
+
+```bash
+cd ~/nassila/training
+source ~/nassila/.venv/bin/activate
+
+~/llama.cpp/build/bin/llama-server \
+  -m exports/nassila-grounding-e4b-v1.1-q6_k.gguf \
+  --host 127.0.0.1 \
+  --port 1234 \
+  -c 4096
+```
+
+Leave running.
+
+### Terminal 2 — run eval
+
+```bash
+cd ~/nassila/training
+source ~/nassila/.venv/bin/activate
+
+# quick check server is up
+curl -s http://127.0.0.1:1234/v1/models | head
+
+# predictions (~15+ min)
+python scripts/run_l3_eval_batch.py \
+  --base-url http://127.0.0.1:1234 \
+  --model "nassila-grounding-e4b-v1.1" \
+  --data data/eval_samples.jsonl data/eval_holdout_45.jsonl \
+  --retry 1 --repair \
+  --out outputs/v1_1_predictions.jsonl
+
+# score
+python scripts/evaluate_outputs.py \
+  --eval data/eval_samples.jsonl data/eval_holdout_45.jsonl \
+  --predictions outputs/v1_1_predictions.jsonl \
+  --report outputs/v1_1_report.json \
+  --repair
+
+cat outputs/v1_1_report.json
+```
+
+If `--model` fails, copy the exact id from `curl .../v1/models`.
+
+### Go / no-go
+
+| Metric | Pass? |
+|--------|-------|
+| Expect pass rate | ≥ 90% |
+| Quote validity (holdout) | ≥ 98% |
+| False supported | ≤ 5% |
+
+**NO-GO:** save `v1_1_report.json` (small — `scp` or copy-paste). Destroy instance. **Do not download GGUF.**
+
+**GO:** continue to F (and G on PC).
+
+---
+
+## Step F — Upload to Hugging Face (from Vast, optional but recommended)
+
+Do this **before** destroying the instance so your PC can resume-download later.
 
 ```bash
 export HF_TOKEN="hf_..."
@@ -131,32 +221,43 @@ hf upload jamalesam93/nassila-grounding-e4b-v1.1 \
   --repo-type model
 ```
 
-**Option B:** overwrite v1 repos — add README note that artifact is v1.1-trained.
-
-Model card: 700 train rows, paraphrase-supported mix, link to NassilaT commit `4ee08ee+`.
-
 ---
 
-## Part 6 — PC eval (LM Studio)
-
-1. Download `nassila-grounding-e4b-v1.1-q6_k.gguf` (or scp from Vast).
-2. Load in LM Studio; server on port **1234**.
-3. Run tuned eval (same harness as v1 baseline):
+## Step G — Download to PC (only after GO)
 
 ```powershell
-cd training
-.\scripts\run_baseline_eval.ps1   # point at tuned model id in LM Studio
+pip install -U "huggingface_hub[cli]"
+hf download jamalesam93/nassila-grounding-e4b-v1.1 `
+  nassila-grounding-e4b-v1.1-q6_k.gguf `
+  --local-dir .\models\nassila-grounding-e4b-v1.1
 ```
 
-Compare to `outputs/baseline_report.json` and v1 `outputs/v1_report.json`.
-
-**Go/no-go:** expect ≥90% · quotes ≥98% · false supported ≤5%.
+`hf download` resumes interrupted transfers — works well with download managers that wrap it.
 
 ---
 
-## Part 7 — Destroy Vast instance
+## Step H — LM Studio on PC
 
-Destroy (not stop) after upload + optional scp backup of GGUF.
+1. Import `nassila-grounding-e4b-v1.1-q6_k.gguf` into LM Studio
+2. Start local server on port **1234**
+3. Point Nassila preset at `http://localhost:1234`
+
+---
+
+## Step I — Destroy Vast instance
+
+Destroy (not stop) after upload and/or you have the GGUF on PC.
+
+---
+
+## Quick reference — file paths on Vast
+
+| Step | Path |
+|------|------|
+| Train output | `~/nassila/training/outputs/nassila-grounding-e4b-v1.1/lora_adapter/` |
+| Merged HF | `~/nassila/training/exports/hf-merged-v1.1-bf16/` |
+| **GGUF for eval + PC** | `~/nassila/training/exports/nassila-grounding-e4b-v1.1-q6_k.gguf` |
+| Eval report | `~/nassila/training/outputs/v1_1_report.json` |
 
 ---
 
@@ -164,8 +265,9 @@ Destroy (not stop) after upload + optional scp backup of GGUF.
 
 | Issue | Fix |
 |-------|-----|
-| OOM at step 0 | Rent **A6000 48 GB**; do not raise seq length |
-| `Gemma4ClippableLinear` merge error | Use `merge_adapter_gemma4.py`, not vanilla PEFT on 4-bit |
-| Unsloth GGUF ~112 MB only | Broken path — use llama.cpp recipe above |
-| `hf upload` path error | Pass explicit filename for GGUF, not `.` as path_in_repo |
-| CUDA 12.2 host | Destroy; rent CUDA 13 NGC template |
+| OOM during train | Use A6000 48 GB; do not raise seq length |
+| Merge fails on Gemma4ClippableLinear | Use `merge_adapter_gemma4.py` only |
+| Unsloth GGUF ~112 MB | Wrong path — use Steps C + D |
+| `hf upload` fails on GGUF | Pass explicit filename (see Step F) |
+| CUDA 12.2 on host | Destroy; rent CUDA 13 template |
+| Connection refused during eval | Start `llama-server` in Terminal 1 first |
