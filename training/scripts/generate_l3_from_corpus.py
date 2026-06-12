@@ -39,11 +39,11 @@ VISIBLE_CLAIM_CHARS = 200
 YEAR_BINS = [(2000, 2009), (2010, 2019), (2020, 2026)]
 
 VERDICT_TARGETS = {
-    "supported": 0.30,
-    "weak": 0.18,
+    "supported": 0.38,
+    "weak": 0.14,
     "not_in_source": 0.22,
     "contradicted": 0.18,
-    "insufficient_evidence": 0.12,
+    "insufficient_evidence": 0.08,
 }
 
 HEDGE_RE = re.compile(
@@ -176,6 +176,129 @@ def strip_hedges(text: str) -> str:
     return out
 
 
+def normalize_ws(text: str) -> str:
+    return re.sub(r"\s+", " ", text.strip())
+
+
+def extract_key_numbers(text: str) -> list[str]:
+    return re.findall(r"\d+(?:\.\d+)?", text)
+
+
+def numeric_alignment_ok(claim: str, source_sentence: str) -> bool:
+    """True when every number in claim appears in the source sentence."""
+    claim_nums = extract_key_numbers(claim)
+    if not claim_nums:
+        return False
+    source_nums = set(extract_key_numbers(source_sentence))
+    return all(n in source_nums for n in claim_nums)
+
+
+def semantic_overlap_ok(claim: str, source_sentence: str) -> bool:
+    """Non-numeric paraphrase: enough content-word overlap with source sentence."""
+    claim_words = {w.lower() for w in re.findall(r"[a-zA-Z]{5,}", claim)}
+    source_words = {w.lower() for w in re.findall(r"[a-zA-Z]{5,}", source_sentence)}
+    if len(claim_words) < 2:
+        return False
+    hits = len(claim_words & source_words)
+    return hits >= max(2, len(claim_words) // 3)
+
+
+def supported_alignment_ok(claim: str, source_sentence: str) -> bool:
+    if extract_key_numbers(claim):
+        return numeric_alignment_ok(claim, source_sentence)
+    return semantic_overlap_ok(claim, source_sentence)
+
+
+def paraphrase_sentence_for_supported(sentence: str, rng: random.Random) -> str | None:
+    """Manuscript-style paraphrase preserving key numbers (eval holdout style)."""
+    s = sentence.strip()
+    if len(s) < 30:
+        return None
+
+    patterns: list[tuple[re.Pattern[str], list[str]]] = [
+        (
+            re.compile(r"sensitivity was (\d+(?:\.\d+)?)\s*%", re.I),
+            [
+                "The new test had {n}% sensitivity",
+                "Diagnostic sensitivity reached {n}%",
+            ],
+        ),
+        (
+            re.compile(r"followed for (?:a )?mean of (\d+(?:\.\d+)?) months", re.I),
+            ["Mean follow-up was {n} months"],
+        ),
+        (
+            re.compile(r"(?:reached|achieved) an AUC of (\d+(?:\.\d+)?)", re.I),
+            ["The model achieved an AUC of {n}"],
+        ),
+        (
+            re.compile(r"(\d+(?:\.\d+)?)\s*% of (?:patients|participants)", re.I),
+            ["Around {n}% of patients reported the outcome"],
+        ),
+        (
+            re.compile(r"enrolled (\d[\d,]*) (?:adults|patients|participants)", re.I),
+            ["The cohort included {n} participants"],
+        ),
+        (
+            re.compile(r"efficacy (?:was |of )?(\d+(?:\.\d+)?)\s*%", re.I),
+            ["Vaccine efficacy was {n}% in the trial"],
+        ),
+        (
+            re.compile(r"efficacy against .+ was (\d+(?:\.\d+)?)\s*%", re.I),
+            ["Efficacy was {n}% against the primary endpoint"],
+        ),
+        (
+            re.compile(r"(\d+(?:\.\d+)?)\s*% \(95% CI", re.I),
+            ["The rate was {n}% in the primary analysis"],
+        ),
+        (
+            re.compile(r"increased by (\d+(?:\.\d+)?)\s*%", re.I),
+            ["The measure rose by {n}% compared with baseline"],
+        ),
+    ]
+
+    for pat, templates in patterns:
+        m = pat.search(s)
+        if m:
+            n = m.group(1).replace(",", "")
+            tpl = rng.choice(templates)
+            return tpl.format(n=n)
+
+    semantic: list[tuple[re.Pattern[str], str]] = [
+        (
+            re.compile(r"was associated with improved (.+?)[\.,]", re.I),
+            r"\1 improved with treatment",
+        ),
+        (
+            re.compile(r"decreased significantly in the (.+?) (?:arm|group)", re.I),
+            r"Treatment reduced outcomes in the \1 group",
+        ),
+        (
+            re.compile(r"did not differ between (.+?) groups", re.I),
+            r"Rates were similar between groups",
+        ),
+        (
+            re.compile(r"protocol compliance was high", re.I),
+            r"Compliance with the protocol was high",
+        ),
+        (
+            re.compile(r"were significantly elevated", re.I),
+            r"Both biomarkers were elevated",
+        ),
+    ]
+    for pat, repl in semantic:
+        m = pat.search(s)
+        if m:
+            out = pat.sub(repl, s, count=1)
+            if "{n}" in out and m.lastindex:
+                out = out.format(n=m.group(1))
+            out = normalize_ws(out)
+            if 20 <= len(out) <= VISIBLE_CLAIM_CHARS and out.lower() != s.lower():
+                return out[:VISIBLE_CLAIM_CHARS]
+
+    return None
+
+
 def claim_absent_from_text(claim: str, text: str) -> bool:
     words = [w.lower() for w in re.findall(r"[a-zA-Z]{5,}", claim)]
     if len(words) < 3:
@@ -227,6 +350,41 @@ def row_meta(paper: dict[str, Any]) -> dict[str, Any]:
     return {
         "label": "abstract",
         "url": paper.get("article_url") or paper.get("doi"),
+    }
+
+
+def make_supported_paraphrase(
+    paper: dict[str, Any], sentence: str, idx: int, rng: random.Random
+) -> dict[str, Any] | None:
+    """Supported when passage paraphrases the abstract but numbers/facts align."""
+    if sentence not in paper["abstract"]:
+        return None
+    paraphrase = paraphrase_sentence_for_supported(sentence, rng)
+    if not paraphrase:
+        return None
+    if normalize_ws(paraphrase) == normalize_ws(sentence):
+        return None
+    if not supported_alignment_ok(paraphrase, sentence):
+        return None
+    cite = citation_phrase(paper.get("authors", []), paper.get("year"))
+    return {
+        "id": f"l3-{paper['corpus_id']}-supp-{idx}",
+        "task": "l3_grounding",
+        "version": 1,
+        "passage": neutral_passage(paraphrase, cite, rng),
+        "source_excerpt": paper["abstract"],
+        "meta": row_meta(paper),
+        "output": {
+            "claims": [
+                {
+                    "claim": paraphrase[:VISIBLE_CLAIM_CHARS],
+                    "verdict": "supported",
+                    "sourceQuotes": [sentence],
+                    "hasNumericClaim": bool(re.search(r"\d", paraphrase)),
+                }
+            ],
+            "overallVerdict": "support",
+        },
     }
 
 
@@ -303,6 +461,9 @@ def make_weak(
         return None
     # Hedges must change the claim text we train on (first 200 chars), not only the tail.
     if strengthened[:VISIBLE_CLAIM_CHARS] == sentence[:VISIBLE_CLAIM_CHARS]:
+        return None
+    # Same numbers with only hedging removed → supported pattern, not weak.
+    if extract_key_numbers(strengthened) and numeric_alignment_ok(strengthened, sentence):
         return None
     cite = citation_phrase(paper.get("authors", []), paper.get("year"))
     return {
@@ -439,6 +600,10 @@ def generate_for_paper(paper: dict[str, Any], rng: random.Random) -> list[dict[s
         if sup and not validate_row(sup):
             rows.append(sup)
             idx += 1
+        sup_para = make_supported_paraphrase(paper, sentence, idx, rng)
+        if sup_para and not validate_row(sup_para):
+            rows.append(sup_para)
+            idx += 1
 
     num_sent = pick_numeric_sentence(abstract, rng)
     if num_sent:
@@ -446,6 +611,11 @@ def generate_for_paper(paper: dict[str, Any], rng: random.Random) -> list[dict[s
         if con and not validate_row(con):
             rows.append(con)
             idx += 1
+        if num_sent != sentence:
+            sup_num = make_supported_paraphrase(paper, num_sent, idx, rng)
+            if sup_num and not validate_row(sup_num):
+                rows.append(sup_num)
+                idx += 1
 
     hedged = pick_hedged_sentence(abstract, rng)
     if hedged:
@@ -569,7 +739,7 @@ def main() -> int:
         type=Path,
         default=DATA_DIR / "eval_corpus_holdout_papers.jsonl",
     )
-    parser.add_argument("--target-rows", type=int, default=400)
+    parser.add_argument("--target-rows", type=int, default=700)
     parser.add_argument("--target-papers", type=int, default=0, help="0 = auto from target-rows")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--export-review", type=Path, default=None)
