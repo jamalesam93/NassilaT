@@ -22,10 +22,20 @@
 
 ### v1.1 — Phase 2.2 (in progress)
 
-**Walkthrough:** [PHASE2_2_V1_1_WALKTHROUGH.md](./PHASE2_2_V1_1_WALKTHROUGH.md)
+**Single checklist (train → eval on Vast → download only if pass):** [PHASE2_2_V1_1_WALKTHROUGH.md](./PHASE2_2_V1_1_WALKTHROUGH.md)
 
-1. ~~**Label spot-check**~~ — done (104/105 perfect; row 70 generalization acceptable)
-2. **Vast re-train** — `train_qlora_gemma4_e4b.py` → `outputs/nassila-grounding-e4b-v1.1`
-3. **GGUF export** — `merge_adapter_gemma4.py` + llama.cpp Q6_K (not `export_gguf.py`)
-4. **Tuned eval** — targets: expect ≥90%, quotes ≥98%, false supported ≤5%
-5. **HF publish** — `nassila-grounding-e4b-v1.1` + `-adapter` repos
+| Step | On | What |
+|------|-----|------|
+| A | Vast | Setup |
+| B | Vast | Train → LoRA adapter |
+| C | Vast | Merge → full HF weights (**required**) |
+| D | Vast | GGUF Q6_K (**required for eval**) |
+| E | Vast | Eval → go/no-go |
+| F | Vast | Upload HF (optional, before destroy) |
+| G | PC | Download GGUF **only if GO** |
+| H | PC | LM Studio + Nassila |
+
+1. ~~**Label spot-check**~~ — done
+2. **A–E on Vast** — train, merge, GGUF, eval (no home download yet)
+3. **F** — upload to HF from Vast
+4. **G–H on PC** — only after eval passes
