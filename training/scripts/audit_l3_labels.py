@@ -26,6 +26,8 @@ from generate_l3_from_corpus import (  # noqa: E402
     HEDGE_RE,
     VISIBLE_CLAIM_CHARS,
     flip_number_in_text,
+    numeric_alignment_ok,
+    semantic_overlap_ok,
     strip_hedges,
 )
 from validate_dataset import is_substring_quote  # noqa: E402
@@ -63,7 +65,8 @@ def audit_row(record: dict) -> list[str]:
             if not is_substring_quote(q, excerpt):
                 issues.append(f"{rid}: supported quote not in source_excerpt")
             if claim[:VISIBLE_CLAIM_CHARS] != q[:VISIBLE_CLAIM_CHARS] and claim not in q:
-                issues.append(f"{rid}: supported claim diverges from quote prefix")
+                if not numeric_alignment_ok(claim, q) and not semantic_overlap_ok(claim, q):
+                    issues.append(f"{rid}: supported claim diverges from quote without alignment")
 
     if verdict == "contradicted":
         if not quotes:
