@@ -1,5 +1,7 @@
 # Phase 2 Walkthrough — Production QLoRA + GGUF (`nassila-grounding-e4b-v1`)
 
+**v1.1 retrain (700 rows):** use [PHASE2_2_V1_1_WALKTHROUGH.md](./PHASE2_2_V1_1_WALKTHROUGH.md) — manual GGUF export required for Gemma 4.
+
 **Full step-by-step (PC + Vast + eval):** [PHASE2_TRAINING_GUIDE.md](./PHASE2_TRAINING_GUIDE.md)
 
 After **Phase 1.5** (corpus) and label generation on your PC.
