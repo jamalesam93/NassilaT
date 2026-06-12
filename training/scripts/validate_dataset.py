@@ -21,7 +21,7 @@ L3_VERDICTS = frozenset(
     {"supported", "weak", "contradicted", "not_in_source", "insufficient_evidence"}
 )
 OVERALL_VERDICTS = frozenset({"support", "weak", "unrelated", "insufficient_evidence"})
-# One Ring task ids — see docs/ONE_RING.md and src/shared/nassila-agent-tasks.ts
+# Ouroboros task ids — see docs/OUROBOROS.md and src/shared/nassila-agent-tasks.ts
 TASKS = frozenset({
     "l3_grounding",
     "doc_extract",
@@ -41,6 +41,9 @@ def is_substring_quote(quote: str, excerpt: str) -> bool:
     if quote in excerpt:
         return True
     return normalize_ws(quote) in normalize_ws(excerpt)
+
+
+GROUNDING_SYSTEM_MESSAGE = "You are a strict academic citation grounding assistant."
 
 
 def build_grounding_user_prompt(passage: str, source_excerpt: str, meta: dict[str, Any]) -> str:
@@ -67,6 +70,23 @@ def build_grounding_user_prompt(passage: str, source_excerpt: str, meta: dict[st
             f"SOURCE_EXCERPT ({label}{url_part}):\n{source_excerpt}",
         ]
     )
+
+
+def build_grounding_chat_messages(
+    passage: str,
+    source_excerpt: str,
+    meta: dict[str, Any],
+    *,
+    chat_template: bool = False,
+) -> list[dict[str, str]]:
+    """Messages for eval/inference; chat_template matches train_qlora system+user layout."""
+    user = build_grounding_user_prompt(passage, source_excerpt, meta)
+    if chat_template:
+        return [
+            {"role": "system", "content": GROUNDING_SYSTEM_MESSAGE},
+            {"role": "user", "content": user},
+        ]
+    return [{"role": "user", "content": user}]
 
 
 def validate_l3_record(record: dict[str, Any], line_no: int, errors: list[str]) -> None:

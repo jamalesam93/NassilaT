@@ -1,14 +1,14 @@
-# Nassila training roadmap — One Ring
+# Nassila training roadmap — Ouroboros
 
-**North star:** one local model identity (**One Ring**) for all Nassila AI tasks, forged **one facet at a time**. Canonical vision: [`docs/ONE_RING.md`](../docs/ONE_RING.md).
+**North star:** one local model identity (**Ouroboros**) for all Nassila AI tasks, forged **one worker at a time**. Canonical vision: [`docs/OUROBOROS.md`](https://github.com/jamalesam93/citations-style/blob/main/docs/OUROBOROS.md) (stub: [`ONE_RING.md`](./ONE_RING.md)).
 
-**v1 ships only** `l3_grounding` → **`nassila-grounding-e4b-v1`** (Gemma 4 E4B). Later facets merge into **`nassila-agent-*`**.
+**v1 ships only** worker **Sanad** (`l3_grounding`) → **`nassila-grounding-e4b-v1`** (Gemma 4 E4B). Later workers merge into **`nassila-agent-*`**.
 
 ---
 
-## One Ring phases (product + training)
+## Ouroboros phases (product + training)
 
-| Phase | Facet | Task id(s) | Artifact | Base model |
+| Phase | Worker | Task id(s) | Artifact | Base model |
 |-------|-------|------------|----------|------------|
 | **0** | Baseline eval | `l3_grounding` | Stock Gemma 4 E4B Q6_K | E4B |
 | **0.5** | App guardrails | — | JSON repair, retry, caps | — (app code) |
@@ -83,7 +83,7 @@ Implemented in Nassila engine/renderer:
 
 ---
 
-## Phase 3+ — More facets → One Ring merge
+## Phase 3+ — More workers → Ouroboros merge
 
 Train each task with its JSONL ([`DATASET_SCHEMA.md`](./DATASET_SCHEMA.md)), eval independently, then **multi-task merge** into one GGUF.
 
@@ -115,7 +115,7 @@ Train each task with its JSONL ([`DATASET_SCHEMA.md`](./DATASET_SCHEMA.md)), eva
 
 1. Remove `/training/` from `.gitignore` (or use separate repo per [`docs/NEW_REPOSITORY.md`](../docs/NEW_REPOSITORY.md))
 2. Ship eval reports + GGUF on Hugging Face
-3. Link [`docs/ONE_RING.md`](../docs/ONE_RING.md) from README
+3. Link [`docs/OUROBOROS.md`](https://github.com/jamalesam93/citations-style/blob/main/docs/OUROBOROS.md) from README
 
 ---
 
@@ -123,7 +123,7 @@ Train each task with its JSONL ([`DATASET_SCHEMA.md`](./DATASET_SCHEMA.md)), eva
 
 | Doc | Purpose |
 |-----|---------|
-| [`docs/ONE_RING.md`](../docs/ONE_RING.md) | Product vision + task registry |
+| [`docs/OUROBOROS.md`](https://github.com/jamalesam93/citations-style/blob/main/docs/OUROBOROS.md) | Product vision + workers registry |
 | [`README.md`](./README.md) | Training pack index |
 | [`DATASET_SCHEMA.md`](./DATASET_SCHEMA.md) | JSONL per task |
 | [`LM_STUDIO_INTEGRATION.md`](./LM_STUDIO_INTEGRATION.md) | Inference + presets |

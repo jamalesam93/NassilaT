@@ -2,7 +2,7 @@
 
 How to run your **baseline or fine-tuned** Gemma model in LM Studio and connect it to Nassila’s existing OpenAI-compatible LLM path.
 
-**One Ring:** Users should load **one GGUF** in LM Studio (e.g. `nassila-grounding-e4b-v1` today; `nassila-agent-*` when multi-task ships). The app will route by `task` via prompt/schema — see [`docs/ONE_RING.md`](../docs/ONE_RING.md) and [`src/shared/nassila-agent-tasks.ts`](../src/shared/nassila-agent-tasks.ts).
+**Ouroboros:** Users should load **one GGUF** in LM Studio (e.g. `nassila-grounding-e4b-v1` today; `nassila-agent-*` when multi-task ships). The app routes by `task` via prompt/schema — worker **Sanad** = `l3_grounding`. See [`docs/OUROBOROS.md`](https://github.com/jamalesam93/citations-style/blob/main/docs/OUROBOROS.md) and [`nassila-agent-tasks.ts`](https://github.com/jamalesam93/citations-style/blob/main/src/shared/nassila-agent-tasks.ts).
 
 | Artifact | Tasks (v1 / future) |
 |----------|---------------------|

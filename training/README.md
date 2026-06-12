@@ -2,7 +2,7 @@
 
 This folder is a **self-contained guide** for fine-tuning **Nassila-specific** local models on **Google Gemma 4 E4B**, then running them in **LM Studio** and connecting them to the desktop app.
 
-**Strategy:** [**One Ring**](../docs/ONE_RING.md) — one model identity over time, many `task` facets. **v1** trains only **`l3_grounding`** → `nassila-grounding-e4b-v1`. See [ONE_RING.md](./ONE_RING.md) and [ROADMAP.md](./ROADMAP.md).
+**Strategy:** [**Ouroboros**](./OUROBOROS.md) — one model identity over time, **workers** per `task`. **v1** trains worker **Sanad** (`l3_grounding`) → `nassila-grounding-e4b-v1`. See [ROADMAP.md](./ROADMAP.md).
 
 It is documentation-first: sample data, schemas, diagrams, and helper scripts. It does **not** ship model weights, checkpoints, or private training data.
 
@@ -37,8 +37,8 @@ Hugging Face E4B IT  →  QLoRA training  →  adapter  →  export Q6_K GGUF  �
 | 2 | [DATASET_SCHEMA.md](./DATASET_SCHEMA.md) | Exact JSONL formats for each task |
 | 3 | [EVALUATION_GUIDE.md](./EVALUATION_GUIDE.md) | Metrics and pass/fail thresholds |
 | 4 | [LM_STUDIO_INTEGRATION.md](./LM_STUDIO_INTEGRATION.md) | Serve model locally; point Nassila at it |
-| 5 | [ROADMAP.md](./ROADMAP.md) | One Ring phases (L3 now → merge later) |
-| 6 | [ONE_RING.md](./ONE_RING.md) | Canonical vision link + merge checklist |
+| 5 | [ROADMAP.md](./ROADMAP.md) | Ouroboros phases (Sanad now → merge later) |
+| 6 | [OUROBOROS.md](./OUROBOROS.md) | Canonical vision link + workers |
 
 ---
 
@@ -51,8 +51,8 @@ training/
   DATASET_SCHEMA.md         ← JSONL field definitions
   EVALUATION_GUIDE.md       ← how to score your model
   LM_STUDIO_INTEGRATION.md  ← local server + app wiring
-  ROADMAP.md                ← One Ring training phases
-  ONE_RING.md               ← pointer to docs/ONE_RING.md
+  ROADMAP.md                ← Ouroboros training phases
+  OUROBOROS.md              ← pointer to docs/OUROBOROS.md
   requirements.txt          ← Python deps for scripts
   data/
     l3_grounding_samples.jsonl    ← 8 train-style examples
@@ -71,11 +71,11 @@ training/
     app_integration_flow.mmd
 ```
 
-Product vision: [`docs/ONE_RING.md`](../docs/ONE_RING.md). App-side refinements (parser repair, retry, presets, host parsers) are tracked in [`docs/WEBPAGE_ROADMAP.md`](../docs/WEBPAGE_ROADMAP.md).
+Product vision: [OUROBOROS.md](./OUROBOROS.md) → [citations-style docs](https://github.com/jamalesam93/citations-style/blob/main/docs/OUROBOROS.md). App-side refinements are in [`docs/WEBPAGE_ROADMAP.md`](https://github.com/jamalesam93/citations-style/blob/main/docs/WEBPAGE_ROADMAP.md).
 
 ---
 
-## What to train first (One Ring facets)
+## What to train first (Ouroboros workers)
 
 | Priority | Task id | v1? | App hook |
 |----------|---------|-----|----------|
