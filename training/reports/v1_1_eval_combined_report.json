@@ -1,0 +1,44 @@
+{
+  "predictions_file": "outputs/v1_1_predictions.jsonl",
+  "repair_allowed": true,
+  "verdict": "NO-GO",
+  "core_eval": {
+    "eval_file": "data/eval_samples.jsonl",
+    "total_l3_rows": 5,
+    "json_parse_rate_strict": 1.0,
+    "json_parse_rate_with_repair": 1.0,
+    "repair_used_count": 0,
+    "expect_checks_pass_rate": 0.6,
+    "quote_validity_rate": 0.3333,
+    "false_supported_rate": 0.0,
+    "category_pass_rates": {}
+  },
+  "holdout_eval": {
+    "eval_file": "data/eval_holdout_45.jsonl",
+    "total_l3_rows": 45,
+    "json_parse_rate_strict": 1.0,
+    "json_parse_rate_with_repair": 1.0,
+    "repair_used_count": 0,
+    "expect_checks_pass_rate": 0.6667,
+    "quote_validity_rate": 0.0909,
+    "false_supported_rate": 0.0,
+    "category_pass_rates": {
+      "supported": 0.1,
+      "contradicted": 1.0,
+      "not_in_source": 0.6667,
+      "weak": 1.0,
+      "insufficient_evidence": 1.0,
+      "multi_claim": 0.5
+    }
+  },
+  "combined_totals": {
+    "total_l3_rows": 50,
+    "expect_checks_pass_rate": 0.66,
+    "json_parse_rate_strict": 1.0,
+    "json_parse_rate_with_repair": 1.0
+  },
+  "notes": [
+    "h-001..h-008,h-010,h-040: any_claim_verdict missing supported",
+    "h-001 raw: weak verdict with valid sourceQuotes — hedge false positive"
+  ]
+}

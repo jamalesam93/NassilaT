@@ -20,22 +20,18 @@
 
 1. ~~Label QA~~ · ~~baseline eval~~ · ~~Vast train~~ · ~~tuned eval (NO-GO)~~ · ~~HF publish (v1)~~
 
-### v1.1 — Phase 2.2 (in progress)
+### v1.1 — Phase 2.2 (done, NO-GO)
 
-**Single checklist (train → eval on Vast → download only if pass):** [PHASE2_2_V1_1_WALKTHROUGH.md](./PHASE2_2_V1_1_WALKTHROUGH.md)
+- Trained 700 rows on Vast; eval on Vast (66% expect, 9.1% quote validity)
+- Adapter on HF: `QinEmPeRoR93/nassila-grounding-e4b-v1.1-adapter`
+- Report: [reports/v1_1_eval_combined_report.json](./reports/v1_1_eval_combined_report.json)
+- Walkthrough: [PHASE2_2_V1_1_WALKTHROUGH.md](./PHASE2_2_V1_1_WALKTHROUGH.md)
 
-| Step | On | What |
-|------|-----|------|
-| A | Vast | Setup |
-| B | Vast | Train → LoRA adapter |
-| C | Vast | Merge → full HF weights (**required**) |
-| D | Vast | GGUF Q6_K (**required for eval**) |
-| E | Vast | Eval → go/no-go |
-| F | Vast | Upload HF (optional, before destroy) |
-| G | PC | Download GGUF **only if GO** |
-| H | PC | LM Studio + Nassila |
+### v1.2 — Phase 2.3 (next)
 
-1. ~~**Label spot-check**~~ — done
-2. **A–E on Vast** — train, merge, GGUF, eval (no home download yet)
-3. **F** — upload to HF from Vast
-4. **G–H on PC** — only after eval passes
+**Plan:** [PHASE2_3_V1_2_PLAN.md](./PHASE2_3_V1_2_PLAN.md)
+
+1. **Dataset** — holdout-shaped supported rows, anti-false-weak pairs, rebalance
+2. **Eval alignment** — chat-template eval matching train
+3. **Vast train** — 3 epochs, `nassila-grounding-e4b-v1.2`
+4. **Eval on Vast** before any GGUF download
