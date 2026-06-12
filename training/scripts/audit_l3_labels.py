@@ -30,7 +30,7 @@ from generate_l3_from_corpus import (  # noqa: E402
     semantic_overlap_ok,
     strip_hedges,
 )
-from validate_dataset import is_substring_quote  # noqa: E402
+from validate_dataset import is_substring_quote, normalize_ws  # noqa: E402
 
 BAD_PREFIXES = (
     "This study reports that",
@@ -52,6 +52,8 @@ def audit_row(record: dict) -> list[str]:
     verdict = claim_obj.get("verdict", "")
     claim = str(claim_obj.get("claim", ""))
     quotes = claim_obj.get("sourceQuotes") or []
+    excerpt_mode = record.get("meta", {}).get("excerpt_mode", "full")
+    rationale = claim_obj.get("rationale") or []
 
     for bad in BAD_PREFIXES:
         if bad.lower() in passage.lower() and verdict != "not_in_source":
@@ -64,9 +66,14 @@ def audit_row(record: dict) -> list[str]:
             q = quotes[0]
             if not is_substring_quote(q, excerpt):
                 issues.append(f"{rid}: supported quote not in source_excerpt")
+            if excerpt_mode == "sentence" and normalize_ws(q) != normalize_ws(excerpt):
+                if not is_substring_quote(q, excerpt):
+                    issues.append(f"{rid}: sentence excerpt_mode but quote != excerpt")
             if claim[:VISIBLE_CLAIM_CHARS] != q[:VISIBLE_CLAIM_CHARS] and claim not in q:
                 if not numeric_alignment_ok(claim, q) and not semantic_overlap_ok(claim, q):
                     issues.append(f"{rid}: supported claim diverges from quote without alignment")
+        if "-sanad-" in rid and not rationale:
+            issues.append(f"{rid}: sanad supported missing rationale")
 
     if verdict == "contradicted":
         if not quotes:
@@ -95,6 +102,8 @@ def audit_row(record: dict) -> list[str]:
             strengthened = strip_hedges(q)
             if strengthened[:VISIBLE_CLAIM_CHARS] == q[:VISIBLE_CLAIM_CHARS]:
                 issues.append(f"{rid}: hedge removal not visible in claim prefix")
+            if numeric_alignment_ok(claim, q):
+                issues.append(f"{rid}: weak row has numeric alignment (should be supported)")
 
     if verdict == "not_in_source":
         if quotes:

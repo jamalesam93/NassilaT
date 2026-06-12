@@ -27,7 +27,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 TRAINING_DIR = SCRIPT_DIR.parent
 sys.path.insert(0, str(SCRIPT_DIR))
 
-from validate_dataset import build_grounding_user_prompt, load_jsonl  # noqa: E402
+from validate_dataset import build_grounding_chat_messages, load_jsonl  # noqa: E402
 from lmstudio_smoke_test import chat_completion  # noqa: E402
 from json_repair import parse_strict_json, try_parse_with_repair  # noqa: E402
 
@@ -93,6 +93,11 @@ def main() -> int:
         type=float,
         default=0.2,
     )
+    parser.add_argument(
+        "--chat-template",
+        action="store_true",
+        help="Send system+user messages matching QLoRA train layout",
+    )
     args = parser.parse_args()
 
     rows: list[dict] = []
@@ -129,10 +134,11 @@ def main() -> int:
     with args.out.open("w", encoding="utf-8") as f:
         for i, sample in enumerate(rows, 1):
             rid = sample["id"]
-            prompt = build_grounding_user_prompt(
+            messages = build_grounding_chat_messages(
                 sample["passage"],
                 sample["source_excerpt"],
                 sample.get("meta", {}),
+                chat_template=args.chat_template,
             )
             attempts = args.retry + 1
             last_raw = ""
@@ -144,7 +150,7 @@ def main() -> int:
                     last_raw = chat_completion(
                         args.base_url,
                         args.model,
-                        [{"role": "user", "content": prompt}],
+                        messages,
                         args.api_key,
                         temperature=args.temperature,
                     )

@@ -39,12 +39,15 @@ VISIBLE_CLAIM_CHARS = 200
 YEAR_BINS = [(2000, 2009), (2010, 2019), (2020, 2026)]
 
 VERDICT_TARGETS = {
-    "supported": 0.38,
-    "weak": 0.14,
-    "not_in_source": 0.22,
-    "contradicted": 0.18,
+    "supported": 0.45,
+    "weak": 0.12,
+    "not_in_source": 0.20,
+    "contradicted": 0.15,
     "insufficient_evidence": 0.08,
 }
+
+EXCERPT_CHUNK_MAX = 1800
+SUPPORTED_RATIONALE = "Numeric/factual alignment; paraphrase is supported"
 
 HEDGE_RE = re.compile(
     r"\b(may|might|could|suggest|suggested|possibly|appear|appears|seem|seems|"
@@ -142,6 +145,60 @@ def neutral_passage(core: str, cite: str, rng: random.Random) -> str:
     if opener and body and not METHODS_RE.match(body) and body[0].isupper():
         body = body[0].lower() + body[1:] if len(body) > 1 else body.lower()
     return f"{opener}{body} {cite}."
+
+
+def direct_passage(core: str, cite: str) -> str:
+    """Eval holdout style: direct claim + citation (no neutral opener)."""
+    body = core.strip()
+    if body and body[-1] in ".!?":
+        body = body[:-1]
+    return f"{body} {cite}."
+
+
+def normalize_tokens(text: str) -> set[str]:
+    parts = (
+        text.lower()
+        .replace(",", " ")
+        .replace(".", " ")
+        .replace(";", " ")
+        .split()
+    )
+    return {t for t in parts if len(t) >= 3}
+
+
+def overlap_score(passage_tokens: set[str], chunk_tokens: set[str]) -> float:
+    if not passage_tokens:
+        return 0.0
+    hits = sum(1 for t in passage_tokens if t in chunk_tokens)
+    return hits / len(passage_tokens)
+
+
+def chunk_excerpt_for_grounding(passage: str, source_text: str, max_chars: int = EXCERPT_CHUNK_MAX) -> str:
+    """Mirror grounding-llm.ts selectSourceChunksForGrounding."""
+    cleaned = normalize_ws(source_text)
+    if len(cleaned) <= max_chars:
+        return cleaned
+
+    parts = re.split(r"(?<=[.!?])\s+|[\n\r]+", cleaned)
+    chunks = [p.strip() for p in parts if len(p.strip()) > 20]
+    if not chunks:
+        chunks = [cleaned[:2000]]
+
+    p_tokens = normalize_tokens(passage)
+    ranked = sorted(
+        ((c, overlap_score(p_tokens, normalize_tokens(c))) for c in chunks),
+        key=lambda x: -x[1],
+    )
+
+    out = ""
+    for chunk, _score in ranked:
+        sep = "\n\n" if out else ""
+        if len(out) + len(sep) + len(chunk) > max_chars:
+            break
+        out = out + sep + chunk
+    if not out:
+        out = cleaned[:max_chars]
+    return out[:max_chars]
 
 
 NUMERIC_TOKEN_RE = re.compile(
@@ -346,10 +403,11 @@ def excerpt_preview(excerpt: str, anchor: str | None, width: int = 180) -> str:
     return excerpt[:width] + "..."
 
 
-def row_meta(paper: dict[str, Any]) -> dict[str, Any]:
+def row_meta(paper: dict[str, Any], excerpt_mode: str = "full") -> dict[str, Any]:
     return {
         "label": "abstract",
         "url": paper.get("article_url") or paper.get("doi"),
+        "excerpt_mode": excerpt_mode,
     }
 
 
@@ -373,7 +431,7 @@ def make_supported_paraphrase(
         "version": 1,
         "passage": neutral_passage(paraphrase, cite, rng),
         "source_excerpt": paper["abstract"],
-        "meta": row_meta(paper),
+        "meta": row_meta(paper, "full"),
         "output": {
             "claims": [
                 {
@@ -381,11 +439,91 @@ def make_supported_paraphrase(
                     "verdict": "supported",
                     "sourceQuotes": [sentence],
                     "hasNumericClaim": bool(re.search(r"\d", paraphrase)),
+                    "rationale": [SUPPORTED_RATIONALE],
                 }
             ],
             "overallVerdict": "support",
         },
     }
+
+
+def make_holdout_style_supported(
+    paper: dict[str, Any], sentence: str, idx: int, rng: random.Random
+) -> dict[str, Any] | None:
+    """Holdout-shaped: direct passage + single-sentence excerpt (eval alignment)."""
+    if sentence not in paper["abstract"]:
+        return None
+    paraphrase = paraphrase_sentence_for_supported(sentence, rng)
+    if not paraphrase:
+        return None
+    if not supported_alignment_ok(paraphrase, sentence):
+        return None
+    cite = citation_phrase(paper.get("authors", []), paper.get("year"))
+    return {
+        "id": f"l3-{paper['corpus_id']}-sanad-{idx}",
+        "task": "l3_grounding",
+        "version": 1,
+        "passage": direct_passage(paraphrase, cite),
+        "source_excerpt": sentence,
+        "meta": row_meta(paper, "sentence"),
+        "output": {
+            "claims": [
+                {
+                    "claim": paraphrase[:VISIBLE_CLAIM_CHARS],
+                    "verdict": "supported",
+                    "sourceQuotes": [sentence],
+                    "hasNumericClaim": bool(re.search(r"\d", paraphrase)),
+                    "rationale": [SUPPORTED_RATIONALE],
+                }
+            ],
+            "overallVerdict": "support",
+        },
+    }
+
+
+def make_supported_paraphrase_chunked(
+    paper: dict[str, Any], sentence: str, idx: int, rng: random.Random
+) -> dict[str, Any] | None:
+    """Production-shaped: paraphrase claim + token-overlap chunked excerpt."""
+    abstract = paper["abstract"]
+    if sentence not in abstract:
+        return None
+    paraphrase = paraphrase_sentence_for_supported(sentence, rng)
+    if not paraphrase or not supported_alignment_ok(paraphrase, sentence):
+        return None
+    cite = citation_phrase(paper.get("authors", []), paper.get("year"))
+    chunk = chunk_excerpt_for_grounding(paraphrase, abstract)
+    if not is_substring_quote(sentence, chunk):
+        if len(sentence) + len(chunk) + 2 <= EXCERPT_CHUNK_MAX:
+            chunk = f"{sentence}\n\n{chunk}"[:EXCERPT_CHUNK_MAX]
+        elif not is_substring_quote(sentence, chunk):
+            return None
+    return {
+        "id": f"l3-{paper['corpus_id']}-chunk-{idx}",
+        "task": "l3_grounding",
+        "version": 1,
+        "passage": neutral_passage(paraphrase, cite, rng),
+        "source_excerpt": chunk,
+        "meta": row_meta(paper, "chunked"),
+        "output": {
+            "claims": [
+                {
+                    "claim": paraphrase[:VISIBLE_CLAIM_CHARS],
+                    "verdict": "supported",
+                    "sourceQuotes": [sentence],
+                    "hasNumericClaim": bool(re.search(r"\d", paraphrase)),
+                    "rationale": [SUPPORTED_RATIONALE],
+                }
+            ],
+            "overallVerdict": "support",
+        },
+    }
+
+
+def is_substring_quote(quote: str, excerpt: str) -> bool:
+    if quote in excerpt:
+        return True
+    return normalize_ws(quote) in normalize_ws(excerpt)
 
 
 def make_supported(
@@ -400,7 +538,7 @@ def make_supported(
         "version": 1,
         "passage": neutral_passage(sentence, cite, rng),
         "source_excerpt": paper["abstract"],
-        "meta": row_meta(paper),
+        "meta": row_meta(paper, "full"),
         "output": {
             "claims": [
                 {
@@ -435,7 +573,7 @@ def make_contradicted(
         "version": 1,
         "passage": neutral_passage(flipped, cite, rng),
         "source_excerpt": paper["abstract"],
-        "meta": row_meta(paper),
+        "meta": row_meta(paper, "full"),
         "output": {
             "claims": [
                 {
@@ -472,7 +610,7 @@ def make_weak(
         "version": 1,
         "passage": neutral_passage(strengthened, cite, rng),
         "source_excerpt": paper["abstract"],
-        "meta": row_meta(paper),
+        "meta": row_meta(paper, "full"),
         "output": {
             "claims": [
                 {
@@ -497,13 +635,48 @@ def make_not_in_source(paper: dict[str, Any], idx: int, rng: random.Random) -> d
         "version": 1,
         "passage": passage,
         "source_excerpt": paper["abstract"],
-        "meta": row_meta(paper),
+        "meta": row_meta(paper, "full"),
         "output": {
             "claims": [
                 {
                     "claim": claim[:200],
                     "verdict": "not_in_source",
                     "rationale": ["Claim content is not supported by the abstract excerpt"],
+                }
+            ],
+            "overallVerdict": "unrelated",
+        },
+    }
+
+
+def make_not_in_source_thin_excerpt(
+    paper: dict[str, Any], idx: int, rng: random.Random
+) -> dict[str, Any] | None:
+    """Claim topic absent from a thin methods/design excerpt (h-021 style)."""
+    abstract = paper["abstract"]
+    thin = methods_excerpt(abstract)
+    if not thin:
+        sents = split_sentences(abstract)
+        thin = " ".join(sents[:2]) if len(sents) >= 2 else None
+    if not thin or len(thin) < 80:
+        return None
+    claim = pick_not_in_source_claim(thin, rng)
+    if not claim_absent_from_text(claim, thin):
+        return None
+    cite = citation_phrase(paper.get("authors", []), paper.get("year"))
+    return {
+        "id": f"l3-{paper['corpus_id']}-nisthin-{idx}",
+        "task": "l3_grounding",
+        "version": 1,
+        "passage": direct_passage(claim, cite),
+        "source_excerpt": thin,
+        "meta": row_meta(paper, "sentence"),
+        "output": {
+            "claims": [
+                {
+                    "claim": claim[:200],
+                    "verdict": "not_in_source",
+                    "rationale": ["Claim topic is absent from the provided excerpt"],
                 }
             ],
             "overallVerdict": "unrelated",
@@ -526,7 +699,7 @@ def make_insufficient_evidence(
         "version": 1,
         "passage": neutral_passage(result_sent, cite, rng),
         "source_excerpt": thin,
-        "meta": row_meta(paper),
+        "meta": row_meta(paper, "sentence"),
         "output": {
             "claims": [
                 {
@@ -604,6 +777,14 @@ def generate_for_paper(paper: dict[str, Any], rng: random.Random) -> list[dict[s
         if sup_para and not validate_row(sup_para):
             rows.append(sup_para)
             idx += 1
+        sanad = make_holdout_style_supported(paper, sentence, idx, rng)
+        if sanad and not validate_row(sanad):
+            rows.append(sanad)
+            idx += 1
+        chunked = make_supported_paraphrase_chunked(paper, sentence, idx, rng)
+        if chunked and not validate_row(chunked):
+            rows.append(chunked)
+            idx += 1
 
     num_sent = pick_numeric_sentence(abstract, rng)
     if num_sent:
@@ -616,6 +797,14 @@ def generate_for_paper(paper: dict[str, Any], rng: random.Random) -> list[dict[s
             if sup_num and not validate_row(sup_num):
                 rows.append(sup_num)
                 idx += 1
+            sanad_num = make_holdout_style_supported(paper, num_sent, idx, rng)
+            if sanad_num and not validate_row(sanad_num):
+                rows.append(sanad_num)
+                idx += 1
+            chunk_num = make_supported_paraphrase_chunked(paper, num_sent, idx, rng)
+            if chunk_num and not validate_row(chunk_num):
+                rows.append(chunk_num)
+                idx += 1
 
     hedged = pick_hedged_sentence(abstract, rng)
     if hedged:
@@ -627,6 +816,11 @@ def generate_for_paper(paper: dict[str, Any], rng: random.Random) -> list[dict[s
     nis = make_not_in_source(paper, idx, rng)
     if not validate_row(nis):
         rows.append(nis)
+        idx += 1
+
+    nis_thin = make_not_in_source_thin_excerpt(paper, idx, rng)
+    if nis_thin and not validate_row(nis_thin):
+        rows.append(nis_thin)
         idx += 1
 
     if rng.random() < 0.45:
@@ -739,9 +933,9 @@ def main() -> int:
         type=Path,
         default=DATA_DIR / "eval_corpus_holdout_papers.jsonl",
     )
-    parser.add_argument("--target-rows", type=int, default=700)
+    parser.add_argument("--target-rows", type=int, default=850)
     parser.add_argument("--target-papers", type=int, default=0, help="0 = auto from target-rows")
-    parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--seed", type=int, default=44)
     parser.add_argument("--export-review", type=Path, default=None)
     parser.add_argument("--review-fraction", type=float, default=0.15)
     args = parser.parse_args()

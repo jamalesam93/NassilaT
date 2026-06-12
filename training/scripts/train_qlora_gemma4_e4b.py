@@ -37,8 +37,8 @@ MAX_SEQ_LENGTH = 1536
 LORA_R = 16
 LORA_ALPHA = 32
 LORA_DROPOUT = 0.05
-LEARNING_RATE = 2e-4
-NUM_EPOCHS = 2
+LEARNING_RATE = 1.5e-4
+NUM_EPOCHS = 3
 BATCH_SIZE = 1
 GRAD_ACCUM = 8
 
@@ -261,7 +261,11 @@ def train_with_peft(chat_file: Path, output_dir: Path) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description="QLoRA template for Nassila grounding")
     parser.add_argument("--train-file", type=Path, required=True)
-    parser.add_argument("--output-dir", type=Path, default=TRAINING_DIR / "outputs" / "nassila-grounding-v1")
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=TRAINING_DIR / "outputs" / "nassila-grounding-e4b-v1.2",
+    )
     parser.add_argument(
         "--backend",
         choices=("unsloth", "peft"),

@@ -26,7 +26,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 TRAINING_DIR = SCRIPT_DIR.parent
 sys.path.insert(0, str(SCRIPT_DIR))
 
-from validate_dataset import build_grounding_user_prompt, load_jsonl  # noqa: E402
+from validate_dataset import build_grounding_chat_messages, load_jsonl  # noqa: E402
 from json_repair import try_parse_with_repair  # noqa: E402
 
 
@@ -103,6 +103,11 @@ def main() -> int:
         action="store_true",
         help="Allow lightweight JSON repair (trailing commas, ?: keys, fences)",
     )
+    parser.add_argument(
+        "--chat-template",
+        action="store_true",
+        help="Send system+user messages matching QLoRA train layout",
+    )
     args = parser.parse_args()
 
     if args.task == "ping":
@@ -125,15 +130,16 @@ def main() -> int:
         print(f"No l3_grounding row in {args.sample}", file=sys.stderr)
         return 1
 
-    user_content = build_grounding_user_prompt(
+    messages = build_grounding_chat_messages(
         sample["passage"],
         sample["source_excerpt"],
         sample.get("meta", {}),
+        chat_template=args.chat_template,
     )
-    messages = [{"role": "user", "content": user_content}]
     print(
         f"POST {args.base_url}/v1/chat/completions model={args.model!r} "
-        f"task=l3_grounding id={sample['id']} retry={args.retry} repair={args.repair}"
+        f"task=l3_grounding id={sample['id']} retry={args.retry} repair={args.repair} "
+        f"chat_template={args.chat_template}"
     )
 
     attempts = args.retry + 1
