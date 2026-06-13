@@ -39,6 +39,19 @@ Save `reports/baseline_v1_2_chat_report.json` for comparison.
 
 Same as [PHASE2_2_V1_1_WALKTHROUGH.md](./PHASE2_2_V1_1_WALKTHROUGH.md) Step A (`git pull` for latest `main`).
 
+**llama.cpp** — **[LLAMA_CPP_VAST.md](./LLAMA_CPP_VAST.md)** (pinned **`b9608`**). Do **not** clone floating `main` or run `cmake --build build -j`.
+
+```bash
+cd ~
+rm -rf llama.cpp
+git clone --depth 1 --branch b9608 https://github.com/ggerganov/llama.cpp.git
+cd llama.cpp
+cmake -B build -DGGML_CUDA=ON -DLLAMA_BUILD_UI=OFF
+grep LLAMA_BUILD_UI build/CMakeCache.txt
+cmake --build build --target llama-server llama-quantize -j
+ls -la build/bin/llama-server build/bin/llama-quantize
+```
+
 ---
 
 ## Step B — Train

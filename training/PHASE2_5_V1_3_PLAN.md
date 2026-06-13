@@ -62,4 +62,5 @@ Eval: **`--chat-template`** + `run_eval_reports.py`.
 
 ## Walkthrough
 
-[PHASE2_6_V1_3_WALKTHROUGH.md](./PHASE2_6_V1_3_WALKTHROUGH.md)
+[PHASE2_6_V1_3_WALKTHROUGH.md](./PHASE2_6_V1_3_WALKTHROUGH.md)  
+**llama.cpp on Vast:** [LLAMA_CPP_VAST.md](./LLAMA_CPP_VAST.md) — pinned **`b9608`**, never floating `main`.

@@ -10,7 +10,7 @@ Usage (GPU machine, after train):
     --adapter-dir outputs/nassila-grounding-e4b-v1.1/lora_adapter \\
     --out-dir exports/hf-merged-v1.1-bf16
 
-Then convert with llama.cpp (see PHASE2_2_V1_1_WALKTHROUGH.md).
+Then convert with llama.cpp (see LLAMA_CPP_VAST.md).
 """
 
 from __future__ import annotations

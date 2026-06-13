@@ -52,7 +52,7 @@ source .venv/bin/activate
 pip install -U pip
 pip install "unsloth[colab-new] @ git+https://github.com/unslothai/unsloth.git"
 pip install --no-deps trl peft accelerate bitsandbytes transformers datasets
-pip install -U "huggingface_hub[cli]"
+pip install -U huggingface_hub
 export HF_TOKEN="hf_your_write_token"
 ```
 

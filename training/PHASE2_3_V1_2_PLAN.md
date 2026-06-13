@@ -115,7 +115,7 @@ Before next Vast train:
 Same as [PHASE2_2_V1_1_WALKTHROUGH.md](./PHASE2_2_V1_1_WALKTHROUGH.md):
 
 - Train → merge → GGUF → **eval on Vast** → upload adapter only if NO-GO; GGUF + PC download only if GO.
-- llama.cpp **must** be built with `-DGGML_CUDA=ON`.
+- llama.cpp: see [LLAMA_CPP_VAST.md](./LLAMA_CPP_VAST.md) — clone **`--branch b9608`**, `-DGGML_CUDA=ON -DLLAMA_BUILD_UI=OFF`, build only `llama-server` and `llama-quantize` (never floating `main`).
 
 ---
 
