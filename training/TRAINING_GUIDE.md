@@ -299,8 +299,8 @@ model.save_pretrained_gguf(
 
 ### Path B — Merge adapter then convert
 
-1. Merge LoRA into base weights (safetensors).
-2. Convert to GGUF with llama.cpp conversion tools or Unsloth.
+1. Merge LoRA into base weights (safetensors) via `scripts/merge_adapter_gemma4.py`.
+2. Convert to GGUF with llama.cpp — **Vast:** [LLAMA_CPP_VAST.md](./LLAMA_CPP_VAST.md) (pinned tag `b9608`, UI off).
 3. Quantize to **Q6_K** if that is your target runtime.
 
 ### Load in LM Studio

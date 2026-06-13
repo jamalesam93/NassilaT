@@ -78,16 +78,21 @@ source .venv/bin/activate
 pip install -U pip
 pip install "unsloth[colab-new] @ git+https://github.com/unslothai/unsloth.git"
 pip install --no-deps trl peft accelerate bitsandbytes transformers datasets
-pip install -U "huggingface_hub[cli]"
+pip install -U huggingface_hub
 export HF_TOKEN="hf_your_write_token"
 ```
 
-**llama.cpp** (skip if already built on this instance from v1):
+**llama.cpp** — **[LLAMA_CPP_VAST.md](./LLAMA_CPP_VAST.md)** (pinned **`b9608`**). Skip if both binaries already exist on this instance.
 
 ```bash
 cd ~
-git clone https://github.com/ggerganov/llama.cpp.git
-cd llama.cpp && cmake -B build && cmake --build build -j
+rm -rf llama.cpp
+git clone --depth 1 --branch b9608 https://github.com/ggerganov/llama.cpp.git
+cd llama.cpp
+cmake -B build -DGGML_CUDA=ON -DLLAMA_BUILD_UI=OFF
+grep LLAMA_BUILD_UI build/CMakeCache.txt
+cmake --build build --target llama-server llama-quantize -j
+ls -la build/bin/llama-server build/bin/llama-quantize
 ```
 
 ---
@@ -226,7 +231,7 @@ hf upload jamalesam93/nassila-grounding-e4b-v1.1 \
 ## Step G — Download to PC (only after GO)
 
 ```powershell
-pip install -U "huggingface_hub[cli]"
+pip install -U huggingface_hub
 hf download jamalesam93/nassila-grounding-e4b-v1.1 `
   nassila-grounding-e4b-v1.1-q6_k.gguf `
   --local-dir .\models\nassila-grounding-e4b-v1.1
@@ -271,3 +276,4 @@ Destroy (not stop) after upload and/or you have the GGUF on PC.
 | `hf upload` fails on GGUF | Pass explicit filename (see Step F) |
 | CUDA 12.2 on host | Destroy; rent CUDA 13 template |
 | Connection refused during eval | Start `llama-server` in Terminal 1 first |
+| `llama-ui` / `asset_60_data` / HF UI download failed | [LLAMA_CPP_VAST.md](./LLAMA_CPP_VAST.md) — re-clone **`b9608`**, never floating `main` |

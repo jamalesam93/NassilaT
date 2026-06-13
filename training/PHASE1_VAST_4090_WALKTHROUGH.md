@@ -184,7 +184,7 @@ https://huggingface.co/settings/tokens → **Read**
 ### 8.3 Optional test on your laptop (PowerShell or WSL)
 
 ```powershell
-pip install -U "huggingface_hub[cli]"
+pip install -U huggingface_hub
 hf auth login
 hf auth whoami
 hf download google/gemma-4-E4B-it config.json --local-dir ./hf_test
@@ -193,7 +193,7 @@ hf download google/gemma-4-E4B-it config.json --local-dir ./hf_test
 ### 8.4 Login on the Vast server
 
 ```bash
-pip install -U "huggingface_hub[cli]"
+pip install -U huggingface_hub
 hf auth login
 hf auth whoami
 ```

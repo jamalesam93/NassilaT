@@ -7,20 +7,24 @@
 - [x] **v1.2** trained/eval on Vast — **NO-GO** (86% combined; holdout 91.1%, supported 9/10)
 - [x] v1.2 adapter on HF: `QinEmPeRoR93/nassila-grounding-e4b-v1.2-adapter`
 - [x] Eval reports: [reports/v1_2_eval_combined_report.json](./reports/v1_2_eval_combined_report.json)
-- [ ] **v1.3** — dataset + train (next)
+- [x] **v1.3** trained/eval on Vast — **NO-GO** (80% combined; core 5/5; supported 3/10; JSON parse 86%)
+- [x] v1.3 adapter on HF: `QinEmPeRoR93/nassila-grounding-e4b-v1.3-adapter`
+- [x] Eval reports: [reports/v1_3_eval_combined_report.json](./reports/v1_3_eval_combined_report.json)
+- [ ] **v1.4** — JSON stability + holdout supported (next)
 
 ## Your checklist
 
-### v1.3 — Phase 2.5–2.6 (next)
+### v1.4 (next)
+
+1. Diagnose v1.3 JSON parse failures on supported holdout (h-002–h-010 cluster)
+2. Dataset / train tweaks without losing core 5/5 gains
+3. See [MODEL_CARD_v1_3.md](./MODEL_CARD_v1_3.md) for failure summary
+
+### Done — v1.3 (reference)
 
 **Plan:** [PHASE2_5_V1_3_PLAN.md](./PHASE2_5_V1_3_PLAN.md)  
-**Walkthrough:** [PHASE2_6_V1_3_WALKTHROUGH.md](./PHASE2_6_V1_3_WALKTHROUGH.md)
-
-1. Regenerate `l3_grounding_train.jsonl` (850 rows, seed 45) — multi-claim, polarity, semantic Sanad
-2. Spot-check `data/l3_review_queue_v1_3.csv`
-3. Vast train `nassila-grounding-e4b-v1.3` (2 epochs)
-4. Eval `--chat-template` + `run_eval_reports.py`
-5. GO → GGUF download · NO-GO → adapter only to HF
+**Walkthrough:** [PHASE2_6_V1_3_WALKTHROUGH.md](./PHASE2_6_V1_3_WALKTHROUGH.md)  
+**llama.cpp:** [LLAMA_CPP_VAST.md](./LLAMA_CPP_VAST.md) (tag **b9608**)
 
 ### Done (reference)
 
