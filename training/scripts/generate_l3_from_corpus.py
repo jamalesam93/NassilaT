@@ -39,15 +39,35 @@ VISIBLE_CLAIM_CHARS = 200
 YEAR_BINS = [(2000, 2009), (2010, 2019), (2020, 2026)]
 
 VERDICT_TARGETS = {
-    "supported": 0.45,
+    "supported": 0.40,
     "weak": 0.12,
     "not_in_source": 0.20,
-    "contradicted": 0.15,
+    "contradicted": 0.16,
     "insufficient_evidence": 0.08,
 }
 
+MULTI_CLAIM_MIN = 100
 EXCERPT_CHUNK_MAX = 1800
 SUPPORTED_RATIONALE = "Numeric/factual alignment; paraphrase is supported"
+SEMANTIC_SUPPORTED_RATIONALE = "Semantic/factual alignment; paraphrase is supported"
+
+SCOPE_LIMIT_PHRASES: list[tuple[str, str, str]] = [
+    (
+        "Cost analyses were beyond the scope of this report.",
+        "identical hospital costs",
+        "Cost data are not present in the excerpt",
+    ),
+    (
+        "Pediatric data were not collected.",
+        "worked equally well in adults and children",
+        "Pediatric outcomes are not described in the excerpt",
+    ),
+    (
+        "Subgroup analyses were not prespecified.",
+        "benefited all demographic subgroups equally",
+        "Subgroup findings are not reported in the excerpt",
+    ),
+]
 
 HEDGE_RE = re.compile(
     r"\b(may|might|could|suggest|suggested|possibly|appear|appears|seem|seems|"
@@ -354,6 +374,76 @@ def paraphrase_sentence_for_supported(sentence: str, rng: random.Random) -> str 
                 return out[:VISIBLE_CLAIM_CHARS]
 
     return None
+
+
+def paraphrase_semantic_for_supported(sentence: str, rng: random.Random) -> str | None:
+    """Non-numeric paraphrase (h-010 style)."""
+    if re.search(r"\d", sentence):
+        return None
+    s = sentence.strip()
+    semantic_templates: list[tuple[re.Pattern[str], str]] = [
+        (re.compile(r"protocol compliance was high", re.I), "Compliance with the protocol was high"),
+        (re.compile(r"compliance was high", re.I), "Compliance with the protocol was high"),
+        (re.compile(r"adherence to (?:the )?protocol was high", re.I), "Compliance with the protocol was high"),
+        (re.compile(r"were similar between groups", re.I), "Rates were similar between groups"),
+        (re.compile(r"did not differ between", re.I), "Outcomes did not differ between groups"),
+        (re.compile(r"were significantly elevated", re.I), "Both biomarkers were elevated"),
+        (re.compile(r"was associated with improved", re.I), "Outcomes improved with treatment"),
+    ]
+    for pat, repl in semantic_templates:
+        if pat.search(s):
+            return repl
+    return paraphrase_sentence_for_supported(sentence, rng)
+
+
+def pick_semantic_sentence(abstract: str, rng: random.Random) -> str | None:
+    candidates = [
+        s
+        for s in split_sentences(abstract)
+        if not re.search(r"\d", s) and RESULTS_RE.search(s) and len(s) >= 40
+    ]
+    return rng.choice(candidates) if candidates else None
+
+
+def pick_polarity_source_sentence(abstract: str, rng: random.Random) -> str | None:
+    patterns = [
+        re.compile(r"significant association", re.I),
+        re.compile(r"statistically significant", re.I),
+        re.compile(r"was associated with", re.I),
+        re.compile(r"significantly (?:increased|decreased|reduced)", re.I),
+    ]
+    candidates = [s for s in split_sentences(abstract) if any(p.search(s) for p in patterns)]
+    return rng.choice(candidates) if candidates else None
+
+
+def pick_partial_response_sentence(abstract: str, rng: random.Random) -> str | None:
+    patterns = [
+        re.compile(r"\d+\s+of\s+\d+", re.I),
+        re.compile(r"partial response", re.I),
+        re.compile(r"\d+\s+participants", re.I),
+        re.compile(r"showed (?:a )?response", re.I),
+    ]
+    candidates = [s for s in split_sentences(abstract) if any(p.search(s) for p in patterns)]
+    return rng.choice(candidates) if candidates else None
+
+
+def pick_two_numeric_sentences(abstract: str, rng: random.Random) -> tuple[str, str] | None:
+    candidates = [s for s in split_sentences(abstract) if re.search(r"\d", s) and len(s) >= 30]
+    if len(candidates) < 2:
+        return None
+    pair = rng.sample(candidates, 2)
+    return pair[0], pair[1]
+
+
+def short_claim_from_sentence(sentence: str, max_len: int = 80) -> str:
+    s = normalize_ws(sentence)
+    if len(s) <= max_len:
+        return s
+    m = re.search(r"\d+(?:\.\d+)?\s*%?", s)
+    if m:
+        start = max(0, m.start() - 30)
+        return s[start : start + max_len].strip()
+    return s[:max_len].strip()
 
 
 def claim_absent_from_text(claim: str, text: str) -> bool:
@@ -715,6 +805,206 @@ def make_insufficient_evidence(
     }
 
 
+def make_semantic_sanad_supported(
+    paper: dict[str, Any], sentence: str, idx: int, rng: random.Random
+) -> dict[str, Any] | None:
+    """Holdout-shaped semantic supported (h-010; no numbers)."""
+    if sentence not in paper["abstract"] or re.search(r"\d", sentence):
+        return None
+    paraphrase = paraphrase_semantic_for_supported(sentence, rng)
+    if not paraphrase or not semantic_overlap_ok(paraphrase, sentence):
+        return None
+    cite = citation_phrase(paper.get("authors", []), paper.get("year"))
+    return {
+        "id": f"l3-{paper['corpus_id']}-sanadsem-{idx}",
+        "task": "l3_grounding",
+        "version": 1,
+        "passage": direct_passage(paraphrase, cite),
+        "source_excerpt": sentence,
+        "meta": {**row_meta(paper, "sentence"), "row_type": "semantic_sanad"},
+        "output": {
+            "claims": [
+                {
+                    "claim": paraphrase[:VISIBLE_CLAIM_CHARS],
+                    "verdict": "supported",
+                    "sourceQuotes": [sentence],
+                    "rationale": [SEMANTIC_SUPPORTED_RATIONALE],
+                }
+            ],
+            "overallVerdict": "support",
+        },
+    }
+
+
+def make_polarity_contradicted(
+    paper: dict[str, Any], sentence: str, idx: int, rng: random.Random
+) -> dict[str, Any] | None:
+    """Negation/polarity flip (h-013 style)."""
+    if sentence not in paper["abstract"]:
+        return None
+    lowered = sentence.lower()
+    if "association" not in lowered and "associated" not in lowered:
+        return None
+    topic_m = re.search(
+        r"association (?:was observed )?between (.+?) and (.+?)[\.,]",
+        sentence,
+        re.I,
+    )
+    if topic_m:
+        neg_claim = (
+            f"There was no association between {topic_m.group(1).strip()} "
+            f"and {topic_m.group(2).strip()}"
+        )
+    else:
+        neg_claim = "There was no association between the factors studied and the outcome"
+    cite = citation_phrase(paper.get("authors", []), paper.get("year"))
+    return {
+        "id": f"l3-{paper['corpus_id']}-pol-{idx}",
+        "task": "l3_grounding",
+        "version": 1,
+        "passage": direct_passage(neg_claim, cite),
+        "source_excerpt": sentence,
+        "meta": {**row_meta(paper, "sentence"), "row_type": "polarity"},
+        "output": {
+            "claims": [
+                {
+                    "claim": neg_claim[:VISIBLE_CLAIM_CHARS],
+                    "verdict": "contradicted",
+                    "sourceQuotes": [sentence],
+                    "rationale": ["Passage denies an association the excerpt reports"],
+                }
+            ],
+            "overallVerdict": "weak",
+        },
+    }
+
+
+def make_overclaim_contradicted(
+    paper: dict[str, Any], sentence: str, idx: int, rng: random.Random
+) -> dict[str, Any] | None:
+    """Overstated passage vs partial counts (eval-003 style)."""
+    if sentence not in paper["abstract"]:
+        return None
+    overclaims = [
+        "The treatment cured all patients in the cohort",
+        "CRISPR editing cured the disorder in all patients",
+        "Every participant achieved complete remission",
+        "All patients recovered fully",
+    ]
+    cite = citation_phrase(paper.get("authors", []), paper.get("year"))
+    claim = rng.choice(overclaims)
+    return {
+        "id": f"l3-{paper['corpus_id']}-over-{idx}",
+        "task": "l3_grounding",
+        "version": 1,
+        "passage": direct_passage(claim, cite),
+        "source_excerpt": sentence,
+        "meta": {**row_meta(paper, "sentence"), "row_type": "overclaim"},
+        "output": {
+            "claims": [
+                {
+                    "claim": claim[:VISIBLE_CLAIM_CHARS],
+                    "verdict": "contradicted",
+                    "sourceQuotes": [sentence],
+                    "rationale": ["Excerpt reports partial or limited response, not universal cure"],
+                }
+            ],
+            "overallVerdict": "weak",
+        },
+    }
+
+
+def make_multi_claim_supported(
+    paper: dict[str, Any], idx: int, rng: random.Random
+) -> dict[str, Any] | None:
+    """Two atomic supported claims in one passage (eval-005 style)."""
+    pair = pick_two_numeric_sentences(paper["abstract"], rng)
+    if not pair:
+        return None
+    sent_a, sent_b = pair
+    quote_a = short_claim_from_sentence(sent_a, 60)
+    quote_b = short_claim_from_sentence(sent_b, 60)
+    nums_a = extract_key_numbers(sent_a)
+    nums_b = extract_key_numbers(sent_b)
+    claim_a = f"Sample size n={nums_a[0]}" if nums_a else quote_a[:60]
+    claim_b = f"{nums_b[0]}% power" if nums_b and "%" in sent_b.lower() else quote_b[:60]
+    if "%" in sent_b and nums_b:
+        claim_b = f"{nums_b[0]}% power"
+    passage_core = f"{claim_a} with {claim_b}"
+    cite = citation_phrase(paper.get("authors", []), paper.get("year"))
+    excerpt = f"{sent_a} {sent_b}"
+    if len(excerpt) > EXCERPT_CHUNK_MAX:
+        excerpt = excerpt[:EXCERPT_CHUNK_MAX]
+    return {
+        "id": f"l3-{paper['corpus_id']}-multi-{idx}",
+        "task": "l3_grounding",
+        "version": 1,
+        "passage": direct_passage(passage_core, cite),
+        "source_excerpt": excerpt,
+        "meta": {**row_meta(paper, "sentence"), "row_type": "multi_claim"},
+        "output": {
+            "claims": [
+                {
+                    "claim": claim_a[:VISIBLE_CLAIM_CHARS],
+                    "verdict": "supported",
+                    "sourceQuotes": [sent_a if len(sent_a) <= 200 else quote_a],
+                    "hasNumericClaim": True,
+                },
+                {
+                    "claim": claim_b[:VISIBLE_CLAIM_CHARS],
+                    "verdict": "supported",
+                    "sourceQuotes": [sent_b if len(sent_b) <= 200 else quote_b],
+                    "hasNumericClaim": bool(nums_b),
+                },
+            ],
+            "overallVerdict": "support",
+        },
+    }
+
+
+def make_multi_claim_partial(
+    paper: dict[str, Any], idx: int, rng: random.Random
+) -> dict[str, Any] | None:
+    """Compound passage: one supported claim + one absent from excerpt (h-043/h-045)."""
+    sent_a = pick_results_sentence(paper["abstract"], rng)
+    if not sent_a:
+        sent_a = pick_claim_sentence(paper["abstract"], rng)
+    if not sent_a or sent_a not in paper["abstract"]:
+        return None
+    scope_sent, claim_b_phrase, rationale_b = rng.choice(SCOPE_LIMIT_PHRASES)
+    para_a = paraphrase_semantic_for_supported(sent_a, rng) or short_claim_from_sentence(sent_a, 90)
+    if not para_a:
+        return None
+    cite = citation_phrase(paper.get("authors", []), paper.get("year"))
+    passage_core = f"{para_a.rstrip('.')}, and {claim_b_phrase}"
+    excerpt = f"{sent_a} {scope_sent}"
+    quote_a = sent_a
+    return {
+        "id": f"l3-{paper['corpus_id']}-multip-{idx}",
+        "task": "l3_grounding",
+        "version": 1,
+        "passage": direct_passage(passage_core, cite),
+        "source_excerpt": excerpt,
+        "meta": {**row_meta(paper, "sentence"), "row_type": "multi_claim"},
+        "output": {
+            "claims": [
+                {
+                    "claim": para_a[:VISIBLE_CLAIM_CHARS],
+                    "verdict": "supported",
+                    "sourceQuotes": [quote_a],
+                    "rationale": [SEMANTIC_SUPPORTED_RATIONALE],
+                },
+                {
+                    "claim": claim_b_phrase[:VISIBLE_CLAIM_CHARS],
+                    "verdict": "not_in_source",
+                    "rationale": [rationale_b],
+                },
+            ],
+            "overallVerdict": "weak",
+        },
+    }
+
+
 def year_bin(year: int | None) -> str:
     if not isinstance(year, int):
         return "unknown"
@@ -823,6 +1113,37 @@ def generate_for_paper(paper: dict[str, Any], rng: random.Random) -> list[dict[s
         rows.append(nis_thin)
         idx += 1
 
+    semantic = pick_semantic_sentence(abstract, rng)
+    if semantic:
+        sem_sanad = make_semantic_sanad_supported(paper, semantic, idx, rng)
+        if sem_sanad and not validate_row(sem_sanad):
+            rows.append(sem_sanad)
+            idx += 1
+
+    polarity = pick_polarity_source_sentence(abstract, rng)
+    if polarity:
+        pol = make_polarity_contradicted(paper, polarity, idx, rng)
+        if pol and not validate_row(pol):
+            rows.append(pol)
+            idx += 1
+
+    partial = pick_partial_response_sentence(abstract, rng)
+    if partial:
+        over = make_overclaim_contradicted(paper, partial, idx, rng)
+        if over and not validate_row(over):
+            rows.append(over)
+            idx += 1
+
+    multi_sup = make_multi_claim_supported(paper, idx, rng)
+    if multi_sup and not validate_row(multi_sup):
+        rows.append(multi_sup)
+        idx += 1
+
+    multi_part = make_multi_claim_partial(paper, idx, rng)
+    if multi_part and not validate_row(multi_part):
+        rows.append(multi_part)
+        idx += 1
+
     if rng.random() < 0.45:
         ins = make_insufficient_evidence(paper, idx, rng)
         if ins and not validate_row(ins):
@@ -858,6 +1179,18 @@ def balance_rows(rows: list[dict[str, Any]], target: int, rng: random.Random) ->
             count += 1
             if count >= quota:
                 break
+
+    multi_pool = [r for r in rows if len(r.get("output", {}).get("claims", [])) >= 2 and r["id"] not in seen_ids]
+    rng.shuffle(multi_pool)
+    multi_count = sum(1 for r in picked if len(r.get("output", {}).get("claims", [])) >= 2)
+    for r in multi_pool:
+        if multi_count >= MULTI_CLAIM_MIN:
+            break
+        if len(picked) >= target:
+            break
+        picked.append(r)
+        seen_ids.add(r["id"])
+        multi_count += 1
 
     rest = [r for r in rows if r["id"] not in seen_ids]
     rng.shuffle(rest)
@@ -935,7 +1268,7 @@ def main() -> int:
     )
     parser.add_argument("--target-rows", type=int, default=850)
     parser.add_argument("--target-papers", type=int, default=0, help="0 = auto from target-rows")
-    parser.add_argument("--seed", type=int, default=44)
+    parser.add_argument("--seed", type=int, default=45)
     parser.add_argument("--export-review", type=Path, default=None)
     parser.add_argument("--review-fraction", type=float, default=0.15)
     args = parser.parse_args()

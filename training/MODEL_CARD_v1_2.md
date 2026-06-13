@@ -1,48 +1,19 @@
 # Model card — nassila-grounding-e4b-v1.2 (Sanad / Ouroboros)
 
-**Status:** Template — fill after Vast train + eval.
+**Hugging Face:** `QinEmPeRoR93/nassila-grounding-e4b-v1.2-adapter`  
+**Status:** evaluation **NO-GO** — adapter archived; GGUF not published.
 
-| Field | Value |
-|-------|-------|
-| Worker | **Sanad** (`l3_grounding`) |
-| Base | `google/gemma-4-E4B-it` |
-| Method | QLoRA (Unsloth), 3 epochs, LR 1.5e-4 |
-| Train rows | 850 (seed 44) |
-| Quant (ship) | Q6_K GGUF |
-| Artifact | `nassila-grounding-e4b-v1.2-q6_k.gguf` |
+## Evaluation summary (Vast, `--chat-template`)
 
-## Intended use
+| Metric | Stock baseline | v1.2 | Target |
+|--------|----------------|------|--------|
+| Combined expect | 86% | **86%** | ≥90% |
+| Holdout expect | 84.4% | **91.1%** | — |
+| Core eval (5 rows) | 100% | **40%** | — |
+| Quote validity (holdout) | 100% | **90.9%** | ≥98% |
+| False supported (holdout) | 11.8% | **0%** | ≤5% |
+| Supported h-001–h-010 | 10/10 | **9/10** | ≥8/10 |
 
-Offline manuscript claim grounding: passage vs source excerpt → structured JSON (`supported`, `weak`, `contradicted`, `not_in_source`, `insufficient_evidence`).
+Reports: [reports/v1_2_eval_combined_report.json](./reports/v1_2_eval_combined_report.json)
 
-## Training data (v1.2)
-
-- Holdout-shaped rows (`-sanad-`): direct passage + single-sentence excerpt
-- Chunked excerpts (`excerpt_mode=chunked`) mirroring app `selectSourceChunksForGrounding`
-- Full-abstract rows retained for production shape
-- Rebalanced verdicts: supported ≥45%, weak ≤12%
-
-## Eval (fill in)
-
-| Metric | Target | v1.2 result |
-|--------|--------|-------------|
-| Expect pass | ≥90% | |
-| Quote validity (holdout) | ≥98% | |
-| False supported | ≤5% | |
-| Supported holdout h-001–h-010 | ≥8/10 | |
-
-**Eval command:** `run_l3_eval_batch.py --chat-template` (matches train system+user layout).
-
-## Comparison
-
-| Version | Expect pass | Quote validity | Notes |
-|---------|-------------|----------------|-------|
-| v1 | 62% | 0% holdout supported | NO-GO |
-| v1.1 | 66% | 9.1% | NO-GO, false weak on paraphrase |
-| v1.2 | | | Multi-scale excerpts + chat-template eval |
-
-## Links
-
-- [PHASE2_4_V1_2_WALKTHROUGH.md](./PHASE2_4_V1_2_WALKTHROUGH.md)
-- [OUROBOROS.md](./OUROBOROS.md)
-- Prior: [MODEL_CARD_v1_1.md](./MODEL_CARD_v1_1.md)
+**Next:** [PHASE2_5_V1_3_PLAN.md](./PHASE2_5_V1_3_PLAN.md)
