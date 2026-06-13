@@ -102,12 +102,11 @@ python scripts/run_l3_eval_batch.py \
   --chat-template --retry 1 --repair \
   --out outputs/v1_2_predictions.jsonl
 
-python scripts/evaluate_outputs.py \
-  --eval data/eval_samples.jsonl data/eval_holdout_45.jsonl \
+python scripts/run_eval_reports.py \
   --predictions outputs/v1_2_predictions.jsonl \
-  --report outputs/v1_2_report.json --repair
+  --out-dir outputs --repair
 
-cat outputs/v1_2_report.json
+cat outputs/eval_combined_report.json
 ```
 
 ---

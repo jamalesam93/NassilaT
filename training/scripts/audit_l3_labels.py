@@ -48,72 +48,77 @@ def audit_row(record: dict) -> list[str]:
     claims = record.get("output", {}).get("claims", [])
     if not claims:
         return [f"{rid}: no claims"]
-    claim_obj = claims[0]
-    verdict = claim_obj.get("verdict", "")
-    claim = str(claim_obj.get("claim", ""))
-    quotes = claim_obj.get("sourceQuotes") or []
     excerpt_mode = record.get("meta", {}).get("excerpt_mode", "full")
-    rationale = claim_obj.get("rationale") or []
 
-    for bad in BAD_PREFIXES:
-        if bad.lower() in passage.lower() and verdict != "not_in_source":
-            issues.append(f"{rid}: forbidden template prefix in passage ({bad!r})")
+    if "-multi" in rid or len(claims) >= 2:
+        if len(claims) < 2:
+            issues.append(f"{rid}: multi row needs at least 2 claims")
 
-    if verdict == "supported":
-        if not quotes:
-            issues.append(f"{rid}: supported missing sourceQuotes")
-        else:
-            q = quotes[0]
-            if not is_substring_quote(q, excerpt):
-                issues.append(f"{rid}: supported quote not in source_excerpt")
-            if excerpt_mode == "sentence" and normalize_ws(q) != normalize_ws(excerpt):
+    for ci, claim_obj in enumerate(claims):
+        verdict = claim_obj.get("verdict", "")
+        claim = str(claim_obj.get("claim", ""))
+        quotes = claim_obj.get("sourceQuotes") or []
+        rationale = claim_obj.get("rationale") or []
+        suffix = f" claims[{ci}]" if len(claims) > 1 else ""
+
+        for bad in BAD_PREFIXES:
+            if bad.lower() in passage.lower() and verdict != "not_in_source":
+                issues.append(f"{rid}{suffix}: forbidden template prefix in passage ({bad!r})")
+
+        if verdict == "supported":
+            if not quotes:
+                issues.append(f"{rid}{suffix}: supported missing sourceQuotes")
+            else:
+                q = quotes[0]
                 if not is_substring_quote(q, excerpt):
-                    issues.append(f"{rid}: sentence excerpt_mode but quote != excerpt")
-            if claim[:VISIBLE_CLAIM_CHARS] != q[:VISIBLE_CLAIM_CHARS] and claim not in q:
-                if not numeric_alignment_ok(claim, q) and not semantic_overlap_ok(claim, q):
-                    issues.append(f"{rid}: supported claim diverges from quote without alignment")
-        if "-sanad-" in rid and not rationale:
-            issues.append(f"{rid}: sanad supported missing rationale")
+                    issues.append(f"{rid}{suffix}: supported quote not in source_excerpt")
+                if excerpt_mode == "sentence" and len(claims) == 1:
+                    if normalize_ws(q) != normalize_ws(excerpt) and not is_substring_quote(q, excerpt):
+                        issues.append(f"{rid}{suffix}: sentence excerpt_mode but quote != excerpt")
+                if claim[:VISIBLE_CLAIM_CHARS] != q[:VISIBLE_CLAIM_CHARS] and claim not in q:
+                    if not numeric_alignment_ok(claim, q) and not semantic_overlap_ok(claim, q):
+                        issues.append(f"{rid}{suffix}: supported claim diverges from quote without alignment")
+            if ("-sanad-" in rid or "-sanadsem-" in rid) and not rationale:
+                issues.append(f"{rid}{suffix}: sanad supported missing rationale")
 
-    if verdict == "contradicted":
-        if not quotes:
-            issues.append(f"{rid}: contradicted missing sourceQuotes")
-        else:
-            q = quotes[0]
-            if claim[:VISIBLE_CLAIM_CHARS] == q[:VISIBLE_CLAIM_CHARS]:
-                issues.append(
-                    f"{rid}: contradicted claim/quote identical in first {VISIBLE_CLAIM_CHARS} chars"
-                )
-            flip = flip_number_in_text(q, max_offset=len(q))
-            if flip and flip[1][:VISIBLE_CLAIM_CHARS] == q[:VISIBLE_CLAIM_CHARS]:
-                issues.append(f"{rid}: numeric flip not visible in claim prefix")
+        if verdict == "contradicted":
+            if not quotes:
+                issues.append(f"{rid}{suffix}: contradicted missing sourceQuotes")
+            elif quotes:
+                q = quotes[0]
+                if claim[:VISIBLE_CLAIM_CHARS] == q[:VISIBLE_CLAIM_CHARS]:
+                    issues.append(
+                        f"{rid}{suffix}: contradicted claim/quote identical in first {VISIBLE_CLAIM_CHARS} chars"
+                    )
+                flip = flip_number_in_text(q, max_offset=len(q))
+                if flip and flip[1][:VISIBLE_CLAIM_CHARS] == q[:VISIBLE_CLAIM_CHARS]:
+                    issues.append(f"{rid}{suffix}: numeric flip not visible in claim prefix")
 
-    if verdict == "weak":
-        if not quotes:
-            issues.append(f"{rid}: weak missing sourceQuotes")
-        else:
-            q = quotes[0]
-            if claim[:VISIBLE_CLAIM_CHARS] == q[:VISIBLE_CLAIM_CHARS]:
-                issues.append(
-                    f"{rid}: weak claim/quote identical in first {VISIBLE_CLAIM_CHARS} chars"
-                )
-            if not HEDGE_RE.search(q):
-                issues.append(f"{rid}: weak source quote has no hedge words")
-            strengthened = strip_hedges(q)
-            if strengthened[:VISIBLE_CLAIM_CHARS] == q[:VISIBLE_CLAIM_CHARS]:
-                issues.append(f"{rid}: hedge removal not visible in claim prefix")
-            if numeric_alignment_ok(claim, q):
-                issues.append(f"{rid}: weak row has numeric alignment (should be supported)")
+        if verdict == "weak":
+            if not quotes:
+                issues.append(f"{rid}{suffix}: weak missing sourceQuotes")
+            else:
+                q = quotes[0]
+                if claim[:VISIBLE_CLAIM_CHARS] == q[:VISIBLE_CLAIM_CHARS]:
+                    issues.append(
+                        f"{rid}{suffix}: weak claim/quote identical in first {VISIBLE_CLAIM_CHARS} chars"
+                    )
+                if not HEDGE_RE.search(q):
+                    issues.append(f"{rid}{suffix}: weak source quote has no hedge words")
+                strengthened = strip_hedges(q)
+                if strengthened[:VISIBLE_CLAIM_CHARS] == q[:VISIBLE_CLAIM_CHARS]:
+                    issues.append(f"{rid}{suffix}: hedge removal not visible in claim prefix")
+                if numeric_alignment_ok(claim, q):
+                    issues.append(f"{rid}{suffix}: weak row has numeric alignment (should be supported)")
 
-    if verdict == "not_in_source":
-        if quotes:
-            for q in quotes:
-                if is_substring_quote(str(q), excerpt):
-                    issues.append(f"{rid}: not_in_source but quote found in excerpt")
+        if verdict == "not_in_source":
+            if quotes:
+                for q in quotes:
+                    if is_substring_quote(str(q), excerpt):
+                        issues.append(f"{rid}{suffix}: not_in_source but quote found in excerpt")
 
-    # Numeric consistency: claim should not be empty
-    if not claim.strip():
-        issues.append(f"{rid}: empty claim text")
+        if not claim.strip():
+            issues.append(f"{rid}{suffix}: empty claim text")
 
     return issues
 

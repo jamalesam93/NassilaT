@@ -4,29 +4,27 @@
 
 ## Current repo state
 
-- [x] `data/paper_corpus_enriched.jsonl` — **4,233** papers with abstract ≥ 120 chars
-- [x] **v1** train (400 rows) — trained, GGUF on HF; eval **NO-GO**
-- [x] **v1.1** (700 rows) — Vast train/eval **NO-GO** (66% expect, 9.1% quote validity)
-- [x] **Ouroboros** docs + worker **Sanad** (`l3_grounding`) — see [OUROBOROS.md](./OUROBOROS.md)
-- [ ] **v1.2** (850 rows, seed 44) — dataset + eval alignment in repo; **your Vast train next**
-
-**v1.1 failure (root cause):** verdict calibration + train/eval shape mismatch (full abstract + neutral openers vs holdout sentence excerpts; user-only eval vs system+user train).
+- [x] **v1.2** trained/eval on Vast — **NO-GO** (86% combined; holdout 91.1%, supported 9/10)
+- [x] v1.2 adapter on HF: `QinEmPeRoR93/nassila-grounding-e4b-v1.2-adapter`
+- [x] Eval reports: [reports/v1_2_eval_combined_report.json](./reports/v1_2_eval_combined_report.json)
+- [ ] **v1.3** — dataset + train (next)
 
 ## Your checklist
 
-### v1.2 — Phase 2.3–2.4 (next)
+### v1.3 — Phase 2.5–2.6 (next)
 
-**Plan:** [PHASE2_3_V1_2_PLAN.md](./PHASE2_3_V1_2_PLAN.md)  
-**Walkthrough:** [PHASE2_4_V1_2_WALKTHROUGH.md](./PHASE2_4_V1_2_WALKTHROUGH.md)
+**Plan:** [PHASE2_5_V1_3_PLAN.md](./PHASE2_5_V1_3_PLAN.md)  
+**Walkthrough:** [PHASE2_6_V1_3_WALKTHROUGH.md](./PHASE2_6_V1_3_WALKTHROUGH.md)
 
-1. **PC baseline** — stock E4B with `--chat-template` → `reports/baseline_v1_2_chat_report.json`
-2. **Vast train** — `outputs/nassila-grounding-e4b-v1.2` (3 epochs)
-3. **Eval on Vast** — `run_l3_eval_batch.py --chat-template` before any GGUF download
-4. **GO** → download GGUF · LM Studio · fill [MODEL_CARD_v1_2.md](./MODEL_CARD_v1_2.md)
+1. Regenerate `l3_grounding_train.jsonl` (850 rows, seed 45) — multi-claim, polarity, semantic Sanad
+2. Spot-check `data/l3_review_queue_v1_3.csv`
+3. Vast train `nassila-grounding-e4b-v1.3` (2 epochs)
+4. Eval `--chat-template` + `run_eval_reports.py`
+5. GO → GGUF download · NO-GO → adapter only to HF
 
 ### Done (reference)
 
-| Version | Rows | Verdict |
-|---------|------|---------|
-| v1 | 400 | NO-GO |
-| v1.1 | 700 | NO-GO — [PHASE2_2_V1_1_WALKTHROUGH.md](./PHASE2_2_V1_1_WALKTHROUGH.md) |
+| Version | Combined expect | Supported holdout | Verdict |
+|---------|-----------------|-------------------|---------|
+| v1.1 | 66% | 1/10 | NO-GO |
+| v1.2 | 86% | 9/10 | NO-GO — [MODEL_CARD_v1_2.md](./MODEL_CARD_v1_2.md) |
