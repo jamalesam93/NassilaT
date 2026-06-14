@@ -12,6 +12,9 @@ SCRIPT_DIR = Path(__file__).resolve().parent.parent / "scripts"
 sys.path.insert(0, str(SCRIPT_DIR))
 
 from generate_l3_from_corpus import (  # noqa: E402
+    CANONICAL_CLAIM_KEYS,
+    balance_rows,
+    canonical_claim,
     chunk_excerpt_for_grounding,
     make_holdout_style_supported,
     make_multi_claim_partial,
@@ -124,6 +127,64 @@ class TestGenerateL3(unittest.TestCase):
             "year": 2020,
         }
         self.assertIsNone(make_weak(paper, paper["abstract"], 0, rng))
+
+    def test_canonical_claim_key_order(self):
+        claim = canonical_claim(
+            claim="Test claim",
+            verdict="supported",
+            source_quotes=["quote text"],
+            rationale=["reason"],
+            has_numeric=False,
+        )
+        self.assertEqual(list(claim.keys()), list(CANONICAL_CLAIM_KEYS))
+        self.assertEqual(claim["hasNumericClaim"], False)
+
+    def test_canonical_claim_supported_requires_quotes(self):
+        with self.assertRaises(ValueError):
+            canonical_claim(claim="No quotes", verdict="supported")
+
+    def test_semantic_sanad_claim_ends_with_has_numeric(self):
+        rng = random.Random(5)
+        paper = {
+            "corpus_id": "test-sem",
+            "abstract": "Protocol compliance was high across all study sites.",
+            "authors": ["Davies"],
+            "year": 2018,
+        }
+        row = make_semantic_sanad_supported(paper, paper["abstract"], 0, rng)
+        self.assertIsNotNone(row)
+        keys = list(row["output"]["claims"][0].keys())
+        self.assertEqual(keys[-1], "hasNumericClaim")
+
+    def test_balance_rows_keeps_priority_when_generic_pool_overflows(self):
+        """Priority suffix rows survive even when generic supported pool is huge."""
+        rng = random.Random(99)
+
+        def mk_row(rid: str, verdict: str = "supported") -> dict:
+            return {
+                "id": rid,
+                "output": {
+                    "claims": [
+                        {
+                            "claim": f"claim for {rid}",
+                            "verdict": verdict,
+                            "sourceQuotes": ["x"] if verdict == "supported" else [],
+                            "rationale": [],
+                            "hasNumericClaim": False,
+                        }
+                    ]
+                },
+            }
+
+        priority_rows = [mk_row(f"l3-p-{i}-sanadsem-{i}") for i in range(5)]
+        generic_supported = [mk_row(f"l3-p-{i}-plain-{i}") for i in range(200)]
+        other = [mk_row(f"l3-p-{i}-nis-{i}", "not_in_source") for i in range(50)]
+        all_rows = priority_rows + generic_supported + other
+        balanced = balance_rows(all_rows, target=30, rng=rng)
+        picked_ids = {r["id"] for r in balanced}
+        for pr in priority_rows:
+            self.assertIn(pr["id"], picked_ids, "priority row must be retained")
+        self.assertLessEqual(len(balanced), 30)
 
 
 if __name__ == "__main__":

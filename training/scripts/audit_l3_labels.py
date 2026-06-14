@@ -23,6 +23,7 @@ sys.path.insert(0, str(SCRIPT_DIR))
 
 from corpus_utils import read_jsonl  # noqa: E402
 from generate_l3_from_corpus import (  # noqa: E402
+    CANONICAL_CLAIM_KEYS,
     HEDGE_RE,
     VISIBLE_CLAIM_CHARS,
     flip_number_in_text,
@@ -119,6 +120,14 @@ def audit_row(record: dict) -> list[str]:
 
         if not claim.strip():
             issues.append(f"{rid}{suffix}: empty claim text")
+
+        keys = list(claim_obj.keys())
+        if keys != list(CANONICAL_CLAIM_KEYS):
+            issues.append(
+                f"{rid}{suffix}: claim keys out of order (expected {CANONICAL_CLAIM_KEYS}, got {tuple(keys)})"
+            )
+        elif keys[-1] != "hasNumericClaim":
+            issues.append(f"{rid}{suffix}: hasNumericClaim must be last claim key")
 
     return issues
 

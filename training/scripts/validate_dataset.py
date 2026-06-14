@@ -53,7 +53,6 @@ def build_grounding_user_prompt(passage: str, source_excerpt: str, meta: dict[st
     url_part = f" {url}" if url else ""
     return "\n".join(
         [
-            "You are a strict academic citation grounding assistant.",
             "Break the manuscript passage into short factual claims (atomic where possible).",
             "For each claim, compare ONLY to SOURCE_EXCERPT (verbatim text from the cited work).",
             "Verdict per claim:",
@@ -63,7 +62,7 @@ def build_grounding_user_prompt(passage: str, source_excerpt: str, meta: dict[st
             "- contradicted: excerpt clearly conflicts.",
             "- insufficient_evidence: cannot tell from excerpt.",
             'Respond with a single JSON object ONLY, no markdown fencing, keys:',
-            '{ "claims": [ { "claim": string, "verdict": "supported"|"weak"|"not_in_source"|"contradicted"|"insufficient_evidence", "hasNumericClaim"?: boolean, "sourceQuotes"?: string[], "rationale"?: string[] } ], "overallVerdict"?: "support"|"weak"|"unrelated"|"insufficient_evidence", "overallRationale"?: string[] }',
+            '{ "claims": [ { "claim": string, "verdict": "supported"|"weak"|"not_in_source"|"contradicted"|"insufficient_evidence", "sourceQuotes"?: string[], "rationale"?: string[], "hasNumericClaim"?: boolean } ], "overallVerdict"?: "support"|"weak"|"unrelated"|"insufficient_evidence", "overallRationale"?: string[] }',
             "",
             f"PASSAGE:\n{passage}",
             "",
@@ -222,6 +221,12 @@ def main() -> int:
         type=Path,
         help="Optional: write chat-format JSONL for SFT training (l3_grounding only)",
     )
+    parser.add_argument(
+        "--strict-length",
+        type=int,
+        metavar="MAX_TOKENS",
+        help="When exporting chat JSONL, fail if any row exceeds this token count (requires transformers)",
+    )
     args = parser.parse_args()
 
     if not args.path.exists():
@@ -269,9 +274,39 @@ def main() -> int:
 
     if args.export_chat:
         args.export_chat.parent.mkdir(parents=True, exist_ok=True)
+        tokenizer = None
+        if args.strict_length:
+            try:
+                from transformers import AutoTokenizer  # type: ignore
+
+                tokenizer = AutoTokenizer.from_pretrained(
+                    "google/gemma-4-E4B-it", trust_remote_code=True
+                )
+            except ImportError:
+                print(
+                    "strict-length requires transformers; install on export machine",
+                    file=sys.stderr,
+                )
+                return 1
+
+        length_errors: list[str] = []
         with args.export_chat.open("w", encoding="utf-8") as out:
             for row in chat_rows:
+                if tokenizer is not None:
+                    text = tokenizer.apply_chat_template(
+                        row["messages"], tokenize=False, add_generation_prompt=False
+                    )
+                    n_tok = len(tokenizer.encode(text, add_special_tokens=False))
+                    if n_tok > args.strict_length:
+                        length_errors.append(
+                            f"{row['id']}: {n_tok} tokens > {args.strict_length}"
+                        )
                 out.write(json.dumps(row, ensure_ascii=False) + "\n")
+        if length_errors:
+            print(f"FAILED strict-length: {len(length_errors)} overflow(s)")
+            for err in length_errors[:20]:
+                print(f"  - {err}")
+            return 1
         print(f"Wrote chat export: {args.export_chat} ({len(chat_rows)} rows)")
 
     return 0
