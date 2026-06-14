@@ -1,7 +1,8 @@
 # Phase 2.7 — v1.4 on Vast (training diagnosis fix)
 
-**v1.4a result (GATE PASS):** JSON parse 100%, supported 8/10, combined 90%.  
-**HF adapter:** `QinEmPeRoR93/nassila-grounding-e4b-v1.4a-adapter`
+**v1.4a result (GATE PASS):** JSON parse 100%, supported 8/10, combined 90%. **SHIP adapter.**  
+**v1.4b result (NO-GO):** combined 87.1%, quote validity unchanged (81.8%). Archived on HF for comparison.  
+**HF adapters:** `QinEmPeRoR93/nassila-grounding-e4b-v1.4a-adapter` (ship), `...v1.4b-adapter` (no-go)
 
 ---
 
@@ -89,16 +90,18 @@ python scripts/compare_eval_versions.py
 
 ## v1.4b go/no-go (ship bar)
 
-| Metric | v1.4a | v1.4 target |
-|--------|-------|-------------|
-| Combined expect | 90% | **≥90%** ✓ (hold) |
-| JSON parse (repair) | 100% | **≥98%** |
-| Supported h-001–h-010 | 8/10 | **≥8/10** |
-| Core eval (legacy 5) | 5/5 | **5/5** |
-| Quote validity (holdout) | 81.8% | **≥98%** |
-| False supported (holdout) | 2.9% | **≤5%** |
+| Metric | v1.4a | v1.4b | v1.4 target |
+|--------|-------|-------|-------------|
+| Combined expect | 90% | **87.1%** | ≥90% |
+| JSON parse (repair) | 100% | **100%** | ≥98% |
+| Supported h-001–h-010 | 8/10 | **8/10** | ≥8/10 |
+| Core eval (legacy 5) | 5/5 | **5/5** | 5/5 |
+| Quote validity (holdout) | 81.8% | **81.8%** | ≥98% |
+| False supported (holdout) | 2.9% | **0%** | ≤5% |
 
-4b goal: improve **h-006/h-010** (semantic supported), **quote validity**, **multi_claim** without regressing JSON parse.
+**4b verdict:** NO-GO — ship **v1.4a**. Quote validity needs v1.5 (data/loss), not more epochs.
+
+Upload HF README: `training/hf/README_v1_4a_adapter.md`, `README_v1_4b_adapter.md` (see MODEL_CARD_v1_4.md).
 
 ---
 
