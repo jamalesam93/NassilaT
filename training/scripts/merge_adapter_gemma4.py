@@ -20,7 +20,7 @@ import sys
 from pathlib import Path
 
 BASE_MODEL = "google/gemma-4-E4B-it"
-MAX_SEQ_LENGTH = 1536
+MAX_SEQ_LENGTH = 2048
 
 
 def main() -> int:

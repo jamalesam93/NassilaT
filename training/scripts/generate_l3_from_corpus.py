@@ -221,6 +221,11 @@ def chunk_excerpt_for_grounding(passage: str, source_text: str, max_chars: int =
     return out[:max_chars]
 
 
+def capped_abstract_excerpt(passage: str, abstract: str, max_chars: int = EXCERPT_CHUNK_MAX) -> str:
+    """Chunk long corpus abstracts so chat rows fit MAX_SEQ_LENGTH (2048 tokens)."""
+    return chunk_excerpt_for_grounding(passage, abstract, max_chars=max_chars)
+
+
 NUMERIC_TOKEN_RE = re.compile(
     r"(\d+(?:\.\d+)?)\s*(%|percent|percentage|fold|times|months|years|days|g/100 g|mg|ml|ha)?",
     re.I,
@@ -562,7 +567,7 @@ def make_supported_paraphrase(
         "task": "l3_grounding",
         "version": 1,
         "passage": neutral_passage(paraphrase, cite, rng),
-        "source_excerpt": paper["abstract"],
+        "source_excerpt": capped_abstract_excerpt(paraphrase, paper["abstract"]),
         "meta": row_meta(paper, "full"),
         "output": {
             "claims": [
@@ -669,7 +674,7 @@ def make_supported(
         "task": "l3_grounding",
         "version": 1,
         "passage": neutral_passage(sentence, cite, rng),
-        "source_excerpt": paper["abstract"],
+        "source_excerpt": capped_abstract_excerpt(sentence, paper["abstract"]),
         "meta": row_meta(paper, "full"),
         "output": {
             "claims": [
@@ -704,7 +709,7 @@ def make_contradicted(
         "task": "l3_grounding",
         "version": 1,
         "passage": neutral_passage(flipped, cite, rng),
-        "source_excerpt": paper["abstract"],
+        "source_excerpt": capped_abstract_excerpt(flipped, paper["abstract"]),
         "meta": row_meta(paper, "full"),
         "output": {
             "claims": [
@@ -741,7 +746,7 @@ def make_weak(
         "task": "l3_grounding",
         "version": 1,
         "passage": neutral_passage(strengthened, cite, rng),
-        "source_excerpt": paper["abstract"],
+        "source_excerpt": capped_abstract_excerpt(strengthened, paper["abstract"]),
         "meta": row_meta(paper, "full"),
         "output": {
             "claims": [
@@ -767,7 +772,7 @@ def make_not_in_source(paper: dict[str, Any], idx: int, rng: random.Random) -> d
         "task": "l3_grounding",
         "version": 1,
         "passage": passage,
-        "source_excerpt": paper["abstract"],
+        "source_excerpt": capped_abstract_excerpt(passage, paper["abstract"]),
         "meta": row_meta(paper, "full"),
         "output": {
             "claims": [
