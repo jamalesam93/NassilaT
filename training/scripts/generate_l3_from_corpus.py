@@ -501,6 +501,47 @@ def row_meta(paper: dict[str, Any], excerpt_mode: str = "full") -> dict[str, Any
     }
 
 
+CANONICAL_CLAIM_KEYS = ("claim", "verdict", "sourceQuotes", "rationale", "hasNumericClaim")
+
+PRIORITY_SUFFIXES = (
+    "-sanad-",
+    "-sanadsem-",
+    "-supp-",
+    "-chunk-",
+    "-pol-",
+    "-over-",
+    "-multip-",
+    "-multi-",
+)
+
+
+def is_priority_row(row_id: str) -> bool:
+    return any(s in row_id for s in PRIORITY_SUFFIXES)
+
+
+def canonical_claim(
+    *,
+    claim: str,
+    verdict: str,
+    source_quotes: list[str] | None = None,
+    rationale: list[str] | None = None,
+    has_numeric: bool | None = None,
+) -> dict[str, Any]:
+    """Fixed key order; hasNumericClaim is always last (scalar JSON terminator)."""
+    quotes = list(source_quotes or [])
+    if verdict == "supported" and not quotes:
+        raise ValueError(f"supported claim must have sourceQuotes: {claim[:60]!r}")
+    return {
+        "claim": claim,
+        "verdict": verdict,
+        "sourceQuotes": quotes,
+        "rationale": list(rationale or []),
+        "hasNumericClaim": has_numeric
+        if has_numeric is not None
+        else bool(re.search(r"\d", claim)),
+    }
+
+
 def make_supported_paraphrase(
     paper: dict[str, Any], sentence: str, idx: int, rng: random.Random
 ) -> dict[str, Any] | None:
@@ -524,13 +565,13 @@ def make_supported_paraphrase(
         "meta": row_meta(paper, "full"),
         "output": {
             "claims": [
-                {
-                    "claim": paraphrase[:VISIBLE_CLAIM_CHARS],
-                    "verdict": "supported",
-                    "sourceQuotes": [sentence],
-                    "hasNumericClaim": bool(re.search(r"\d", paraphrase)),
-                    "rationale": [SUPPORTED_RATIONALE],
-                }
+                canonical_claim(
+                    claim=paraphrase[:VISIBLE_CLAIM_CHARS],
+                    verdict="supported",
+                    source_quotes=[sentence],
+                    rationale=[SUPPORTED_RATIONALE],
+                    has_numeric=bool(re.search(r"\d", paraphrase)),
+                )
             ],
             "overallVerdict": "support",
         },
@@ -558,13 +599,13 @@ def make_holdout_style_supported(
         "meta": row_meta(paper, "sentence"),
         "output": {
             "claims": [
-                {
-                    "claim": paraphrase[:VISIBLE_CLAIM_CHARS],
-                    "verdict": "supported",
-                    "sourceQuotes": [sentence],
-                    "hasNumericClaim": bool(re.search(r"\d", paraphrase)),
-                    "rationale": [SUPPORTED_RATIONALE],
-                }
+                canonical_claim(
+                    claim=paraphrase[:VISIBLE_CLAIM_CHARS],
+                    verdict="supported",
+                    source_quotes=[sentence],
+                    rationale=[SUPPORTED_RATIONALE],
+                    has_numeric=bool(re.search(r"\d", paraphrase)),
+                )
             ],
             "overallVerdict": "support",
         },
@@ -597,13 +638,13 @@ def make_supported_paraphrase_chunked(
         "meta": row_meta(paper, "chunked"),
         "output": {
             "claims": [
-                {
-                    "claim": paraphrase[:VISIBLE_CLAIM_CHARS],
-                    "verdict": "supported",
-                    "sourceQuotes": [sentence],
-                    "hasNumericClaim": bool(re.search(r"\d", paraphrase)),
-                    "rationale": [SUPPORTED_RATIONALE],
-                }
+                canonical_claim(
+                    claim=paraphrase[:VISIBLE_CLAIM_CHARS],
+                    verdict="supported",
+                    source_quotes=[sentence],
+                    rationale=[SUPPORTED_RATIONALE],
+                    has_numeric=bool(re.search(r"\d", paraphrase)),
+                )
             ],
             "overallVerdict": "support",
         },
@@ -631,12 +672,12 @@ def make_supported(
         "meta": row_meta(paper, "full"),
         "output": {
             "claims": [
-                {
-                    "claim": sentence[:VISIBLE_CLAIM_CHARS],
-                    "verdict": "supported",
-                    "sourceQuotes": [sentence],
-                    "hasNumericClaim": bool(re.search(r"\d", sentence)),
-                }
+                canonical_claim(
+                    claim=sentence[:VISIBLE_CLAIM_CHARS],
+                    verdict="supported",
+                    source_quotes=[sentence],
+                    has_numeric=bool(re.search(r"\d", sentence)),
+                )
             ],
             "overallVerdict": "support",
         },
@@ -666,13 +707,13 @@ def make_contradicted(
         "meta": row_meta(paper, "full"),
         "output": {
             "claims": [
-                {
-                    "claim": flipped[:VISIBLE_CLAIM_CHARS],
-                    "verdict": "contradicted",
-                    "sourceQuotes": [sentence],
-                    "hasNumericClaim": True,
-                    "rationale": ["Passage numeric value conflicts with abstract wording"],
-                }
+                canonical_claim(
+                    claim=flipped[:VISIBLE_CLAIM_CHARS],
+                    verdict="contradicted",
+                    source_quotes=[sentence],
+                    rationale=["Passage numeric value conflicts with abstract wording"],
+                    has_numeric=True,
+                )
             ],
             "overallVerdict": "weak",
         },
@@ -703,12 +744,13 @@ def make_weak(
         "meta": row_meta(paper, "full"),
         "output": {
             "claims": [
-                {
-                    "claim": strengthened[:VISIBLE_CLAIM_CHARS],
-                    "verdict": "weak",
-                    "sourceQuotes": [sentence],
-                    "rationale": ["Abstract uses more hedged wording than the passage"],
-                }
+                canonical_claim(
+                    claim=strengthened[:VISIBLE_CLAIM_CHARS],
+                    verdict="weak",
+                    source_quotes=[sentence],
+                    rationale=["Abstract uses more hedged wording than the passage"],
+                    has_numeric=bool(re.search(r"\d", strengthened)),
+                )
             ],
             "overallVerdict": "weak",
         },
@@ -728,11 +770,11 @@ def make_not_in_source(paper: dict[str, Any], idx: int, rng: random.Random) -> d
         "meta": row_meta(paper, "full"),
         "output": {
             "claims": [
-                {
-                    "claim": claim[:200],
-                    "verdict": "not_in_source",
-                    "rationale": ["Claim content is not supported by the abstract excerpt"],
-                }
+                canonical_claim(
+                    claim=claim[:200],
+                    verdict="not_in_source",
+                    rationale=["Claim content is not supported by the abstract excerpt"],
+                )
             ],
             "overallVerdict": "unrelated",
         },
@@ -763,11 +805,11 @@ def make_not_in_source_thin_excerpt(
         "meta": row_meta(paper, "sentence"),
         "output": {
             "claims": [
-                {
-                    "claim": claim[:200],
-                    "verdict": "not_in_source",
-                    "rationale": ["Claim topic is absent from the provided excerpt"],
-                }
+                canonical_claim(
+                    claim=claim[:200],
+                    verdict="not_in_source",
+                    rationale=["Claim topic is absent from the provided excerpt"],
+                )
             ],
             "overallVerdict": "unrelated",
         },
@@ -792,13 +834,13 @@ def make_insufficient_evidence(
         "meta": row_meta(paper, "sentence"),
         "output": {
             "claims": [
-                {
-                    "claim": result_sent[:200],
-                    "verdict": "insufficient_evidence",
-                    "rationale": [
+                canonical_claim(
+                    claim=result_sent[:200],
+                    verdict="insufficient_evidence",
+                    rationale=[
                         "Excerpt covers methods/design only; results claim cannot be verified from it"
                     ],
-                }
+                )
             ],
             "overallVerdict": "insufficient_evidence",
         },
@@ -824,12 +866,13 @@ def make_semantic_sanad_supported(
         "meta": {**row_meta(paper, "sentence"), "row_type": "semantic_sanad"},
         "output": {
             "claims": [
-                {
-                    "claim": paraphrase[:VISIBLE_CLAIM_CHARS],
-                    "verdict": "supported",
-                    "sourceQuotes": [sentence],
-                    "rationale": [SEMANTIC_SUPPORTED_RATIONALE],
-                }
+                canonical_claim(
+                    claim=paraphrase[:VISIBLE_CLAIM_CHARS],
+                    verdict="supported",
+                    source_quotes=[sentence],
+                    rationale=[SEMANTIC_SUPPORTED_RATIONALE],
+                    has_numeric=False,
+                )
             ],
             "overallVerdict": "support",
         },
@@ -867,12 +910,12 @@ def make_polarity_contradicted(
         "meta": {**row_meta(paper, "sentence"), "row_type": "polarity"},
         "output": {
             "claims": [
-                {
-                    "claim": neg_claim[:VISIBLE_CLAIM_CHARS],
-                    "verdict": "contradicted",
-                    "sourceQuotes": [sentence],
-                    "rationale": ["Passage denies an association the excerpt reports"],
-                }
+                canonical_claim(
+                    claim=neg_claim[:VISIBLE_CLAIM_CHARS],
+                    verdict="contradicted",
+                    source_quotes=[sentence],
+                    rationale=["Passage denies an association the excerpt reports"],
+                )
             ],
             "overallVerdict": "weak",
         },
@@ -902,12 +945,12 @@ def make_overclaim_contradicted(
         "meta": {**row_meta(paper, "sentence"), "row_type": "overclaim"},
         "output": {
             "claims": [
-                {
-                    "claim": claim[:VISIBLE_CLAIM_CHARS],
-                    "verdict": "contradicted",
-                    "sourceQuotes": [sentence],
-                    "rationale": ["Excerpt reports partial or limited response, not universal cure"],
-                }
+                canonical_claim(
+                    claim=claim[:VISIBLE_CLAIM_CHARS],
+                    verdict="contradicted",
+                    source_quotes=[sentence],
+                    rationale=["Excerpt reports partial or limited response, not universal cure"],
+                )
             ],
             "overallVerdict": "weak",
         },
@@ -944,18 +987,18 @@ def make_multi_claim_supported(
         "meta": {**row_meta(paper, "sentence"), "row_type": "multi_claim"},
         "output": {
             "claims": [
-                {
-                    "claim": claim_a[:VISIBLE_CLAIM_CHARS],
-                    "verdict": "supported",
-                    "sourceQuotes": [sent_a if len(sent_a) <= 200 else quote_a],
-                    "hasNumericClaim": True,
-                },
-                {
-                    "claim": claim_b[:VISIBLE_CLAIM_CHARS],
-                    "verdict": "supported",
-                    "sourceQuotes": [sent_b if len(sent_b) <= 200 else quote_b],
-                    "hasNumericClaim": bool(nums_b),
-                },
+                canonical_claim(
+                    claim=claim_a[:VISIBLE_CLAIM_CHARS],
+                    verdict="supported",
+                    source_quotes=[sent_a if len(sent_a) <= 200 else quote_a],
+                    has_numeric=True,
+                ),
+                canonical_claim(
+                    claim=claim_b[:VISIBLE_CLAIM_CHARS],
+                    verdict="supported",
+                    source_quotes=[sent_b if len(sent_b) <= 200 else quote_b],
+                    has_numeric=bool(nums_b),
+                ),
             ],
             "overallVerdict": "support",
         },
@@ -988,17 +1031,17 @@ def make_multi_claim_partial(
         "meta": {**row_meta(paper, "sentence"), "row_type": "multi_claim"},
         "output": {
             "claims": [
-                {
-                    "claim": para_a[:VISIBLE_CLAIM_CHARS],
-                    "verdict": "supported",
-                    "sourceQuotes": [quote_a],
-                    "rationale": [SEMANTIC_SUPPORTED_RATIONALE],
-                },
-                {
-                    "claim": claim_b_phrase[:VISIBLE_CLAIM_CHARS],
-                    "verdict": "not_in_source",
-                    "rationale": [rationale_b],
-                },
+                canonical_claim(
+                    claim=para_a[:VISIBLE_CLAIM_CHARS],
+                    verdict="supported",
+                    source_quotes=[quote_a],
+                    rationale=[SEMANTIC_SUPPORTED_RATIONALE],
+                ),
+                canonical_claim(
+                    claim=claim_b_phrase[:VISIBLE_CLAIM_CHARS],
+                    verdict="not_in_source",
+                    rationale=[rationale_b],
+                ),
             ],
             "overallVerdict": "weak",
         },
@@ -1153,34 +1196,60 @@ def generate_for_paper(paper: dict[str, Any], rng: random.Random) -> list[dict[s
 
 
 def balance_rows(rows: list[dict[str, Any]], target: int, rng: random.Random) -> list[dict[str, Any]]:
-    by_verdict: dict[str, list[dict[str, Any]]] = {}
-    for r in rows:
-        for c in r.get("output", {}).get("claims", []):
-            v = c.get("verdict", "supported")
-            by_verdict.setdefault(v, []).append(r)
-            break
-
+    """Include all priority (specialized) rows first, then fill verdict quotas from generic pool."""
     if not rows:
         return []
 
+    priority = [r for r in rows if is_priority_row(r["id"])]
+    generic = [r for r in rows if not is_priority_row(r["id"])]
+
     picked: list[dict[str, Any]] = []
     seen_ids: set[str] = set()
+
+    rng.shuffle(priority)
+    for r in priority:
+        if r["id"] in seen_ids:
+            continue
+        picked.append(r)
+        seen_ids.add(r["id"])
+
+    def primary_verdict(row: dict[str, Any]) -> str:
+        claims = row.get("output", {}).get("claims", [])
+        if claims and isinstance(claims[0], dict):
+            return str(claims[0].get("verdict", "supported"))
+        return "supported"
+
+    verdict_in_picked: Counter[str] = Counter(primary_verdict(r) for r in picked)
     quotas = {v: max(1, int(target * frac)) for v, frac in VERDICT_TARGETS.items()}
 
+    by_verdict: dict[str, list[dict[str, Any]]] = {}
+    for r in generic:
+        if r["id"] in seen_ids:
+            continue
+        by_verdict.setdefault(primary_verdict(r), []).append(r)
+
     for verdict, quota in quotas.items():
+        needed = max(0, quota - verdict_in_picked.get(verdict, 0))
         pool = by_verdict.get(verdict, [])
         rng.shuffle(pool)
-        count = 0
+        added = 0
         for r in pool:
+            if len(picked) >= target:
+                break
             if r["id"] in seen_ids:
                 continue
             picked.append(r)
             seen_ids.add(r["id"])
-            count += 1
-            if count >= quota:
+            verdict_in_picked[verdict] += 1
+            added += 1
+            if added >= needed:
                 break
 
-    multi_pool = [r for r in rows if len(r.get("output", {}).get("claims", [])) >= 2 and r["id"] not in seen_ids]
+    multi_pool = [
+        r
+        for r in rows
+        if len(r.get("output", {}).get("claims", [])) >= 2 and r["id"] not in seen_ids
+    ]
     rng.shuffle(multi_pool)
     multi_count = sum(1 for r in picked if len(r.get("output", {}).get("claims", [])) >= 2)
     for r in multi_pool:
@@ -1192,7 +1261,7 @@ def balance_rows(rows: list[dict[str, Any]], target: int, rng: random.Random) ->
         seen_ids.add(r["id"])
         multi_count += 1
 
-    rest = [r for r in rows if r["id"] not in seen_ids]
+    rest = [r for r in generic if r["id"] not in seen_ids]
     rng.shuffle(rest)
     for r in rest:
         if len(picked) >= target:
@@ -1268,7 +1337,7 @@ def main() -> int:
     )
     parser.add_argument("--target-rows", type=int, default=850)
     parser.add_argument("--target-papers", type=int, default=0, help="0 = auto from target-rows")
-    parser.add_argument("--seed", type=int, default=45)
+    parser.add_argument("--seed", type=int, default=46)
     parser.add_argument("--export-review", type=Path, default=None)
     parser.add_argument("--review-fraction", type=float, default=0.15)
     args = parser.parse_args()

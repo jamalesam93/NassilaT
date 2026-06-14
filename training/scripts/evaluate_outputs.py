@@ -89,6 +89,47 @@ def load_jsonl_by_id(path: Path) -> dict[str, dict[str, Any]]:
     return out
 
 
+def classify_failure_mode(
+    eval_row: dict[str, Any],
+    row_result: dict[str, Any],
+    parsed: dict[str, Any] | None,
+) -> str:
+    """Per-row failure taxonomy for holdout matrix and debugging."""
+    if row_result.get("error") == "missing_prediction":
+        return "missing_prediction"
+    expect = eval_row.get("expect", {})
+    if expect.get("must_parse_json") and not row_result.get("parsed_strict"):
+        if not row_result.get("parsed"):
+            return "parse_json"
+    if not row_result.get("parsed") or parsed is None:
+        return "parse_json"
+
+    claims = parsed.get("claims", [])
+    verdicts = [c.get("verdict") for c in claims if isinstance(c, dict)]
+    failures = row_result.get("failures") or []
+
+    if row_result.get("checks_passed"):
+        return "pass"
+
+    for f in failures:
+        if f == "must_parse_json":
+            return "parse_json"
+        if f.startswith("min_claims"):
+            return "min_claims"
+        if f.startswith("any_claim_verdict"):
+            return "wrong_verdict"
+        if f.startswith("forbidden"):
+            return "forbidden_verdict"
+        if "invalid quote" in f:
+            return "quote_invalid"
+
+    forbidden = expect.get("forbidden_claim_verdict", [])
+    if "supported" in forbidden and "supported" in verdicts:
+        return "forbidden_verdict"
+
+    return "wrong_verdict"
+
+
 def evaluate_l3_row(
     eval_row: dict[str, Any],
     raw_output: str,
@@ -119,6 +160,7 @@ def evaluate_l3_row(
         result["failures"].append("must_parse_json")
 
     if not ok or parsed is None:
+        result["failure_mode"] = classify_failure_mode(eval_row, result, None)
         return result
 
     claims = parsed.get("claims", [])
@@ -155,6 +197,7 @@ def evaluate_l3_row(
                     result["checks_passed"] = False
                     result["failures"].append(f"invalid quote substring: {q[:40]!r}")
 
+    result["failure_mode"] = classify_failure_mode(eval_row, result, parsed)
     return result
 
 

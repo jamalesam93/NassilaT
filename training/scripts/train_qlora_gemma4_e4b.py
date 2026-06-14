@@ -1,26 +1,24 @@
 #!/usr/bin/env python3
 """
-QLoRA fine-tuning template for Nassila L3 grounding on Gemma 4 E4B.
+QLoRA fine-tuning for Nassila L3 grounding on Gemma 4 E4B (v1.4).
 
-IMPORTANT:
-  - Run on a GPU machine (Linux/WSL/cloud). Not on the LM Studio GGUF file.
-  - BASE_MODEL: google/gemma-4-E4B-it (Apache 2.0 on Hugging Face).
-  - Install optional deps from requirements.txt (uncomment torch/peft/trl lines).
+v1.4a: schema/balance fixes, v1.3 hyperparams (2 ep, 1e-4)
+v1.4b: same data, v1.2 hyperparams (3 ep, 1.5e-4)
 
 Usage:
   python scripts/train_qlora_gemma4_e4b.py \\
-    --train-file data/l3_grounding_samples.jsonl \\
-    --output-dir outputs/nassila-grounding-v1
+    --train-file data/l3_grounding_train.jsonl \\
+    --phase 4a
 
-  # Export chat JSONL first:
-  python scripts/validate_dataset.py data/l3_grounding_samples.jsonl \\
-    --export-chat data/l3_grounding_chat.jsonl
+  python scripts/validate_dataset.py data/l3_grounding_train.jsonl \\
+    --export-chat data/l3_grounding_chat.jsonl --strict-length 2048
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import random
 import sys
 from pathlib import Path
 
@@ -30,17 +28,31 @@ sys.path.insert(0, str(SCRIPT_DIR))
 
 from validate_dataset import build_grounding_user_prompt, load_jsonl  # noqa: E402
 
-# --- Configuration (edit before running) ---
+# --- Configuration ---
 BASE_MODEL = "google/gemma-4-E4B-it"
-# 1536 fits RTX 4090 (24 GB) with gradient checkpointing; raise on 48 GB+ GPUs.
-MAX_SEQ_LENGTH = 1536
+MAX_SEQ_LENGTH = 2048
 LORA_R = 16
 LORA_ALPHA = 32
 LORA_DROPOUT = 0.05
-LEARNING_RATE = 1e-4
-NUM_EPOCHS = 2
 BATCH_SIZE = 1
 GRAD_ACCUM = 8
+EVAL_HOLDOUT_FRACTION = 0.05
+SAVE_STEPS = 50
+EVAL_STEPS = 50
+SAVE_TOTAL_LIMIT = 3
+
+PHASE_CONFIG = {
+    "4a": {
+        "num_epochs": 2,
+        "learning_rate": 1e-4,
+        "output_name": "nassila-grounding-e4b-v1.4a",
+    },
+    "4b": {
+        "num_epochs": 3,
+        "learning_rate": 1.5e-4,
+        "output_name": "nassila-grounding-e4b-v1.4b",
+    },
+}
 
 
 def records_to_chat_jsonl(input_path: Path, output_path: Path) -> int:
@@ -73,10 +85,37 @@ def records_to_chat_jsonl(input_path: Path, output_path: Path) -> int:
     return count
 
 
-def train_with_unsloth(chat_file: Path, output_dir: Path) -> None:
-    """
-    Unsloth path (recommended). See https://unsloth.ai/docs/models/gemma-4/train
-    """
+def split_train_eval(
+    chat_file: Path, train_out: Path, eval_out: Path, seed: int = 46
+) -> tuple[int, int]:
+    """Hold out ~5% of chat rows for eval loss during training."""
+    lines = [ln.strip() for ln in chat_file.read_text(encoding="utf-8").splitlines() if ln.strip()]
+    rng = random.Random(seed)
+    indices = list(range(len(lines)))
+    rng.shuffle(indices)
+    n_eval = max(1, int(len(lines) * EVAL_HOLDOUT_FRACTION))
+    eval_idx = set(indices[:n_eval])
+    train_out.parent.mkdir(parents=True, exist_ok=True)
+    n_train = n_eval_rows = 0
+    with train_out.open("w", encoding="utf-8") as tf, eval_out.open("w", encoding="utf-8") as ef:
+        for i, line in enumerate(lines):
+            if i in eval_idx:
+                ef.write(line + "\n")
+                n_eval_rows += 1
+            else:
+                tf.write(line + "\n")
+                n_train += 1
+    return n_train, n_eval_rows
+
+
+def train_with_unsloth(
+    chat_file: Path,
+    eval_file: Path | None,
+    output_dir: Path,
+    *,
+    num_epochs: int,
+    learning_rate: float,
+) -> None:
     try:
         from unsloth import FastLanguageModel  # type: ignore
         from trl import SFTTrainer  # type: ignore
@@ -108,11 +147,13 @@ def train_with_unsloth(chat_file: Path, output_dir: Path) -> None:
             "up_proj",
             "down_proj",
         ],
-        # Recompute activations during backward instead of storing them — saves VRAM.
         use_gradient_checkpointing="unsloth",
     )
 
     dataset = load_dataset("json", data_files=str(chat_file), split="train")
+    eval_dataset = None
+    if eval_file and eval_file.exists():
+        eval_dataset = load_dataset("json", data_files=str(eval_file), split="train")
 
     def formatting_func(examples):
         texts = []
@@ -126,26 +167,35 @@ def train_with_unsloth(chat_file: Path, output_dir: Path) -> None:
         return {"text": texts}
 
     dataset = dataset.map(formatting_func, batched=True)
+    if eval_dataset is not None:
+        eval_dataset = eval_dataset.map(formatting_func, batched=True)
 
     training_args = TrainingArguments(
         output_dir=str(output_dir),
-        num_train_epochs=NUM_EPOCHS,
+        num_train_epochs=num_epochs,
         per_device_train_batch_size=BATCH_SIZE,
         gradient_accumulation_steps=GRAD_ACCUM,
-        learning_rate=LEARNING_RATE,
+        learning_rate=learning_rate,
         logging_steps=5,
-        save_steps=50,
+        save_steps=SAVE_STEPS,
+        save_total_limit=SAVE_TOTAL_LIMIT,
         warmup_ratio=0.05,
         fp16=False,
         bf16=True,
         report_to="none",
-        save_strategy="no",
+        save_strategy="steps",
+        eval_strategy="steps" if eval_dataset is not None else "no",
+        eval_steps=EVAL_STEPS if eval_dataset is not None else None,
+        load_best_model_at_end=eval_dataset is not None,
+        metric_for_best_model="eval_loss" if eval_dataset is not None else None,
+        greater_is_better=False,
     )
 
     trainer = SFTTrainer(
         model=model,
         tokenizer=tokenizer,
         train_dataset=dataset,
+        eval_dataset=eval_dataset,
         dataset_text_field="text",
         max_seq_length=MAX_SEQ_LENGTH,
         args=training_args,
@@ -154,16 +204,17 @@ def train_with_unsloth(chat_file: Path, output_dir: Path) -> None:
     trainer.train()
     model.save_pretrained(str(output_dir / "lora_adapter"))
     tokenizer.save_pretrained(str(output_dir / "lora_adapter"))
-
     print(f"Saved LoRA adapter to {output_dir / 'lora_adapter'}")
-    print("Export GGUF for LM Studio, e.g.:")
-    print("  model.save_pretrained_gguf('exports/nassila-q6_k', tokenizer, quantization_method='q6_k')")
 
 
-def train_with_peft(chat_file: Path, output_dir: Path) -> None:
-    """
-    Standard Hugging Face + PEFT QLoRA fallback (more manual than Unsloth).
-    """
+def train_with_peft(
+    chat_file: Path,
+    eval_file: Path | None,
+    output_dir: Path,
+    *,
+    num_epochs: int,
+    learning_rate: float,
+) -> None:
     try:
         import torch  # type: ignore
         from datasets import load_dataset  # type: ignore
@@ -176,10 +227,7 @@ def train_with_peft(chat_file: Path, output_dir: Path) -> None:
         )
         from trl import SFTTrainer  # type: ignore
     except ImportError as e:
-        raise SystemExit(
-            "Missing torch/peft/transformers/trl/datasets. Install on GPU machine.\n"
-            f"Original error: {e}"
-        ) from e
+        raise SystemExit(f"Missing torch/peft/transformers/trl/datasets.\nOriginal error: {e}") from e
 
     bnb = BitsAndBytesConfig(
         load_in_4bit=True,
@@ -216,6 +264,9 @@ def train_with_peft(chat_file: Path, output_dir: Path) -> None:
     model = get_peft_model(model, lora_config)
 
     dataset = load_dataset("json", data_files=str(chat_file), split="train")
+    eval_dataset = None
+    if eval_file and eval_file.exists():
+        eval_dataset = load_dataset("json", data_files=str(eval_file), split="train")
 
     def formatting_func(examples):
         texts = []
@@ -229,24 +280,33 @@ def train_with_peft(chat_file: Path, output_dir: Path) -> None:
         return {"text": texts}
 
     dataset = dataset.map(formatting_func, batched=True)
+    if eval_dataset is not None:
+        eval_dataset = eval_dataset.map(formatting_func, batched=True)
 
     training_args = TrainingArguments(
         output_dir=str(output_dir),
-        num_train_epochs=NUM_EPOCHS,
+        num_train_epochs=num_epochs,
         per_device_train_batch_size=BATCH_SIZE,
         gradient_accumulation_steps=GRAD_ACCUM,
-        learning_rate=LEARNING_RATE,
+        learning_rate=learning_rate,
         logging_steps=5,
-        save_steps=50,
+        save_steps=SAVE_STEPS,
+        save_total_limit=SAVE_TOTAL_LIMIT,
         bf16=True,
         report_to="none",
-        save_strategy="no",
+        save_strategy="steps",
+        eval_strategy="steps" if eval_dataset is not None else "no",
+        eval_steps=EVAL_STEPS if eval_dataset is not None else None,
+        load_best_model_at_end=eval_dataset is not None,
+        metric_for_best_model="eval_loss" if eval_dataset is not None else None,
+        greater_is_better=False,
     )
 
     trainer = SFTTrainer(
         model=model,
         tokenizer=tokenizer,
         train_dataset=dataset,
+        eval_dataset=eval_dataset,
         dataset_text_field="text",
         max_seq_length=MAX_SEQ_LENGTH,
         args=training_args,
@@ -259,23 +319,31 @@ def train_with_peft(chat_file: Path, output_dir: Path) -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="QLoRA template for Nassila grounding")
+    parser = argparse.ArgumentParser(description="QLoRA for Nassila grounding v1.4")
     parser.add_argument("--train-file", type=Path, required=True)
+    parser.add_argument(
+        "--phase",
+        choices=tuple(PHASE_CONFIG.keys()),
+        default="4a",
+        help="4a = v1.3 hyperparams; 4b = v1.2 hyperparams (run after 4a JSON gate)",
+    )
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=TRAINING_DIR / "outputs" / "nassila-grounding-e4b-v1.3",
+        default=None,
+        help="Override output dir (default from --phase)",
     )
     parser.add_argument(
         "--backend",
         choices=("unsloth", "peft"),
         default="unsloth",
-        help="Training backend (unsloth recommended if available)",
     )
+    parser.add_argument("--chat-file", type=Path, help="Pre-built chat JSONL")
+    parser.add_argument("--seed", type=int, default=46)
     parser.add_argument(
-        "--chat-file",
-        type=Path,
-        help="Pre-built chat JSONL; if omitted, generated from train-file",
+        "--no-eval-split",
+        action="store_true",
+        help="Skip 5%% holdout eval split (not recommended for v1.4)",
     )
     args = parser.parse_args()
 
@@ -283,17 +351,46 @@ def main() -> int:
         print(f"Train file not found: {args.train_file}", file=sys.stderr)
         return 1
 
-    chat_file = args.chat_file or (args.output_dir / "chat_train.jsonl")
-    if not args.chat_file:
-        n = records_to_chat_jsonl(args.train_file, chat_file)
-        print(f"Built chat file: {chat_file} ({n} rows)")
+    phase = PHASE_CONFIG[args.phase]
+    output_dir = args.output_dir or (TRAINING_DIR / "outputs" / phase["output_name"])
+    output_dir.mkdir(parents=True, exist_ok=True)
 
-    args.output_dir.mkdir(parents=True, exist_ok=True)
+    full_chat = args.chat_file or (output_dir / "chat_full.jsonl")
+    if not args.chat_file:
+        n = records_to_chat_jsonl(args.train_file, full_chat)
+        print(f"Built chat file: {full_chat} ({n} rows)")
+
+    train_chat = output_dir / "chat_train.jsonl"
+    eval_chat = output_dir / "eval_chat.jsonl"
+    if args.no_eval_split:
+        train_chat = full_chat
+        eval_path: Path | None = None
+    else:
+        n_train, n_eval = split_train_eval(full_chat, train_chat, eval_chat, seed=args.seed)
+        print(f"Split chat: train={n_train}, eval={n_eval} -> {train_chat}, {eval_chat}")
+        eval_path = eval_chat
+
+    print(
+        f"Phase {args.phase}: epochs={phase['num_epochs']}, lr={phase['learning_rate']}, "
+        f"max_seq={MAX_SEQ_LENGTH}, out={output_dir}"
+    )
 
     if args.backend == "unsloth":
-        train_with_unsloth(chat_file, args.output_dir)
+        train_with_unsloth(
+            train_chat,
+            eval_path,
+            output_dir,
+            num_epochs=phase["num_epochs"],
+            learning_rate=phase["learning_rate"],
+        )
     else:
-        train_with_peft(chat_file, args.output_dir)
+        train_with_peft(
+            train_chat,
+            eval_path,
+            output_dir,
+            num_epochs=phase["num_epochs"],
+            learning_rate=phase["learning_rate"],
+        )
 
     return 0
 
