@@ -1,12 +1,14 @@
 # Model card — nassila-grounding-e4b-v1.4 (Sanad / Ouroboros)
 
 **HF adapters:**
-- v1.4a: [`QinEmPeRoR93/nassila-grounding-e4b-v1.4a-adapter`](https://huggingface.co/QinEmPeRoR93/nassila-grounding-e4b-v1.4a-adapter) — **4a GATE PASS**
-- v1.4b: `QinEmPeRoR93/nassila-grounding-e4b-v1.4b-adapter` — **PENDING**
+- v1.4a: [`QinEmPeRoR93/nassila-grounding-e4b-v1.4a-adapter`](https://huggingface.co/QinEmPeRoR93/nassila-grounding-e4b-v1.4a-adapter) — **SHIP** (4a gate PASS)
+- v1.4b: [`QinEmPeRoR93/nassila-grounding-e4b-v1.4b-adapter`](https://huggingface.co/QinEmPeRoR93/nassila-grounding-e4b-v1.4b-adapter) — **NO-GO** (archived)
 
-Train file for both phases: `data/l3_grounding_train_v14a.jsonl` (seq-safe excerpts).
+**Production pick:** **v1.4a** — best combined expect (90%), JSON parse recovered, core 5/5.
 
-See [PHASE2_7_V1_4_WALKTHROUGH.md](./PHASE2_7_V1_4_WALKTHROUGH.md).
+Train file for both phases: `data/l3_grounding_train_v14a.jsonl` (850 rows, seq-safe excerpts).
+
+See [PHASE2_7_V1_4_WALKTHROUGH.md](./PHASE2_7_V1_4_WALKTHROUGH.md). HF README sources: [hf/README_v1_4a_adapter.md](./hf/README_v1_4a_adapter.md), [hf/README_v1_4b_adapter.md](./hf/README_v1_4b_adapter.md).
 
 ---
 
@@ -33,29 +35,59 @@ See [PHASE2_7_V1_4_WALKTHROUGH.md](./PHASE2_7_V1_4_WALKTHROUGH.md).
 | Quote validity (holdout) | 90.9% | 36.4% | **81.8%** | ≥98% |
 | False supported (holdout) | 0% | 2.9% | **2.9%** | ≤5% |
 
-**4a gate:** PASS (JSON + supported cluster recovered from v1.3 `parse_json` failures).
+**4a gate:** PASS — JSON + supported cluster recovered from v1.3 `parse_json` failures.
 
-**Remaining misses:** h-006, h-010 (`wrong_verdict`); h-043, h-045 (holdout edge cases).
+**Holdout misses:** h-006, h-010 (`wrong_verdict`); h-043 (`forbidden_verdict`); h-045 (`wrong_verdict`).
 
-Reports: `reports/v1_4a_eval_combined_report.json`, `reports/holdout_failure_matrix.md`
+Reports: `reports/v1_4a_eval_combined_report.json`
 
 ---
 
-## v1.4b (planned)
+## v1.4b evaluation (Vast, Q6_K, 70 rows)
 
 | Field | v1.4a | v1.4b |
 |-------|-------|-------|
 | Train rows | 850 (`train_v14a.jsonl`) | same |
 | Epochs | 2 | **3** |
 | Learning rate | 1e-4 | **1.5e-4** |
-| Output dir | `nassila-grounding-e4b-v1.4a` | `nassila-grounding-e4b-v1.4b` |
+| Combined expect | **90%** | **87.1%** |
+| JSON parse (repair) | 100% | **100%** |
+| Supported h-001–h-010 | 8/10 | **8/10** |
+| Core eval (legacy 5) | 5/5 | **5/5** |
+| Extended core (20) | 85% | **80%** |
+| Holdout expect | 91.1% | **88.9%** |
+| Quote validity (holdout) | 81.8% | **81.8%** (no gain) |
+| False supported (holdout) | 2.9% | **0%** |
 
-**Ship bar:** hold quote validity ≥98%, keep JSON 100%, core 5/5, improve h-006/h-010 if possible.
+**4b verdict:** NO-GO — extra epochs did not improve quote validity or combined score; regressed h-008, h-034 vs 4a. Fixed h-006.
 
-## v1.4b results
+**Holdout misses:** h-008, h-010, h-034, h-043, h-045.
 
-```
-PENDING — run PHASE=4b on Vast after git pull
+Reports: `reports/v1_4b_eval_combined_report.json`, `reports/holdout_failure_matrix.md`
+
+---
+
+## Holdout regression (4a vs 4b)
+
+| Row | v1.4a | v1.4b | Notes |
+|-----|-------|-------|-------|
+| h-006 | wrong_verdict | **pass** | 4b win |
+| h-008 | pass | **wrong_verdict** | 4b regression |
+| h-010 | wrong_verdict | wrong_verdict | persistent |
+| h-034 | pass | **wrong_verdict** | 4b regression |
+| h-043 | forbidden_verdict | wrong_verdict | mode shift |
+| h-045 | wrong_verdict | wrong_verdict | persistent |
+
+---
+
+## Upload HF README
+
+```bash
+cd training/hf
+export HF_TOKEN="hf_..."
+
+hf upload QinEmPeRoR93/nassila-grounding-e4b-v1.4a-adapter README_v1_4a_adapter.md README.md --repo-type model
+hf upload QinEmPeRoR93/nassila-grounding-e4b-v1.4b-adapter README_v1_4b_adapter.md README.md --repo-type model
 ```
 
 ---

@@ -1,0 +1,223 @@
+{
+  "eval_file": "/root/nassila/training/data/eval_samples_extended.jsonl",
+  "total_l3_rows": 20,
+  "json_parse_rate_strict": 1.0,
+  "json_parse_rate_with_repair": 1.0,
+  "repair_used_count": 0,
+  "expect_checks_pass_rate": 0.8,
+  "quote_validity_rate": 0.8,
+  "false_supported_rate": 0.1111,
+  "category_pass_rates": {},
+  "per_row": [
+    {
+      "id": "eval-006",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "eval-007",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "eval-008",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "eval-009",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "eval-010",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "eval-011",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "eval-012",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "eval-013",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "any_claim_verdict missing ['weak']",
+        "forbidden verdict present: ['supported']"
+      ],
+      "failure_mode": "wrong_verdict"
+    },
+    {
+      "id": "eval-014",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "eval-015",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "eval-016",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "any_claim_verdict missing ['supported']"
+      ],
+      "failure_mode": "wrong_verdict"
+    },
+    {
+      "id": "eval-017",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "eval-018",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "min_claims:1<2",
+        "any_claim_verdict missing ['supported', 'not_in_source']"
+      ],
+      "failure_mode": "min_claims"
+    },
+    {
+      "id": "eval-019",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "eval-020",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "any_claim_verdict missing ['supported']"
+      ],
+      "failure_mode": "wrong_verdict"
+    },
+    {
+      "id": "eval-021",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "eval-022",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "eval-023",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "eval-024",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "eval-025",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    }
+  ]
+}
