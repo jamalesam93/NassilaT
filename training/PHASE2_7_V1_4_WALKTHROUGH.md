@@ -101,8 +101,6 @@ python scripts/compare_eval_versions.py
 
 **4b verdict:** NO-GO — ship **v1.4a**. Quote validity needs v1.5 (data/loss), not more epochs.
 
-Upload HF README: `training/hf/README_v1_4a_adapter.md`, `README_v1_4b_adapter.md` (see MODEL_CARD_v1_4.md).
-
 ---
 
 ## Lessons learned (v1.4a Vast)

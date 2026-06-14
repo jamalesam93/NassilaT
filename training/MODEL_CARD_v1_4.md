@@ -8,7 +8,7 @@
 
 Train file for both phases: `data/l3_grounding_train_v14a.jsonl` (850 rows, seq-safe excerpts).
 
-See [PHASE2_7_V1_4_WALKTHROUGH.md](./PHASE2_7_V1_4_WALKTHROUGH.md). HF README sources: [hf/README_v1_4a_adapter.md](./hf/README_v1_4a_adapter.md), [hf/README_v1_4b_adapter.md](./hf/README_v1_4b_adapter.md).
+See [PHASE2_7_V1_4_WALKTHROUGH.md](./PHASE2_7_V1_4_WALKTHROUGH.md). Model cards live on each HF adapter repo README.
 
 ---
 
@@ -77,18 +77,6 @@ Reports: `reports/v1_4b_eval_combined_report.json`, `reports/holdout_failure_mat
 | h-034 | pass | **wrong_verdict** | 4b regression |
 | h-043 | forbidden_verdict | wrong_verdict | mode shift |
 | h-045 | wrong_verdict | wrong_verdict | persistent |
-
----
-
-## Upload HF README
-
-```bash
-cd training/hf
-export HF_TOKEN="hf_..."
-
-hf upload QinEmPeRoR93/nassila-grounding-e4b-v1.4a-adapter README_v1_4a_adapter.md README.md --repo-type model
-hf upload QinEmPeRoR93/nassila-grounding-e4b-v1.4b-adapter README_v1_4b_adapter.md README.md --repo-type model
-```
 
 ---
 
