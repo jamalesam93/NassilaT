@@ -5,7 +5,7 @@ QLoRA fine-tuning for Nassila L3 grounding on Gemma 4 E4B (v1.4).
 v1.4a: schema/balance fixes, v1.3 hyperparams (2 ep, 1e-4)
 v1.4b: same data, v1.2 hyperparams (3 ep, 1.5e-4)
 
-Default train file: data/l3_grounding_train_v14a.jsonl (seq-safe, 844 rows).
+Default train file: data/l3_grounding_train_v14a.jsonl (seq-safe, 850 rows).
 Use prepare_v14_train.py to rebuild from l3_grounding_train.jsonl.
 
 Unsloth + Gemma4: save_strategy="no" (mid-training checkpoints pickle-fail on Vast).
