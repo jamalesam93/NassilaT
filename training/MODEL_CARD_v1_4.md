@@ -1,66 +1,67 @@
 # Model card — nassila-grounding-e4b-v1.4 (Sanad / Ouroboros)
 
-**Status:** **PENDING** — v1.4a/b Vast train + eval not yet run. Update this file after `run_vast_pipeline.sh`.
+**HF adapters:**
+- v1.4a: [`QinEmPeRoR93/nassila-grounding-e4b-v1.4a-adapter`](https://huggingface.co/QinEmPeRoR93/nassila-grounding-e4b-v1.4a-adapter) — **4a GATE PASS**
+- v1.4b: `QinEmPeRoR93/nassila-grounding-e4b-v1.4b-adapter` — **PENDING**
 
-**Planned HF repos:** `nassila-grounding-e4b-v1.4a-adapter`, `nassila-grounding-e4b-v1.4b-adapter` (or single v1.4 if fast path).
+Train file for both phases: `data/l3_grounding_train_v14a.jsonl` (seq-safe excerpts).
 
 See [PHASE2_7_V1_4_WALKTHROUGH.md](./PHASE2_7_V1_4_WALKTHROUGH.md).
 
 ---
 
-## v1.4 changes vs v1.3
+## v1.4 fixes vs v1.3
 
 | Fix | Description |
 |-----|-------------|
-| **Uniform JSON schema** | `canonical_claim()` — fixed key order; `hasNumericClaim` always last |
-| **Priority balancing** | `-sanad-`, `-sanadsem-`, `-supp-`, etc. never crowded out by generic paraphrase rows |
-| **Prompt dedup** | System message only in chat `system` role (NassilaT `validate_dataset.py`) |
-| **Seq length** | 2048 on A6000; `--strict-length` on export |
-| **Checkpoints** | `save_steps=50`, `eval_steps=50`, 5% eval holdout, `load_best_model_at_end` |
-| **Two-step train** | 4a = data fix + v1.3 hyperparams; 4b = v1.2 hyperparams if 4a passes JSON gate |
-| **Eval** | Legacy 5 + extended 20 core + 45 holdout; `failure_mode` per row |
+| Uniform JSON schema | `canonical_claim()` — `hasNumericClaim` always last |
+| Priority balancing | Rare suffixes only (`-sanad-`, `-supp-`, etc.); not `-multi-`/`-multip-` |
+| Prompt dedup | System message only in chat `system` role |
+| Seq length | 2048; `prepare_v14_train.py` caps excerpts |
+| Training | `save_strategy=no` (Unsloth/Gemma4 checkpoint pickle bug) |
 
-## Training (planned)
+---
 
-| Field | v1.4a | v1.4b |
-|-------|-------|-------|
-| Train rows | 850 (seed **46**) | same file |
-| Seq length | **2048** | **2048** |
-| Epochs | **2** | **3** |
-| Learning rate | **1e-4** | **1.5e-4** |
-| Output dir | `nassila-grounding-e4b-v1.4a` | `nassila-grounding-e4b-v1.4b` |
+## v1.4a evaluation (Vast, Q6_K, 70 rows)
 
-## Evaluation targets
+| Metric | v1.2 | v1.3 | v1.4a | Target |
+|--------|------|------|-------|--------|
+| Combined expect | 86% | 80% | **90%** | ≥90% |
+| JSON parse (repair) | 100% | 86% | **100%** | ≥98% |
+| Supported h-001–h-010 | 9/10 | 3/10 | **8/10** | ≥8/10 |
+| Core eval (legacy 5) | 2/5 | 5/5 | **5/5** | 5/5 |
+| Quote validity (holdout) | 90.9% | 36.4% | **81.8%** | ≥98% |
+| False supported (holdout) | 0% | 2.9% | **2.9%** | ≤5% |
 
-| Metric | v1.2 | v1.3 | v1.4 target |
-|--------|------|------|-------------|
-| Combined expect | 86% | 80% | **≥90%** |
-| JSON parse (repair) | 100% | 86% | **≥98%** |
-| Supported h-001–h-010 | 9/10 | 3/10 | **≥8/10** |
-| Core eval (legacy 5) | 2/5 | 5/5 | **5/5** |
-| Quote validity (holdout) | 90.9% | 36.4% | **≥98%** |
+**4a gate:** PASS (JSON + supported cluster recovered from v1.3 `parse_json` failures).
 
-## v1.4a gate (minimum before hyperparam change)
-
-- [ ] `audit_l3_labels.py` PASS
-- [ ] `audit_chat_seq_lengths.py` — 0 overflows
-- [ ] JSON parse ≥98%
-- [ ] Supported h-001–h-010 ≥8/10
-
-## Results (fill after Vast)
-
-```
-v1.4a combined:     PENDING
-v1.4a JSON parse:   PENDING
-v1.4a supported:    PENDING
-v1.4b combined:     PENDING
-GO/NO-GO:           PENDING
-```
+**Remaining misses:** h-006, h-010 (`wrong_verdict`); h-043, h-045 (holdout edge cases).
 
 Reports: `reports/v1_4a_eval_combined_report.json`, `reports/holdout_failure_matrix.md`
 
+---
+
+## v1.4b (planned)
+
+| Field | v1.4a | v1.4b |
+|-------|-------|-------|
+| Train rows | 850 (`train_v14a.jsonl`) | same |
+| Epochs | 2 | **3** |
+| Learning rate | 1e-4 | **1.5e-4** |
+| Output dir | `nassila-grounding-e4b-v1.4a` | `nassila-grounding-e4b-v1.4b` |
+
+**Ship bar:** hold quote validity ≥98%, keep JSON 100%, core 5/5, improve h-006/h-010 if possible.
+
+## v1.4b results
+
+```
+PENDING — run PHASE=4b on Vast after git pull
+```
+
+---
+
 ## Related
 
-- Diagnosis: [nassila_training_diagnosis.md](../nassila_training_diagnosis.md)
+- [nassila_training_diagnosis.md](../nassila_training_diagnosis.md)
 - Predecessor NO-GO: [MODEL_CARD_v1_3.md](./MODEL_CARD_v1_3.md)
 - llama.cpp on Vast: [LLAMA_CPP_VAST.md](./LLAMA_CPP_VAST.md)

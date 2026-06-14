@@ -1,0 +1,53 @@
+{
+  "predictions_file": "reports/v1_4a_predictions.jsonl",
+  "repair_allowed": true,
+  "legacy_core_eval": {
+    "eval_file": "/root/nassila/training/data/eval_samples.jsonl",
+    "total_l3_rows": 5,
+    "json_parse_rate_strict": 1.0,
+    "json_parse_rate_with_repair": 1.0,
+    "repair_used_count": 0,
+    "expect_checks_pass_rate": 1.0,
+    "quote_validity_rate": 1.0,
+    "false_supported_rate": 0.0,
+    "category_pass_rates": {}
+  },
+  "extended_core_eval": {
+    "eval_file": "/root/nassila/training/data/eval_samples_extended.jsonl",
+    "total_l3_rows": 20,
+    "json_parse_rate_strict": 1.0,
+    "json_parse_rate_with_repair": 1.0,
+    "repair_used_count": 0,
+    "expect_checks_pass_rate": 0.85,
+    "quote_validity_rate": 0.9,
+    "false_supported_rate": 0.1111,
+    "category_pass_rates": {}
+  },
+  "holdout_eval": {
+    "eval_file": "/root/nassila/training/data/eval_holdout_45.jsonl",
+    "total_l3_rows": 45,
+    "json_parse_rate_strict": 1.0,
+    "json_parse_rate_with_repair": 1.0,
+    "repair_used_count": 0,
+    "expect_checks_pass_rate": 0.9111,
+    "quote_validity_rate": 0.8182,
+    "false_supported_rate": 0.0294,
+    "category_pass_rates": {
+      "supported": 0.8,
+      "contradicted": 1.0,
+      "not_in_source": 1.0,
+      "weak": 1.0,
+      "insufficient_evidence": 1.0,
+      "multi_claim": 0.6667
+    }
+  },
+  "combined_totals": {
+    "total_l3_rows": 70,
+    "legacy_core_rows": 5,
+    "extended_core_rows": 20,
+    "holdout_rows": 45,
+    "expect_checks_pass_rate": 0.9,
+    "json_parse_rate_strict": 1.0,
+    "json_parse_rate_with_repair": 1.0
+  }
+}

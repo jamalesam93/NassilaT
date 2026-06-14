@@ -1,22 +1,44 @@
 #!/usr/bin/env bash
 # Nassila v1.4 Vast pipeline: validate → train → merge → GGUF → eval → reports
 # See training/PHASE2_7_V1_4_WALKTHROUGH.md
+#
+# Usage:
+#   PHASE=4b bash scripts/run_vast_pipeline.sh
+#   SKIP_TRAIN=1 PHASE=4b bash scripts/run_vast_pipeline.sh   # merge+eval only
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TRAINING_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 cd "$TRAINING_DIR"
 
-PHASE="${PHASE:-4a}"
-CHECKPOINT="${CHECKPOINT:-}"
+PHASE="${PHASE:-4b}"
 SKIP_TRAIN="${SKIP_TRAIN:-0}"
 REPAIR="${REPAIR:-1}"
+LLAMA_BIN="${LLAMA_BIN:-$HOME/llama.cpp/build/bin}"
 
-TRAIN_FILE="data/l3_grounding_train.jsonl"
+TRAIN_FILE="data/l3_grounding_train_v14a.jsonl"
 CHAT_FILE="data/l3_grounding_chat.jsonl"
-REPORTS_PREFIX="v1_4${PHASE}_"
 
-echo "=== v1.4 pipeline phase=${PHASE} ==="
+case "$PHASE" in
+  4a) OUTPUT_SUFFIX="v1.4a"; REPORTS_PREFIX="v1_4a_" ;;
+  4b) OUTPUT_SUFFIX="v1.4b"; REPORTS_PREFIX="v1_4b_" ;;
+  *)
+    echo "PHASE must be 4a or 4b (got: $PHASE)" >&2
+    exit 1
+    ;;
+esac
+
+OUTPUT_DIR="outputs/nassila-grounding-e4b-${OUTPUT_SUFFIX}"
+MERGED_DIR="exports/hf-merged-${OUTPUT_SUFFIX}-bf16"
+GGUF_F16="exports/nassila-grounding-e4b-${OUTPUT_SUFFIX}-f16.gguf"
+GGUF_Q6="exports/nassila-grounding-e4b-${OUTPUT_SUFFIX}-q6_k.gguf"
+
+echo "=== v1.4 pipeline phase=${PHASE} (${OUTPUT_SUFFIX}) ==="
+
+if [[ ! -f "$TRAIN_FILE" ]]; then
+  echo "--- Build seq-safe train file ---"
+  python scripts/prepare_v14_train.py
+fi
 
 echo "--- Validate train JSONL ---"
 python scripts/validate_dataset.py "$TRAIN_FILE"
@@ -34,35 +56,40 @@ python scripts/audit_chat_seq_lengths.py "$CHAT_FILE" --max-length 2048 \
   --json "reports/v1_4_seq_audit.json"
 
 if [[ "$SKIP_TRAIN" != "1" ]]; then
-  echo "--- Train QLoRA (phase ${PHASE}) ---"
+  echo "--- Train QLoRA (phase ${PHASE}, save_strategy=no) ---"
   python scripts/train_qlora_gemma4_e4b.py \
     --train-file "$TRAIN_FILE" \
     --phase "$PHASE" \
     --chat-file "$CHAT_FILE"
 fi
 
-OUTPUT_DIR="outputs/nassila-grounding-e4b-v1.4${PHASE}"
 ADAPTER_DIR="${OUTPUT_DIR}/lora_adapter"
-if [[ -n "$CHECKPOINT" ]]; then
-  ADAPTER_DIR="${OUTPUT_DIR}/${CHECKPOINT}"
-  echo "Using checkpoint: $ADAPTER_DIR"
+if [[ ! -d "$ADAPTER_DIR" ]]; then
+  echo "Adapter not found: $ADAPTER_DIR" >&2
+  exit 1
 fi
 
 echo "--- Merge adapter ---"
 python scripts/merge_adapter_gemma4.py \
-  --adapter "$ADAPTER_DIR" \
-  --out "${OUTPUT_DIR}/merged"
+  --adapter-dir "$ADAPTER_DIR" \
+  --out-dir "$MERGED_DIR" \
+  --max-seq-length 2048
 
-echo "--- Export GGUF (Q6_K) ---"
-python scripts/export_gguf.py \
-  --model "${OUTPUT_DIR}/merged" \
-  --out "${OUTPUT_DIR}/gguf-q6_k"
+echo "--- GGUF convert (F16) ---"
+python "$HOME/llama.cpp/convert_hf_to_gguf.py" "$MERGED_DIR" \
+  --outfile "$GGUF_F16" \
+  --outtype f16
+
+echo "--- GGUF quantize (Q6_K) ---"
+"$LLAMA_BIN/llama-quantize" "$GGUF_F16" "$GGUF_Q6" Q6_K
+ls -lh "$GGUF_Q6"
 
 echo "--- Start llama-server (background) ---"
-# Assumes llama.cpp built per LLAMA_CPP_VAST.md (branch b9608)
-LLAMA_BIN="${LLAMA_BIN:-$HOME/llama.cpp/build/bin}"
-GGUF="${OUTPUT_DIR}/gguf-q6_k/nassila-grounding-q6_k.gguf"
-"$LLAMA_BIN/llama-server" -m "$GGUF" --port 8080 --ctx-size 4096 &
+"$LLAMA_BIN/llama-server" \
+  -m "$GGUF_Q6" \
+  --host 127.0.0.1 \
+  --port 1234 \
+  --ctx-size 4096 &
 SERVER_PID=$!
 sleep 15
 
@@ -73,7 +100,7 @@ fi
 
 echo "--- Batch eval ---"
 python scripts/run_l3_eval_batch.py \
-  --base-url http://127.0.0.1:8080 \
+  --base-url http://127.0.0.1:1234 \
   --model nassila-grounding \
   --data data/eval_samples.jsonl data/eval_samples_extended.jsonl data/eval_holdout_45.jsonl \
   --chat-template --retry 1 $REPAIR_FLAG \
@@ -91,5 +118,5 @@ python scripts/compare_eval_versions.py --out reports/holdout_failure_matrix.md
 
 kill "$SERVER_PID" 2>/dev/null || true
 
-echo "=== Done. Reports under reports/${REPORTS_PREFIX}* ==="
-echo "Update MODEL_CARD_v1_4.md with GO/NO-GO from eval_combined_report.json"
+echo "=== Done. Reports: reports/${REPORTS_PREFIX}* ==="
+echo "Update MODEL_CARD_v1_4.md with GO/NO-GO from ${REPORTS_PREFIX}eval_combined_report.json"
