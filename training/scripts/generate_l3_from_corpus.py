@@ -510,8 +510,9 @@ PRIORITY_SUFFIXES = (
     "-chunk-",
     "-pol-",
     "-over-",
-    "-multip-",
-    "-multi-",
+    # -multi- and -multip- intentionally excluded: too abundant (~700 candidates),
+    # would flood the 850-row budget before verdict quotas can fill.
+    # Protected by MULTI_CLAIM_MIN = 100 floor in balance_rows instead.
 )
 
 
