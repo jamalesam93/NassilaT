@@ -59,6 +59,8 @@ def load_version_reports(reports_dir: Path) -> dict[str, dict[str, dict]]:
         ("v1.4a", "v1_4a_eval_holdout_report.json"),
         ("v1.4b", "v1_4b_eval_holdout_report.json"),
         ("v1.4", "v1_4_eval_holdout_report.json"),
+        ("v1.5", "v1_5_eval_holdout_report.json"),
+        ("v1.6", "v1_6_eval_holdout_report.json"),
     ]
     for label, name in patterns:
         path = reports_dir / name

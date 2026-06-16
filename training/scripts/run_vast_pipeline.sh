@@ -2,18 +2,20 @@
 # Nassila Vast pipeline: validate → train → merge → GGUF → eval → reports
 # v1.4: PHASE2_7_V1_4_WALKTHROUGH.md
 # v1.5: PHASE2_8_V1_5_WALKTHROUGH.md
+# v1.6: same walkthrough (decontaminated boost + weak/insufficient rows)
 #
 # Usage:
 #   PHASE=4b bash scripts/run_vast_pipeline.sh
 #   PHASE=5  bash scripts/run_vast_pipeline.sh
-#   SKIP_TRAIN=1 PHASE=5 bash scripts/run_vast_pipeline.sh   # merge+eval only
+#   PHASE=6  bash scripts/run_vast_pipeline.sh   # default
+#   SKIP_TRAIN=1 PHASE=6 bash scripts/run_vast_pipeline.sh   # merge+eval only
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TRAINING_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 cd "$TRAINING_DIR"
 
-PHASE="${PHASE:-5}"
+PHASE="${PHASE:-6}"
 SKIP_TRAIN="${SKIP_TRAIN:-0}"
 REPAIR="${REPAIR:-1}"
 LLAMA_BIN="${LLAMA_BIN:-$HOME/llama.cpp/build/bin}"
@@ -44,13 +46,33 @@ case "$PHASE" in
     REPORTS_PREFIX="v1_5_"
     TRAIN_FILE="data/l3_grounding_train_v15.jsonl"
     CHAT_FILE="data/l3_grounding_chat_v15.jsonl"
-    PREPARE_CMD=(python scripts/prepare_v15_train.py --base data/l3_grounding_train_v14a.jsonl)
+    PREPARE_CMD=(
+      python scripts/prepare_v15_train.py
+      --base data/l3_grounding_train_v14a.jsonl
+      --boost data/l3_grounding_v15_boost.jsonl
+      --out data/l3_grounding_train_v15.jsonl
+    )
     AUDIT_JSON="reports/v1_5_audit_summary.json"
     SEQ_JSON="reports/v1_5_seq_audit.json"
     MODEL_CARD="EVAL_GONOGO.md"
     ;;
+  6)
+    OUTPUT_SUFFIX="v1.6"
+    REPORTS_PREFIX="v1_6_"
+    TRAIN_FILE="data/l3_grounding_train_v16.jsonl"
+    CHAT_FILE="data/l3_grounding_chat_v16.jsonl"
+    PREPARE_CMD=(
+      python scripts/prepare_v15_train.py
+      --base data/l3_grounding_train_v14a.jsonl
+      --boost data/l3_grounding_v16_boost.jsonl
+      --out data/l3_grounding_train_v16.jsonl
+    )
+    AUDIT_JSON="reports/v1_6_audit_summary.json"
+    SEQ_JSON="reports/v1_6_seq_audit.json"
+    MODEL_CARD="EVAL_GONOGO.md"
+    ;;
   *)
-    echo "PHASE must be 4a, 4b, or 5 (got: $PHASE)" >&2
+    echo "PHASE must be 4a, 4b, 5, or 6 (got: $PHASE)" >&2
     exit 1
     ;;
 esac
@@ -66,6 +88,9 @@ if [[ ! -f "$TRAIN_FILE" ]]; then
   echo "--- Build train file ---"
   "${PREPARE_CMD[@]}"
 fi
+
+echo "--- Contamination gate ---"
+python scripts/check_contamination.py "$TRAIN_FILE"
 
 echo "--- Validate train JSONL ---"
 python scripts/validate_dataset.py "$TRAIN_FILE"
