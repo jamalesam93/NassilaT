@@ -2,50 +2,52 @@
 
 Row x version: `pass` or failure mode (`parse_json`, `wrong_verdict`, etc.).
 
-| row | v1.0 | v1.2 | v1.3 | v1.4a | v1.4b |
-| --- | --- | --- | --- | --- | --- |
-| h-001 | pass | pass | pass | pass | pass |
-| h-002 | pass | pass | parse_json | pass | pass |
-| h-003 | pass | pass | pass | pass | pass |
-| h-004 | pass | pass | parse_json | pass | pass |
-| h-005 | pass | pass | parse_json | pass | pass |
-| h-006 | pass | pass | parse_json | wrong_verdict | pass |
-| h-007 | pass | pass | parse_json | pass | pass |
-| h-008 | pass | pass | parse_json | pass | wrong_verdict |
-| h-009 | pass | pass | pass | pass | pass |
-| h-010 | wrong_verdict | wrong_verdict | parse_json | wrong_verdict | wrong_verdict |
-| h-011 | pass | pass | pass | pass | pass |
-| h-012 | pass | pass | pass | pass | pass |
-| h-013 | wrong_verdict | wrong_verdict | pass | pass | pass |
-| h-014 | pass | pass | pass | pass | pass |
-| h-015 | pass | pass | pass | pass | pass |
-| h-016 | pass | pass | pass | pass | pass |
-| h-017 | pass | pass | pass | pass | pass |
-| h-018 | pass | pass | pass | pass | pass |
-| h-019 | pass | pass | pass | pass | pass |
-| h-020 | pass | pass | pass | pass | pass |
-| h-021 | pass | pass | pass | pass | pass |
-| h-022 | pass | pass | pass | pass | pass |
-| h-023 | pass | pass | pass | pass | pass |
-| h-024 | pass | pass | pass | pass | pass |
-| h-025 | pass | pass | pass | pass | pass |
-| h-026 | pass | pass | pass | pass | pass |
-| h-027 | pass | pass | pass | pass | pass |
-| h-028 | pass | pass | wrong_verdict | pass | pass |
-| h-029 | pass | pass | pass | pass | pass |
-| h-030 | pass | pass | pass | pass | pass |
-| h-031 | pass | pass | pass | pass | pass |
-| h-032 | pass | pass | pass | pass | pass |
-| h-033 | pass | pass | pass | pass | pass |
-| h-034 | pass | pass | pass | pass | wrong_verdict |
-| h-035 | pass | pass | pass | pass | pass |
-| h-036 | pass | pass | pass | pass | pass |
-| h-037 | pass | pass | pass | pass | pass |
-| h-038 | pass | pass | pass | pass | pass |
-| h-039 | pass | pass | pass | pass | pass |
-| h-040 | pass | pass | pass | pass | pass |
-| h-041 | pass | pass | pass | pass | pass |
-| h-042 | pass | pass | pass | pass | pass |
-| h-043 | wrong_verdict | wrong_verdict | forbidden_verdict | forbidden_verdict | wrong_verdict |
-| h-044 | pass | pass | pass | pass | pass |
-| h-045 | wrong_verdict | wrong_verdict | wrong_verdict | wrong_verdict | wrong_verdict |
+`*` **v1.5 is contaminated** — 7 boost rows reused eval passages/excerpts (h-006, h-010, h-043, h-045, eval-007/021). Its `pass` cells on contaminated rows reflect memorization, not generalization. v1.6 decontaminates and re-tests; treat the v1.6 column (pending) as the first trustworthy successor to v1.4a.
+
+| row | v1.0 | v1.2 | v1.3 | v1.4a | v1.4b | v1.5* |
+| --- | --- | --- | --- | --- | --- | --- |
+| h-001 | pass | pass | pass | pass | pass | pass |
+| h-002 | pass | pass | parse_json | pass | pass | pass |
+| h-003 | pass | pass | pass | pass | pass | pass |
+| h-004 | pass | pass | parse_json | pass | pass | pass |
+| h-005 | pass | pass | parse_json | pass | pass | pass |
+| h-006 | pass | pass | parse_json | wrong_verdict | pass | pass (contam) |
+| h-007 | pass | pass | parse_json | pass | pass | pass |
+| h-008 | pass | pass | parse_json | pass | wrong_verdict | pass |
+| h-009 | pass | pass | pass | pass | pass | pass |
+| h-010 | wrong_verdict | wrong_verdict | parse_json | wrong_verdict | wrong_verdict | pass (contam) |
+| h-011 | pass | pass | pass | pass | pass | pass |
+| h-012 | pass | pass | pass | pass | pass | pass |
+| h-013 | wrong_verdict | wrong_verdict | pass | pass | pass | pass |
+| h-014 | pass | pass | pass | pass | pass | pass |
+| h-015 | pass | pass | pass | pass | pass | pass |
+| h-016 | pass | pass | pass | pass | pass | pass |
+| h-017 | pass | pass | pass | pass | pass | pass |
+| h-018 | pass | pass | pass | pass | pass | pass |
+| h-019 | pass | pass | pass | pass | pass | pass |
+| h-020 | pass | pass | pass | pass | pass | pass |
+| h-021 | pass | pass | pass | pass | pass | pass |
+| h-022 | pass | pass | pass | pass | pass | pass |
+| h-023 | pass | pass | pass | pass | pass | pass |
+| h-024 | pass | pass | pass | pass | pass | pass |
+| h-025 | pass | pass | pass | pass | pass | pass |
+| h-026 | pass | pass | pass | pass | pass | pass |
+| h-027 | pass | pass | pass | pass | pass | pass |
+| h-028 | pass | pass | wrong_verdict | pass | pass | pass |
+| h-029 | pass | pass | pass | pass | pass | pass |
+| h-030 | pass | pass | pass | pass | pass | pass |
+| h-031 | pass | pass | pass | pass | pass | pass |
+| h-032 | pass | pass | pass | pass | pass | wrong_verdict |
+| h-033 | pass | pass | pass | pass | pass | pass |
+| h-034 | pass | pass | pass | pass | wrong_verdict | wrong_verdict |
+| h-035 | pass | pass | pass | pass | pass | pass |
+| h-036 | pass | pass | pass | pass | pass | pass |
+| h-037 | pass | pass | pass | pass | pass | pass |
+| h-038 | pass | pass | pass | pass | pass | pass |
+| h-039 | pass | pass | pass | pass | pass | pass |
+| h-040 | pass | pass | pass | pass | pass | pass |
+| h-041 | pass | pass | pass | pass | pass | pass |
+| h-042 | pass | pass | pass | pass | pass | pass |
+| h-043 | wrong_verdict | wrong_verdict | forbidden_verdict | forbidden_verdict | wrong_verdict | forbidden_verdict (contam) |
+| h-044 | pass | pass | pass | pass | pass | pass |
+| h-045 | wrong_verdict | wrong_verdict | wrong_verdict | wrong_verdict | wrong_verdict | wrong_verdict (contam) |

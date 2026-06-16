@@ -1,9 +1,63 @@
-# Phase 2.8 — v1.5 on Vast (quote validity + contrastive data)
+# Phase 2.8 — v1.5 / v1.6 on Vast (quote validity + contrastive data)
 
 **Checkpoint to beat:** `nassila-grounding-e4b-v1.4a` — combined 90%, quote validity **81.8%** (target **≥98%**).  
-**v1.4b lesson:** More epochs (3 @ 1.5e-4) did **not** improve quotes. v1.5 fixes are **data / contrastive**, not hyperparams.
+**v1.4b lesson:** More epochs (3 @ 1.5e-4) did **not** improve quotes. Fixes are **data / contrastive**, not hyperparams.
 
 **Agent brief:** [Nassila `docs/OUROBOROS_CONTEXT.md` §7–§12](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md)
+
+---
+
+## ⚠️ v1.5 result — NO-GO and contaminated (do not ship, do not trust)
+
+`reports/v1_5_eval_combined_report.json`: combined expect **88.57%** (< 90% → **FAIL**, down from v1.4a 90.0%).
+
+Two problems, both fixed in **v1.6**:
+
+1. **Train/eval contamination.** 7 of 27 v1.5 boost rows reused **verbatim** eval passages/excerpts (h-006, h-010, h-043, h-045, eval-007/021). The h-006/h-010 "fix" and most of the quote-validity 81.8%→100% jump are **memorization**, not learning. Run `python scripts/check_contamination.py data/l3_grounding_train_v15.jsonl` to see all 7.
+2. **Eroded hedge middle.** The v1.5 boost had 0 `weak` and 0 `insufficient_evidence` rows → regressed h-032, h-034 (weak→not_in_source) and eval-012 (insufficient→decisive).
+
+**Use v1.6 below.** `prepare_v15_train.py` now hard-fails on contamination, so a contaminated train file cannot be built again.
+
+### v1.6 train file (decontaminated + rebalanced)
+
+```bash
+python scripts/prepare_v15_train.py \
+  --base data/l3_grounding_train_v14a.jsonl \
+  --boost data/l3_grounding_v16_boost.jsonl \
+  --out data/l3_grounding_train_v16.jsonl
+python scripts/validate_dataset.py data/l3_grounding_train_v16.jsonl \
+  --export-chat data/l3_grounding_chat_v16.jsonl --strict-length 2048
+python scripts/audit_l3_labels.py data/l3_grounding_train_v16.jsonl --json reports/v1_6_audit_summary.json
+python scripts/check_contamination.py data/l3_grounding_train_v16.jsonl   # must print 0
+```
+
+850 rows; verdict mix contradicted 142 / supported 343 / weak 108 / not_in_source 185 / insufficient 72. Boost `data/l3_grounding_v16_boost.jsonl` = 32 rows: 8 paraphrase, 6 quote-fidelity, 5 contrastive not_in_source, **6 weak**, **4 insufficient**, 3 multi-partial. Train with the **same v1.4a recipe** (2 epochs, LR 1e-4), then eval with `--prefix v1_6_`.
+
+### v1.6 on Vast (current — Tier 2 go/no-go)
+
+| Setting | Value |
+|---------|--------|
+| Train file | `data/l3_grounding_train_v16.jsonl` |
+| Hyperparams | **2 epochs**, LR **1e-4** (v1.4a recipe) |
+| `save_strategy` | **`no`** (Unsloth pickle crash on checkpoint save) |
+| Output | `outputs/nassila-grounding-e4b-v1.6/` |
+| Ship bar | [OUROBOROS_CONTEXT §10](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md) Tier 2 model gates |
+
+```bash
+cd ~/nassila/training
+source ~/nassila/.venv/bin/activate
+chmod +x scripts/run_vast_pipeline.sh
+
+PHASE=6 bash scripts/run_vast_pipeline.sh
+```
+
+Resume merge + eval only (adapter already trained):
+
+```bash
+SKIP_TRAIN=1 PHASE=6 bash scripts/run_vast_pipeline.sh
+```
+
+(`PHASE` defaults to **6** if omitted.)
 
 ---
 
