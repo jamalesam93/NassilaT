@@ -17,15 +17,15 @@ See [`outputs/baseline_report_reference.json`](./outputs/baseline_report_referen
 ## Tuned model (after Vast)
 
 ```powershell
-python scripts/run_l3_eval_batch.py --model "nassila-grounding-e4b-v1.6" `
+python scripts/run_l3_eval_batch.py --model "nassila-grounding-e4b-v1.7" `
   --data data/eval_samples.jsonl data/eval_samples_extended.jsonl data/eval_holdout_45.jsonl `
-  --retry 1 --repair --out reports/v1_6_predictions.jsonl
+  --retry 1 --repair --out reports/v1_7_predictions.jsonl
 
 python scripts/run_eval_reports.py `
-  --predictions reports/v1_6_predictions.jsonl --repair --prefix v1_6_
+  --predictions reports/v1_7_predictions.jsonl --repair --prefix v1_7_
 ```
 
-Read `reports/v1_6_eval_combined_report.json` → `tier2_gates.model_gates_passed`.
+Read `reports/v1_7_eval_combined_report.json` → `tier2_gates.model_gates_passed`.
 
 ## Tier 2 model gates (summary — see §10 for full table)
 
@@ -40,25 +40,26 @@ Read `reports/v1_6_eval_combined_report.json` → `tier2_gates.model_gates_passe
 
 Plus manual review of 20 hard holdout rows.
 
-## v1.6 train prep + Vast
+## v1.7 train prep + Vast
 
 ```bash
 python scripts/prepare_v15_train.py --base data/l3_grounding_train_v14a.jsonl \
-  --boost data/l3_grounding_v16_boost.jsonl --out data/l3_grounding_train_v16.jsonl
-python scripts/check_contamination.py data/l3_grounding_train_v16.jsonl
-python scripts/validate_dataset.py data/l3_grounding_train_v16.jsonl
+  --boost data/l3_grounding_v16_boost.jsonl data/l3_grounding_v17_boost.jsonl \
+  --out data/l3_grounding_train_v17.jsonl
+python scripts/check_contamination.py data/l3_grounding_train_v17.jsonl
+python scripts/validate_dataset.py data/l3_grounding_train_v17.jsonl
 ```
 
-Boost rows: `data/l3_grounding_v16_boost.jsonl` (decontaminated; includes weak + insufficient_evidence).
+Boost rows: `data/l3_grounding_v16_boost.jsonl` + `data/l3_grounding_v17_boost.jsonl` (hard compound + evidential weak + insufficient; all decontaminated).
 
 **Vast pipeline:** [PHASE2_8_V1_5_WALKTHROUGH.md](./PHASE2_8_V1_5_WALKTHROUGH.md)
 
 ```bash
-PHASE=6 bash scripts/run_vast_pipeline.sh
+PHASE=7 bash scripts/run_vast_pipeline.sh
 ```
 
 ## No-go actions
 
-- Add/rebalance rows via `l3_grounding_v16_boost.jsonl` + `prepare_v15_train.py`
+- Add/rebalance rows via `l3_grounding_v17_boost.jsonl` + `prepare_v15_train.py`
 - Re-run Vast QLoRA (v1.4a recipe: 2 ep, 1e-4)
 - Do not publish adapter as Tier 2 ship until `tier2_gates.model_gates_passed` is true

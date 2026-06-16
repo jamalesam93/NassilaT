@@ -1,0 +1,9 @@
+{
+  "file": "data/l3_grounding_chat_v16.jsonl",
+  "rows": 850,
+  "max_length": 2048,
+  "overflow_count": 0,
+  "max_tokens_seen": 1250,
+  "p95_tokens": 894,
+  "overflows": []
+}

@@ -34,7 +34,7 @@ DEFAULT_OUT = TRAINING_DIR / "data" / "l3_grounding_train_v16.jsonl"
 MAX_ROWS = 850
 
 # Any base row whose id starts with a boost-version prefix is replaced by the boost set.
-BOOST_REPLACE_PREFIXES = ("l3-v15-", "l3-v16-")
+BOOST_REPLACE_PREFIXES = ("l3-v15-", "l3-v16-", "l3-v17-")
 
 
 def row_valid(row: dict, line_no: int) -> bool:
@@ -80,7 +80,13 @@ def _trim_overrepresented(rows: list[dict], trim: int) -> list[dict]:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Prepare v1.5 Sanad train JSONL")
     parser.add_argument("--base", type=Path, default=None, help="v14a or full train JSONL")
-    parser.add_argument("--boost", type=Path, default=BOOST_FILE)
+    parser.add_argument(
+        "--boost",
+        type=Path,
+        nargs="+",
+        default=[BOOST_FILE],
+        help="One or more boost JSONL files (merged in order)",
+    )
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT)
     parser.add_argument("--max-rows", type=int, default=MAX_ROWS)
     args = parser.parse_args()
@@ -98,12 +104,15 @@ def main() -> int:
         )
         return 1
 
-    if not args.boost.exists():
-        print(f"Boost file not found: {args.boost}", file=sys.stderr)
+    missing = [p for p in args.boost if not p.exists()]
+    if missing:
+        print(f"Boost file(s) not found: {', '.join(map(str, missing))}", file=sys.stderr)
         return 1
 
     base_rows = read_jsonl(base_path)
-    boost_rows = read_jsonl(args.boost)
+    boost_rows: list[dict] = []
+    for boost_path in args.boost:
+        boost_rows.extend(read_jsonl(boost_path))
 
     boost_ids = {r.get("id") for r in boost_rows}
     kept_base = [
@@ -147,7 +156,8 @@ def main() -> int:
     boost_types = Counter(str(r.get("meta", {}).get("row_type", "base")) for r in boost_rows)
 
     print(f"Base: {base_path} ({len(base_rows)} rows)")
-    print(f"Boost: {args.boost} ({len(boost_rows)} rows: {dict(boost_types)})")
+    boost_names = ", ".join(p.name for p in args.boost)
+    print(f"Boost: {boost_names} ({len(boost_rows)} rows: {dict(boost_types)})")
     print(f"Output: {args.out} ({len(valid)} rows, max {args.max_rows})")
     print(f"First-claim verdict mix: {dict(verdicts)}")
     print("Contamination: 0 (gate passed)")

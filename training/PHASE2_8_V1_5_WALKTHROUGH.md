@@ -1,4 +1,4 @@
-# Phase 2.8 — v1.5 / v1.6 on Vast (quote validity + contrastive data)
+# Phase 2.8 — v1.5 / v1.6 / v1.7 on Vast (quote validity + contrastive data)
 
 **Checkpoint to beat:** `nassila-grounding-e4b-v1.4a` — combined 90%, quote validity **81.8%** (target **≥98%**).  
 **v1.4b lesson:** More epochs (3 @ 1.5e-4) did **not** improve quotes. Fixes are **data / contrastive**, not hyperparams.
@@ -57,7 +57,53 @@ Resume merge + eval only (adapter already trained):
 SKIP_TRAIN=1 PHASE=6 bash scripts/run_vast_pipeline.sh
 ```
 
-(`PHASE` defaults to **6** if omitted.)
+---
+
+## v1.6 result — clean NO-GO (trustworthy), and the v1.7 fix
+
+`reports/v1_6_eval_combined_report.json`: combined expect **88.57%** (< 90% → **FAIL**), but **contamination = 0** — so unlike v1.5 the result is trustworthy. Quote validity holdout **100%**, supported h-001–h-010 10/10, JSON 100% all genuine. The 8 combined misses cluster into:
+
+- **Compound / multi-claim** (h-042, h-043, h-045, eval-018): model grants blanket `supported` on two-part claims; eval-018 didn't split (`min_claims:2`). Causes the holdout false-supported overflow (5.88% > 5%).
+- **Evidential weak/insufficient** (h-032, h-034, eval-012/013): v1.6 taught modal hedges (`may/could`); misses use evidential hedging (`suggested … causality unclear`, `mixed`).
+
+### v1.7 train file (compound + evidential boost)
+
+```bash
+python scripts/prepare_v15_train.py \
+  --base data/l3_grounding_train_v14a.jsonl \
+  --boost data/l3_grounding_v16_boost.jsonl data/l3_grounding_v17_boost.jsonl \
+  --out data/l3_grounding_train_v17.jsonl
+python scripts/check_contamination.py data/l3_grounding_train_v17.jsonl   # must print 0
+python scripts/validate_dataset.py data/l3_grounding_train_v17.jsonl \
+  --export-chat data/l3_grounding_chat_v17.jsonl --strict-length 2048
+python scripts/audit_l3_labels.py data/l3_grounding_train_v17.jsonl --json reports/v1_7_audit_summary.json
+```
+
+850 rows; verdict mix contradicted 145 / supported 330 / weak 114 / not_in_source 185 / insufficient 76. `data/l3_grounding_v17_boost.jsonl` = 17 new rows: **8 hard compound** (split + contradicted/out-of-scope, forbids blanket supported), **6 evidential weak**, **3 insufficient**. Merged with the 32 v1.6 boost rows (49 boost total). Same v1.4a recipe (2 epochs, LR 1e-4).
+
+### v1.7 on Vast (current — Tier 2 go/no-go)
+
+| Setting | Value |
+|---------|--------|
+| Train file | `data/l3_grounding_train_v17.jsonl` |
+| Hyperparams | **2 epochs**, LR **1e-4** (v1.4a recipe) |
+| Output | `outputs/nassila-grounding-e4b-v1.7/` |
+
+```bash
+cd ~/nassila/training
+source ~/nassila/.venv/bin/activate
+chmod +x scripts/run_vast_pipeline.sh
+
+PHASE=7 bash scripts/run_vast_pipeline.sh
+```
+
+Resume merge + eval only:
+
+```bash
+SKIP_TRAIN=1 PHASE=7 bash scripts/run_vast_pipeline.sh
+```
+
+(`PHASE` defaults to **7** if omitted. The pipeline runs `check_contamination.py` before training on every phase.)
 
 ---
 
