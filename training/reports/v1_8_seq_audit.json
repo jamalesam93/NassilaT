@@ -1,5 +1,5 @@
 {
-  "file": "data\\l3_grounding_chat_v18.jsonl",
+  "file": "data/l3_grounding_chat_v18.jsonl",
   "rows": 850,
   "max_length": 2048,
   "overflow_count": 0,
