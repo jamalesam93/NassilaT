@@ -2,6 +2,8 @@
 
 How to measure whether your fine-tuned **Nassila grounding** model is good enough to use — and better than stock Gemma 4 E4B Q6_K.
 
+**Canonical go/no-go gates:** [Nassila `docs/OUROBOROS_CONTEXT.md` §10](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md) (Tier 2 model gates + Tier 2b product-safety in app). This file describes *how* to measure; §10 is the single source for *thresholds*.
+
 ---
 
 ## Evaluation philosophy
@@ -49,7 +51,7 @@ The runner prints **strict** and **with-repair** parse rates plus retry recoveri
 
 **Definition:** Fraction of model outputs where `parseGroundingJson` equivalent succeeds (valid object with `claims` array).
 
-**Target v1:** ≥ **95%**
+**Target (Tier 2, §10):** ≥ **98%** with repair on combined 70-row harness
 
 **How to measure:**
 
@@ -61,7 +63,7 @@ python scripts/evaluate_outputs.py --eval data/eval_samples.jsonl --predictions 
 
 **Definition:** For every claim with `verdict: supported`, every `sourceQuotes[]` entry must be a substring of `source_excerpt`.
 
-**Target v1:** ≥ **98%** of supported claims
+**Target (Tier 2, §10):** ≥ **98%** on **holdout** slice (report extended-core separately via `run_eval_reports.py`)
 
 This is non-negotiable for an academic tool.
 
@@ -77,7 +79,19 @@ Harder cases (`weak` vs `not_in_source`) may stay ambiguous; track separately.
 
 **Definition:** On eval rows where gold expects `contradicted`, `not_in_source`, or `forbidden_claim_verdict`, model must not emit `supported`.
 
-**Target v1:** ≤ **5%** false supported
+**Target (Tier 2, §10):** ≤ **5%** on **holdout** slice. Monitor extended-core in `false_supported_by_slice` (not a ship gate).
+
+### 4b. Supported h-001–h-010 (Tier 2 sub-gate)
+
+**Definition:** Holdout rows `h-001` … `h-010` (paraphrase-supported cluster) must pass expect checks.
+
+**Target:** ≥ **8/10** pass.
+
+### 4c. Core legacy 5 (Tier 2 sub-gate)
+
+**Definition:** All 5 rows in `eval_samples.jsonl` must pass.
+
+**Target:** **5/5** pass.
 
 ### 5. Numeric mismatch detection
 
@@ -196,14 +210,20 @@ Commit **reports** only if they contain no private text; keep private eval local
 
 ---
 
-## Go / no-go for Nassila grounding v1
+## Go / no-go for Nassila grounding (Tier 2)
 
-**Go** if all true:
+**Canonical checklist:** [Nassila `docs/OUROBOROS_CONTEXT.md` §10](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md).
 
-- JSON parse ≥ 95%
-- Quote validity ≥ 98%
-- False supported ≤ 5%
-- Manual review of 20 hard cases acceptable
-- LM Studio loads exported GGUF reliably
+After Vast eval, run:
 
-**No-go** if any critical metric fails — keep stock model for experiments, retain app guardrails, expand dataset before retraining.
+```bash
+python scripts/run_eval_reports.py --predictions reports/v1_5_predictions.jsonl --repair --prefix v1_5_
+```
+
+Inspect `tier2_gates` in `*_eval_combined_report.json`. **Go** when `model_gates_passed` is true **and** manual review of 20 hard holdout rows is acceptable.
+
+**Combined expect:** minimum ≥90%; operator target ≥92% (margin buffer).
+
+**Product safety:** app quote-substring guardrail in `grounding-llm.ts` (Tier 2b) — not scored in NassilaT; verify in Nassila unit tests.
+
+**No-go** if any Tier 2 model gate fails — keep v1.4a checkpoint, expand v1.5 dataset (`prepare_v15_train.py`), retrain before ship.

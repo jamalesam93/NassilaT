@@ -303,7 +303,7 @@ Destroy (not just stop) after adapter + GGUF are uploaded or downloaded.
 
 | Doc | Purpose |
 |-----|---------|
-| [PHASE2_VAST_WALKTHROUGH.md](./PHASE2_VAST_WALKTHROUGH.md) | Vast-focused commands (condensed) |
+| [PHASE2_7_V1_4_WALKTHROUGH.md](./PHASE2_7_V1_4_WALKTHROUGH.md) | Vast-focused commands (current) |
 | [EVALUATION_GUIDE.md](./EVALUATION_GUIDE.md) | Metric definitions |
 | [EVAL_GONOGO.md](./EVAL_GONOGO.md) | Ship / no-ship gates |
 | [DATASET_SCHEMA.md](./DATASET_SCHEMA.md) | JSONL field reference |

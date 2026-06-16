@@ -1,34 +1,29 @@
 # Phase 2 — your next steps
 
-**Full walkthrough:** [PHASE2_TRAINING_GUIDE.md](./PHASE2_TRAINING_GUIDE.md)
+**Agent brief:** [Nassila `docs/OUROBOROS_CONTEXT.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md)
 
-## Current repo state
+**Current Vast walkthrough:** [PHASE2_8_V1_5_WALKTHROUGH.md](./PHASE2_8_V1_5_WALKTHROUGH.md)  
+**Previous:** [PHASE2_7_V1_4_WALKTHROUGH.md](./PHASE2_7_V1_4_WALKTHROUGH.md)
 
-- [x] **v1.2** trained/eval on Vast — **NO-GO** (86% combined; holdout 91.1%, supported 9/10)
-- [x] v1.2 adapter on HF: `QinEmPeRoR93/nassila-grounding-e4b-v1.2-adapter`
-- [x] Eval reports: [reports/v1_2_eval_combined_report.json](./reports/v1_2_eval_combined_report.json)
-- [x] **v1.3** trained/eval on Vast — **NO-GO** (80% combined; core 5/5; supported 3/10; JSON parse 86%)
-- [x] v1.3 adapter on HF: `QinEmPeRoR93/nassila-grounding-e4b-v1.3-adapter`
-- [x] Eval reports: [reports/v1_3_eval_combined_report.json](./reports/v1_3_eval_combined_report.json)
-- [ ] **v1.4** — JSON stability + holdout supported (next)
+## Ship state (Sanad)
+
+| Version | Combined | Verdict | HF adapter |
+|---------|----------|---------|------------|
+| **v1.4a** | 90% | **SHIP** | `nassila-grounding-e4b-v1.4a-adapter` |
+| v1.4b | 87.1% | NO-GO | `nassila-grounding-e4b-v1.4b-adapter` |
+
+Reports: `reports/v1_4a_*`, `reports/v1_4b_*`, `reports/holdout_failure_matrix.md`
 
 ## Your checklist
 
-### v1.4 (next)
+### v1.5 (next — Vast)
 
-1. Diagnose v1.3 JSON parse failures on supported holdout (h-002–h-010 cluster)
-2. Dataset / train tweaks without losing core 5/5 gains
-3. See [MODEL_CARD_v1_3.md](./MODEL_CARD_v1_3.md) for failure summary
+1. PC: `prepare_v15_train.py` + validate + `git push`
+2. Vast: `PHASE=5 bash scripts/run_vast_pipeline.sh`
+3. Quote validity ≥98% (currently 81.8% at v1.4a)
+4. Persistent holdout: h-010, h-043, h-045
+5. See [PHASE2_8_V1_5_WALKTHROUGH.md](./PHASE2_8_V1_5_WALKTHROUGH.md), [MODEL_CARD_v1_4.md](./MODEL_CARD_v1_4.md), `nassila_training_diagnosis.md` §6.2
 
-### Done — v1.3 (reference)
+### v1.0–v1.3 (reference)
 
-**Plan:** [PHASE2_5_V1_3_PLAN.md](./PHASE2_5_V1_3_PLAN.md)  
-**Walkthrough:** [PHASE2_6_V1_3_WALKTHROUGH.md](./PHASE2_6_V1_3_WALKTHROUGH.md)  
-**llama.cpp:** [LLAMA_CPP_VAST.md](./LLAMA_CPP_VAST.md) (tag **b9608**)
-
-### Done (reference)
-
-| Version | Combined expect | Supported holdout | Verdict |
-|---------|-----------------|-------------------|---------|
-| v1.1 | 66% | 1/10 | NO-GO |
-| v1.2 | 86% | 9/10 | NO-GO — [MODEL_CARD_v1_2.md](./MODEL_CARD_v1_2.md) |
+Historical walkthroughs and model cards removed from tree — see **git history**.

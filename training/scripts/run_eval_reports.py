@@ -24,6 +24,7 @@ TRAINING_DIR = SCRIPT_DIR.parent
 sys.path.insert(0, str(SCRIPT_DIR))
 
 from evaluate_outputs import evaluate_dataset, print_summary  # noqa: E402
+from tier_gates import evaluate_tier2_gates  # noqa: E402
 
 
 def merge_rate(a: dict, b: dict, key: str) -> float:
@@ -90,6 +91,19 @@ def main() -> int:
 
     core_total = legacy["total_l3_rows"] + extended["total_l3_rows"]
     all_total = core_total + holdout["total_l3_rows"]
+    combined_expect = merge_rate(
+        {
+            "total_l3_rows": all_total,
+            "expect_checks_pass_rate": (
+                legacy["expect_checks_pass_rate"] * legacy["total_l3_rows"]
+                + extended["expect_checks_pass_rate"] * extended["total_l3_rows"]
+                + holdout["expect_checks_pass_rate"] * holdout["total_l3_rows"]
+            )
+            / max(1, all_total),
+        },
+        {"total_l3_rows": 0, "expect_checks_pass_rate": 0},
+        "expect_checks_pass_rate",
+    )
     combined = {
         "predictions_file": str(args.predictions),
         "repair_allowed": args.repair,
@@ -101,19 +115,7 @@ def main() -> int:
             "legacy_core_rows": legacy["total_l3_rows"],
             "extended_core_rows": extended["total_l3_rows"],
             "holdout_rows": holdout["total_l3_rows"],
-            "expect_checks_pass_rate": merge_rate(
-                {
-                    "total_l3_rows": all_total,
-                    "expect_checks_pass_rate": (
-                        legacy["expect_checks_pass_rate"] * legacy["total_l3_rows"]
-                        + extended["expect_checks_pass_rate"] * extended["total_l3_rows"]
-                        + holdout["expect_checks_pass_rate"] * holdout["total_l3_rows"]
-                    )
-                    / max(1, all_total),
-                },
-                {"total_l3_rows": 0, "expect_checks_pass_rate": 0},
-                "expect_checks_pass_rate",
-            ),
+            "expect_checks_pass_rate": combined_expect,
             "json_parse_rate_strict": round(
                 (
                     legacy["json_parse_rate_strict"] * legacy["total_l3_rows"]
@@ -132,12 +134,30 @@ def main() -> int:
                 / max(1, all_total),
                 4,
             ),
+            "quote_validity_by_slice": {
+                "legacy_core": legacy.get("quote_validity_rate"),
+                "extended_core": extended.get("quote_validity_rate"),
+                "holdout": holdout.get("quote_validity_rate"),
+            },
+            "false_supported_by_slice": {
+                "legacy_core": legacy.get("false_supported_rate"),
+                "extended_core": extended.get("false_supported_rate"),
+                "holdout": holdout.get("false_supported_rate"),
+            },
         },
     }
+    combined["tier2_gates"] = evaluate_tier2_gates(
+        legacy=legacy,
+        extended=extended,
+        holdout=holdout,
+        combined_totals=combined["combined_totals"],
+    )
     combined_report.write_text(json.dumps(combined, indent=2), encoding="utf-8")
 
     print("\n=== Combined (70 eval rows) ===")
     print(json.dumps(combined["combined_totals"], indent=2))
+    print("\n=== Tier 2 gates (canonical: Nassila docs/OUROBOROS_CONTEXT.md §10) ===")
+    print(json.dumps(combined["tier2_gates"], indent=2))
     print(f"\nWrote {legacy_report}")
     print(f"Wrote {extended_report}")
     print(f"Wrote {holdout_report}")

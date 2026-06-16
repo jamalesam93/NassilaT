@@ -1,29 +1,56 @@
 #!/usr/bin/env bash
-# Nassila v1.4 Vast pipeline: validate → train → merge → GGUF → eval → reports
-# See training/PHASE2_7_V1_4_WALKTHROUGH.md
+# Nassila Vast pipeline: validate → train → merge → GGUF → eval → reports
+# v1.4: PHASE2_7_V1_4_WALKTHROUGH.md
+# v1.5: PHASE2_8_V1_5_WALKTHROUGH.md
 #
 # Usage:
 #   PHASE=4b bash scripts/run_vast_pipeline.sh
-#   SKIP_TRAIN=1 PHASE=4b bash scripts/run_vast_pipeline.sh   # merge+eval only
+#   PHASE=5  bash scripts/run_vast_pipeline.sh
+#   SKIP_TRAIN=1 PHASE=5 bash scripts/run_vast_pipeline.sh   # merge+eval only
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TRAINING_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 cd "$TRAINING_DIR"
 
-PHASE="${PHASE:-4b}"
+PHASE="${PHASE:-5}"
 SKIP_TRAIN="${SKIP_TRAIN:-0}"
 REPAIR="${REPAIR:-1}"
 LLAMA_BIN="${LLAMA_BIN:-$HOME/llama.cpp/build/bin}"
 
-TRAIN_FILE="data/l3_grounding_train_v14a.jsonl"
-CHAT_FILE="data/l3_grounding_chat.jsonl"
-
 case "$PHASE" in
-  4a) OUTPUT_SUFFIX="v1.4a"; REPORTS_PREFIX="v1_4a_" ;;
-  4b) OUTPUT_SUFFIX="v1.4b"; REPORTS_PREFIX="v1_4b_" ;;
+  4a)
+    OUTPUT_SUFFIX="v1.4a"
+    REPORTS_PREFIX="v1_4a_"
+    TRAIN_FILE="data/l3_grounding_train_v14a.jsonl"
+    CHAT_FILE="data/l3_grounding_chat.jsonl"
+    PREPARE_CMD=(python scripts/prepare_v14_train.py)
+    AUDIT_JSON="reports/v1_4_audit_summary.json"
+    SEQ_JSON="reports/v1_4_seq_audit.json"
+    MODEL_CARD="MODEL_CARD_v1_4.md"
+    ;;
+  4b)
+    OUTPUT_SUFFIX="v1.4b"
+    REPORTS_PREFIX="v1_4b_"
+    TRAIN_FILE="data/l3_grounding_train_v14a.jsonl"
+    CHAT_FILE="data/l3_grounding_chat.jsonl"
+    PREPARE_CMD=(python scripts/prepare_v14_train.py)
+    AUDIT_JSON="reports/v1_4_audit_summary.json"
+    SEQ_JSON="reports/v1_4_seq_audit.json"
+    MODEL_CARD="MODEL_CARD_v1_4.md"
+    ;;
+  5)
+    OUTPUT_SUFFIX="v1.5"
+    REPORTS_PREFIX="v1_5_"
+    TRAIN_FILE="data/l3_grounding_train_v15.jsonl"
+    CHAT_FILE="data/l3_grounding_chat_v15.jsonl"
+    PREPARE_CMD=(python scripts/prepare_v15_train.py --base data/l3_grounding_train_v14a.jsonl)
+    AUDIT_JSON="reports/v1_5_audit_summary.json"
+    SEQ_JSON="reports/v1_5_seq_audit.json"
+    MODEL_CARD="EVAL_GONOGO.md"
+    ;;
   *)
-    echo "PHASE must be 4a or 4b (got: $PHASE)" >&2
+    echo "PHASE must be 4a, 4b, or 5 (got: $PHASE)" >&2
     exit 1
     ;;
 esac
@@ -33,18 +60,18 @@ MERGED_DIR="exports/hf-merged-${OUTPUT_SUFFIX}-bf16"
 GGUF_F16="exports/nassila-grounding-e4b-${OUTPUT_SUFFIX}-f16.gguf"
 GGUF_Q6="exports/nassila-grounding-e4b-${OUTPUT_SUFFIX}-q6_k.gguf"
 
-echo "=== v1.4 pipeline phase=${PHASE} (${OUTPUT_SUFFIX}) ==="
+echo "=== pipeline phase=${PHASE} (${OUTPUT_SUFFIX}) ==="
 
 if [[ ! -f "$TRAIN_FILE" ]]; then
-  echo "--- Build seq-safe train file ---"
-  python scripts/prepare_v14_train.py
+  echo "--- Build train file ---"
+  "${PREPARE_CMD[@]}"
 fi
 
 echo "--- Validate train JSONL ---"
 python scripts/validate_dataset.py "$TRAIN_FILE"
 
 echo "--- Structural audit ---"
-python scripts/audit_l3_labels.py "$TRAIN_FILE" --json "reports/v1_4_audit_summary.json"
+python scripts/audit_l3_labels.py "$TRAIN_FILE" --json "$AUDIT_JSON"
 
 echo "--- Export chat + strict length ---"
 python scripts/validate_dataset.py "$TRAIN_FILE" \
@@ -53,7 +80,7 @@ python scripts/validate_dataset.py "$TRAIN_FILE" \
 
 echo "--- Sequence length audit ---"
 python scripts/audit_chat_seq_lengths.py "$CHAT_FILE" --max-length 2048 \
-  --json "reports/v1_4_seq_audit.json"
+  --json "$SEQ_JSON"
 
 if [[ "$SKIP_TRAIN" != "1" ]]; then
   echo "--- Train QLoRA (phase ${PHASE}, save_strategy=no) ---"
@@ -119,4 +146,4 @@ python scripts/compare_eval_versions.py --out reports/holdout_failure_matrix.md
 kill "$SERVER_PID" 2>/dev/null || true
 
 echo "=== Done. Reports: reports/${REPORTS_PREFIX}* ==="
-echo "Update MODEL_CARD_v1_4.md with GO/NO-GO from ${REPORTS_PREFIX}eval_combined_report.json"
+echo "Check Tier 2 gates in ${REPORTS_PREFIX}eval_combined_report.json; update ${MODEL_CARD}"

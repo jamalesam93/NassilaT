@@ -2,12 +2,11 @@
 
 | Version | Card | HF adapter | Eval |
 |---------|------|------------|------|
-| **v1** | [MODEL_CARD_v1.md](./MODEL_CARD_v1.md) | `QinEmPeRoR93/nassila-grounding-e4b-v1-adapter` | NO-GO |
-| **v1.1** | [MODEL_CARD_v1_1.md](./MODEL_CARD_v1_1.md) | `QinEmPeRoR93/nassila-grounding-e4b-v1.1-adapter` | NO-GO |
-| **v1.2** | [MODEL_CARD_v1_2.md](./MODEL_CARD_v1_2.md) | `QinEmPeRoR93/nassila-grounding-e4b-v1.2-adapter` | NO-GO |
-| **v1.3** | [MODEL_CARD_v1_3.md](./MODEL_CARD_v1_3.md) | `QinEmPeRoR93/nassila-grounding-e4b-v1.3-adapter` | NO-GO |
+| v1–v1.3 | *(git history)* | `QinEmPeRoR93/nassila-grounding-e4b-v1*` | NO-GO |
 | **v1.4a** | [MODEL_CARD_v1_4.md](./MODEL_CARD_v1_4.md) | `QinEmPeRoR93/nassila-grounding-e4b-v1.4a-adapter` | **SHIP** |
 | **v1.4b** | [MODEL_CARD_v1_4.md](./MODEL_CARD_v1_4.md) | `QinEmPeRoR93/nassila-grounding-e4b-v1.4b-adapter` | NO-GO |
+
+**Agent brief:** [Nassila `docs/OUROBOROS_CONTEXT.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md)
 
 **Vast llama.cpp:** [LLAMA_CPP_VAST.md](./LLAMA_CPP_VAST.md) (pinned **b9608**)
 

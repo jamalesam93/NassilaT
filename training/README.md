@@ -2,7 +2,7 @@
 
 This folder is a **self-contained guide** for fine-tuning **Nassila-specific** local models on **Google Gemma 4 E4B**, then running them in **LM Studio** and connecting them to the desktop app.
 
-**Strategy:** [**Ouroboros**](./OUROBOROS.md) — one model identity over time, **workers** per `task`. **v1** trains worker **Sanad** (`l3_grounding`) → `nassila-grounding-e4b-v1`. See [ROADMAP.md](./ROADMAP.md).
+**Strategy:** [**Ouroboros**](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS.md) — seven workers, forged one at a time. **v1** ships **Sanad** (`l3_grounding`) → **v1.4a**. **Agent brief:** [Nassila `docs/OUROBOROS_CONTEXT.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md). See [ROADMAP.md](./ROADMAP.md).
 
 It is documentation-first: sample data, schemas, diagrams, and helper scripts. It does **not** ship model weights, checkpoints, or private training data.
 
@@ -29,16 +29,17 @@ Hugging Face E4B IT  →  QLoRA training  →  adapter  →  export Q6_K GGUF  �
 
 | Step | Document | What you do |
 |------|----------|-------------|
+| 0 | [Nassila `OUROBOROS_CONTEXT.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md) | **Agents:** workers, v1.4 state, v1.5 planning |
 | 1 | [TRAINING_GUIDE.md](./TRAINING_GUIDE.md) | Full walkthrough: environment, data, train, export, test |
 | 1.1 | [CORPUS_PIPELINE.md](./CORPUS_PIPELINE.md) | Phase 1.5: merge JSON exports, backfill abstracts (PC) |
-| 1.2 | [PHASE2_TRAINING_GUIDE.md](./PHASE2_TRAINING_GUIDE.md) | **Phase 2 step-by-step** (labels → Vast → GGUF → eval) |
-| 1.2b | [PHASE2_VAST_WALKTHROUGH.md](./PHASE2_VAST_WALKTHROUGH.md) | Phase 2 Vast commands (condensed) |
+| 1.2 | [PHASE2_8_V1_5_WALKTHROUGH.md](./PHASE2_8_V1_5_WALKTHROUGH.md) | **Current:** v1.5 Vast pipeline (Sanad) |
+| 1.2a | [PHASE2_7_V1_4_WALKTHROUGH.md](./PHASE2_7_V1_4_WALKTHROUGH.md) | v1.4 Vast pipeline (reference) |
 | 1.3 | [PHASE1_VAST_4090_WALKTHROUGH.md](./PHASE1_VAST_4090_WALKTHROUGH.md) | Phase 1: Vast smoke QLoRA |
 | 2 | [DATASET_SCHEMA.md](./DATASET_SCHEMA.md) | Exact JSONL formats for each task |
 | 3 | [EVALUATION_GUIDE.md](./EVALUATION_GUIDE.md) | Metrics and pass/fail thresholds |
 | 4 | [LM_STUDIO_INTEGRATION.md](./LM_STUDIO_INTEGRATION.md) | Serve model locally; point Nassila at it |
 | 5 | [ROADMAP.md](./ROADMAP.md) | Ouroboros phases (Sanad now → merge later) |
-| 6 | [OUROBOROS.md](./OUROBOROS.md) | Canonical vision link + workers |
+| 6 | [MODEL_CARD_v1_4.md](./MODEL_CARD_v1_4.md) | Ship metrics (v1.4a SHIP, v1.4b NO-GO) |
 
 ---
 
@@ -52,7 +53,7 @@ training/
   EVALUATION_GUIDE.md       ← how to score your model
   LM_STUDIO_INTEGRATION.md  ← local server + app wiring
   ROADMAP.md                ← Ouroboros training phases
-  OUROBOROS.md              ← pointer to docs/OUROBOROS.md
+  MODEL_CARD_v1_4.md        ← ship metrics (v1.4a SHIP)
   requirements.txt          ← Python deps for scripts
   data/
     l3_grounding_samples.jsonl    ← 8 train-style examples
@@ -71,7 +72,7 @@ training/
     app_integration_flow.mmd
 ```
 
-Product vision: [OUROBOROS.md](./OUROBOROS.md) → [citations-style docs](https://github.com/jamalesam93/citations-style/blob/main/docs/OUROBOROS.md). App-side refinements are in [`docs/WEBPAGE_ROADMAP.md`](https://github.com/jamalesam93/citations-style/blob/main/docs/WEBPAGE_ROADMAP.md).
+Product vision: [Nassila `docs/OUROBOROS.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS.md) · agent brief [`OUROBOROS_CONTEXT.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md). App: [`WEBPAGE_ROADMAP.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/WEBPAGE_ROADMAP.md).
 
 ---
 
