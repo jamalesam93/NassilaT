@@ -6,7 +6,8 @@ v1.4a: schema/balance fixes, v1.3 hyperparams (2 ep, 1e-4)
 v1.4b: same data, v1.2 hyperparams (3 ep, 1.5e-4)
 v1.5:  v1.4a data + boost rows, v1.4a hyperparams (2 ep, 1e-4)
 v1.6:  decontaminated boost + weak/insufficient rows, v1.4a hyperparams (2 ep, 1e-4)
-v1.7:  v1.6 boost + hard compound/evidential-weak rows, v1.4a hyperparams (2 ep, 1e-4)
+v1.7:  v1.6 + compound/evidential boost — **no eval delta vs v1.6** (dropped for v1.8)
+v1.8:  v1.6 boost + passage-claim prompt + v18 boost (no v17); v1.4a hyperparams (2 ep, 1e-4)
 
 Default train file: data/l3_grounding_train_v14a.jsonl (seq-safe, 850 rows).
 v1.5: data/l3_grounding_train_v15.jsonl via prepare_v15_train.py.
@@ -74,6 +75,11 @@ PHASE_CONFIG = {
         "num_epochs": 2,
         "learning_rate": 1e-4,
         "output_name": "nassila-grounding-e4b-v1.7",
+    },
+    "8": {
+        "num_epochs": 2,
+        "learning_rate": 1e-4,
+        "output_name": "nassila-grounding-e4b-v1.8",
     },
 }
 
@@ -328,7 +334,7 @@ def main() -> int:
         "--phase",
         choices=tuple(PHASE_CONFIG.keys()),
         default="5",
-        help="4a = v1.3 hyperparams; 4b = v1.2 hyperparams; 5 = v1.5; 6 = v1.6; 7 = v1.7 compound/evidential boost + v1.4a hyperparams",
+        help="4a–7 = prior phases; 8 = v1.8 passage-claim prompt + v18 boost (v1.4a hyperparams)",
     )
     parser.add_argument("--output-dir", type=Path, default=None)
     parser.add_argument("--backend", choices=("unsloth", "peft"), default="unsloth")
