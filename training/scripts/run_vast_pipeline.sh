@@ -3,19 +3,21 @@
 # v1.4: PHASE2_7_V1_4_WALKTHROUGH.md
 # v1.5: PHASE2_8_V1_5_WALKTHROUGH.md
 # v1.6: same walkthrough (decontaminated boost + weak/insufficient rows)
+# v1.7: same walkthrough (hard compound + evidential-weak rows)
 #
 # Usage:
 #   PHASE=4b bash scripts/run_vast_pipeline.sh
 #   PHASE=5  bash scripts/run_vast_pipeline.sh
-#   PHASE=6  bash scripts/run_vast_pipeline.sh   # default
-#   SKIP_TRAIN=1 PHASE=6 bash scripts/run_vast_pipeline.sh   # merge+eval only
+#   PHASE=6  bash scripts/run_vast_pipeline.sh
+#   PHASE=7  bash scripts/run_vast_pipeline.sh   # default
+#   SKIP_TRAIN=1 PHASE=7 bash scripts/run_vast_pipeline.sh   # merge+eval only
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TRAINING_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 cd "$TRAINING_DIR"
 
-PHASE="${PHASE:-6}"
+PHASE="${PHASE:-7}"
 SKIP_TRAIN="${SKIP_TRAIN:-0}"
 REPAIR="${REPAIR:-1}"
 LLAMA_BIN="${LLAMA_BIN:-$HOME/llama.cpp/build/bin}"
@@ -71,8 +73,23 @@ case "$PHASE" in
     SEQ_JSON="reports/v1_6_seq_audit.json"
     MODEL_CARD="EVAL_GONOGO.md"
     ;;
+  7)
+    OUTPUT_SUFFIX="v1.7"
+    REPORTS_PREFIX="v1_7_"
+    TRAIN_FILE="data/l3_grounding_train_v17.jsonl"
+    CHAT_FILE="data/l3_grounding_chat_v17.jsonl"
+    PREPARE_CMD=(
+      python scripts/prepare_v15_train.py
+      --base data/l3_grounding_train_v14a.jsonl
+      --boost data/l3_grounding_v16_boost.jsonl data/l3_grounding_v17_boost.jsonl
+      --out data/l3_grounding_train_v17.jsonl
+    )
+    AUDIT_JSON="reports/v1_7_audit_summary.json"
+    SEQ_JSON="reports/v1_7_seq_audit.json"
+    MODEL_CARD="EVAL_GONOGO.md"
+    ;;
   *)
-    echo "PHASE must be 4a, 4b, 5, or 6 (got: $PHASE)" >&2
+    echo "PHASE must be 4a, 4b, 5, 6, or 7 (got: $PHASE)" >&2
     exit 1
     ;;
 esac

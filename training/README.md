@@ -32,7 +32,7 @@ Hugging Face E4B IT  →  QLoRA training  →  adapter  →  export Q6_K GGUF  �
 | 0 | [Nassila `OUROBOROS_CONTEXT.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md) | **Agents:** workers, v1.4 state, v1.6 training |
 | 1 | [TRAINING_GUIDE.md](./TRAINING_GUIDE.md) | Full walkthrough: environment, data, train, export, test |
 | 1.1 | [CORPUS_PIPELINE.md](./CORPUS_PIPELINE.md) | Phase 1.5: merge JSON exports, backfill abstracts (PC) |
-| 1.2 | [PHASE2_8_V1_5_WALKTHROUGH.md](./PHASE2_8_V1_5_WALKTHROUGH.md) | **Current:** v1.6 Vast pipeline (Sanad) |
+| 1.2 | [PHASE2_8_V1_5_WALKTHROUGH.md](./PHASE2_8_V1_5_WALKTHROUGH.md) | **Current:** v1.7 Vast pipeline (Sanad) |
 | 1.2a | [PHASE2_7_V1_4_WALKTHROUGH.md](./PHASE2_7_V1_4_WALKTHROUGH.md) | v1.4 Vast pipeline (reference) |
 | 1.3 | [PHASE1_VAST_4090_WALKTHROUGH.md](./PHASE1_VAST_4090_WALKTHROUGH.md) | Phase 1: Vast smoke QLoRA |
 | 2 | [DATASET_SCHEMA.md](./DATASET_SCHEMA.md) | Exact JSONL formats for each task |

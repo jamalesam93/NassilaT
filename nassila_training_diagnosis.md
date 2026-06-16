@@ -76,3 +76,25 @@ Net: holdout stayed 41/45 (traded h-006/h-010 gains for h-032/h-034 losses); ext
 4. **Distinct paraphrase / multi rows.** Paraphrase-supported (h-006/h-010 pattern) and multi-claim partial rows are rewritten with **new** text so the next holdout score is a true test.
 
 Build: `python scripts/prepare_v15_train.py --base data/l3_grounding_train_v14a.jsonl --boost data/l3_grounding_v16_boost.jsonl --out data/l3_grounding_train_v16.jsonl` → 850 rows, verdict mix contradicted 142 / supported 343 / weak 108 / not_in_source 185 / insufficient 72; validate + audit + contamination all pass.
+
+## v1.6 result — clean NO-GO (trustworthy; v1.4a remains ship)
+
+`reports/v1_6_eval_combined_report.json`: combined expect **88.57%** (gate ≥90% → **FAIL**), but **contamination = 0** (verified), so unlike v1.5 these numbers are usable. Model gates 4/6: JSON 100%, supported h-001–h-010 10/10, core legacy 5/5, quote validity holdout **100%** all pass; **combined expect 88.57%** and **false-supported holdout 5.88%** (cap ≤5%) fail. Quote validity is now genuinely solved (no memorization).
+
+The 8 combined failures cluster into two themes:
+
+| Theme | Rows | Pattern |
+|-------|------|---------|
+| **Compound / multi-claim** | h-042, h-043, h-045, eval-018 | Model merges a two-part claim and grants blanket `supported` when only one conjunct holds; eval-018 failed `min_claims:2` (didn't split). Drives the holdout false-supported overflow. |
+| **Evidential weak / insufficient** | h-032, h-034, eval-012, eval-013 | v1.6 weak rows taught *modal* hedges (`may/could/appears`); misses use *evidential* hedging (`association suggested but causality unclear`, `mixed`, `small studies hint`). Did not generalize. |
+
+Everything else is solid: supported 10/10, contradicted 10/10, not_in_source clean.
+
+## v1.7 fixes (current)
+
+1. **Harder compound rows.** New boost `data/l3_grounding_v17_boost.jsonl` adds **8 `v17_compound_hard`** rows: 2-claim splits where one conjunct is contradicted (numeric mismatch / direction flip) and/or out-of-scope (`not_in_source` / `insufficient_evidence`). Teaches splitting (fixes eval-018 `min_claims`) and conservative verdicts (fixes h-042/h-043/h-045 false-supported).
+2. **Evidential-strength weak.** **6 `v17_weak_evidential`** rows hedge with `suggested / appears / preliminary / limited / unclear / possibly` (audit-canonical de-hedged-claim shape) — the h-032/h-034 generalization gap.
+3. **More insufficient.** **3 `v17_insufficient`** rows (protocol/discussion/analysis-plan-only excerpts) — the eval-012 pattern.
+4. **Keep v1.6 boost intact** (still clean and useful); v1.7 merges both boost files via the multi-`--boost` prepare flag.
+
+Build: `python scripts/prepare_v15_train.py --base data/l3_grounding_train_v14a.jsonl --boost data/l3_grounding_v16_boost.jsonl data/l3_grounding_v17_boost.jsonl --out data/l3_grounding_train_v17.jsonl` → 850 rows, verdict mix contradicted 145 / supported 330 / weak 114 / not_in_source 185 / insufficient 76; contamination 0, validate OK, structural audit PASS, seq max 1250 ≤ 2048.

@@ -61,6 +61,7 @@ def load_version_reports(reports_dir: Path) -> dict[str, dict[str, dict]]:
         ("v1.4", "v1_4_eval_holdout_report.json"),
         ("v1.5", "v1_5_eval_holdout_report.json"),
         ("v1.6", "v1_6_eval_holdout_report.json"),
+        ("v1.7", "v1_7_eval_holdout_report.json"),
     ]
     for label, name in patterns:
         path = reports_dir / name
@@ -91,6 +92,10 @@ def render_markdown(
         "# Holdout failure matrix",
         "",
         "Row × version: `pass` or failure mode (`parse_json`, `wrong_verdict`, etc.).",
+        "",
+        "**Trust note:** v1.5 is contaminated (7 boost rows reused eval passages/excerpts) — "
+        "its `pass` cells reflect memorization. v1.6 onward are decontaminated "
+        "(`scripts/check_contamination.py` gate = 0) and trustworthy.",
         "",
         "| row | " + " | ".join(versions) + " |",
         "| --- | " + " | ".join(["---"] * len(versions)) + " |",
