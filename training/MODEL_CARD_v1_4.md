@@ -83,5 +83,5 @@ Reports: `reports/v1_4b_eval_combined_report.json`, `reports/holdout_failure_mat
 ## Related
 
 - [nassila_training_diagnosis.md](../nassila_training_diagnosis.md)
-- Predecessor NO-GO: [MODEL_CARD_v1_3.md](./MODEL_CARD_v1_3.md)
+- Predecessor NO-GO: v1.3 (see git history / `holdout_failure_matrix.md`)
 - llama.cpp on Vast: [LLAMA_CPP_VAST.md](./LLAMA_CPP_VAST.md)

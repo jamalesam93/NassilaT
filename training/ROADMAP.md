@@ -1,8 +1,8 @@
 # Nassila training roadmap — Ouroboros
 
-**North star:** one local model identity (**Ouroboros**) for all Nassila AI tasks, forged **one worker at a time**. Canonical vision: [`docs/OUROBOROS.md`](https://github.com/jamalesam93/citations-style/blob/main/docs/OUROBOROS.md) (stub: [`ONE_RING.md`](./ONE_RING.md)).
+**North star:** one local model identity (**Ouroboros**) for all Nassila AI tasks, forged **one worker at a time**. **Agent brief:** [Nassila `docs/OUROBOROS_CONTEXT.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md). Vision: [`docs/OUROBOROS.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS.md).
 
-**v1 ships only** worker **Sanad** (`l3_grounding`) → **`nassila-grounding-e4b-v1`** (Gemma 4 E4B). Later workers merge into **`nassila-agent-*`**.
+**v1 ships only** worker **Sanad** (`l3_grounding`) → **`nassila-grounding-e4b-v1.4a`** (Gemma 4 E4B). Later workers merge into **`nassila-agent-*`**.
 
 ---
 
@@ -77,7 +77,7 @@ Implemented in Nassila engine/renderer:
 | Step | Action |
 |------|--------|
 | Labels | `scripts/generate_l3_from_corpus.py` → `l3_grounding_train.jsonl` (300–500 rows, tier up if needed) |
-| Train | [`PHASE2_VAST_WALKTHROUGH.md`](./PHASE2_VAST_WALKTHROUGH.md) — QLoRA + `export_gguf.py` |
+| Train | [`PHASE2_7_V1_4_WALKTHROUGH.md`](./PHASE2_7_V1_4_WALKTHROUGH.md) — QLoRA + `run_vast_pipeline.sh` |
 | Eval | [`EVALUATION_GUIDE.md`](./EVALUATION_GUIDE.md) — JSON ≥95–99%, expect ≥90% |
 | Publish | [`HF_PUBLISH.md`](./HF_PUBLISH.md); app preset + version bump **1.2.0** |
 
@@ -115,7 +115,7 @@ Train each task with its JSONL ([`DATASET_SCHEMA.md`](./DATASET_SCHEMA.md)), eva
 
 1. Remove `/training/` from `.gitignore` (or use separate repo per [`docs/NEW_REPOSITORY.md`](../docs/NEW_REPOSITORY.md))
 2. Ship eval reports + GGUF on Hugging Face
-3. Link [`docs/OUROBOROS.md`](https://github.com/jamalesam93/citations-style/blob/main/docs/OUROBOROS.md) from README
+3. Link [Nassila `docs/OUROBOROS_CONTEXT.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md) from README
 
 ---
 
@@ -123,10 +123,11 @@ Train each task with its JSONL ([`DATASET_SCHEMA.md`](./DATASET_SCHEMA.md)), eva
 
 | Doc | Purpose |
 |-----|---------|
-| [`docs/OUROBOROS.md`](https://github.com/jamalesam93/citations-style/blob/main/docs/OUROBOROS.md) | Product vision + workers registry |
+| [Nassila `docs/OUROBOROS_CONTEXT.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md) | **Agent entry** — workers, v1.4, v1.5 |
+| [`docs/OUROBOROS.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS.md) | Product vision + workers registry |
 | [`README.md`](./README.md) | Training pack index |
 | [`DATASET_SCHEMA.md`](./DATASET_SCHEMA.md) | JSONL per task |
 | [`LM_STUDIO_INTEGRATION.md`](./LM_STUDIO_INTEGRATION.md) | Inference + presets |
 | [`PHASE1_VAST_4090_WALKTHROUGH.md`](./PHASE1_VAST_4090_WALKTHROUGH.md) | Phase 1 Vast walkthrough |
 | [`CORPUS_PIPELINE.md`](./CORPUS_PIPELINE.md) | Phase 1.5 corpus ingest |
-| [`PHASE2_VAST_WALKTHROUGH.md`](./PHASE2_VAST_WALKTHROUGH.md) | Phase 2 production train |
+| [`PHASE2_7_V1_4_WALKTHROUGH.md`](./PHASE2_7_V1_4_WALKTHROUGH.md) | Current Vast train (v1.4) |

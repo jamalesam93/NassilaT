@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """
-QLoRA fine-tuning for Nassila L3 grounding on Gemma 4 E4B (v1.4).
+QLoRA fine-tuning for Nassila L3 grounding on Gemma 4 E4B (v1.4 / v1.5).
 
 v1.4a: schema/balance fixes, v1.3 hyperparams (2 ep, 1e-4)
 v1.4b: same data, v1.2 hyperparams (3 ep, 1.5e-4)
+v1.5:  v1.4a data + boost rows, v1.4a hyperparams (2 ep, 1e-4)
 
 Default train file: data/l3_grounding_train_v14a.jsonl (seq-safe, 850 rows).
-Use prepare_v14_train.py to rebuild from l3_grounding_train.jsonl.
+v1.5: data/l3_grounding_train_v15.jsonl via prepare_v15_train.py.
 
 Unsloth + Gemma4: save_strategy="no" (mid-training checkpoints pickle-fail on Vast).
 
@@ -56,6 +57,11 @@ PHASE_CONFIG = {
         "num_epochs": 3,
         "learning_rate": 1.5e-4,
         "output_name": "nassila-grounding-e4b-v1.4b",
+    },
+    "5": {
+        "num_epochs": 2,
+        "learning_rate": 1e-4,
+        "output_name": "nassila-grounding-e4b-v1.5",
     },
 }
 
@@ -299,7 +305,7 @@ def train_with_peft(
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="QLoRA for Nassila grounding v1.4")
+    parser = argparse.ArgumentParser(description="QLoRA for Nassila grounding v1.4 / v1.5")
     parser.add_argument(
         "--train-file",
         type=Path,
@@ -309,8 +315,8 @@ def main() -> int:
     parser.add_argument(
         "--phase",
         choices=tuple(PHASE_CONFIG.keys()),
-        default="4b",
-        help="4a = v1.3 hyperparams; 4b = v1.2 hyperparams",
+        default="5",
+        help="4a = v1.3 hyperparams; 4b = v1.2 hyperparams; 5 = v1.5 data + v1.4a hyperparams",
     )
     parser.add_argument("--output-dir", type=Path, default=None)
     parser.add_argument("--backend", choices=("unsloth", "peft"), default="unsloth")

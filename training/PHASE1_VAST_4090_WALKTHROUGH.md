@@ -1,6 +1,6 @@
 # Phase 1 Walkthrough (Vast AI + RTX 4090 24GB) — Nassila L3 QLoRA Setup
 
-This is a **newbie-friendly**, copy/paste walkthrough for **Phase 1** of the [**One Ring**](../docs/ONE_RING.md) training path: setting up a cloud GPU machine on **Vast AI** that can (1) download **Gemma 4 E4B Instruct** (`google/gemma-4-E4B-it`) from Hugging Face, (2) load it in **4-bit** (QLoRA), and (3) run a **tiny smoke training** to produce a LoRA adapter artifact for the first facet, **`l3_grounding`**.
+This is a **newbie-friendly**, copy/paste walkthrough for **Phase 1** of the **Ouroboros** training path ([Nassila `docs/OUROBOROS_CONTEXT.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md)): setting up a cloud GPU machine on **Vast AI** that can (1) download **Gemma 4 E4B Instruct** (`google/gemma-4-E4B-it`) from Hugging Face, (2) load it in **4-bit** (QLoRA), and (3) run a **tiny smoke training** to produce a LoRA adapter for worker **Sanad** (`l3_grounding`).
 
 Phase 1 is **not** where you get quality. Phase 1 is where you make sure the machine and tooling work so Phase 2 (real `nassila-grounding-e4b-v1` training) won’t waste your time/money.
 

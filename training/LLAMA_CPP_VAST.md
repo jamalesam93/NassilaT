@@ -89,9 +89,7 @@ If UI still compiles (`tools/ui/CMakeFiles/llama-ui`) despite `LLAMA_BUILD_UI:BO
 
 ## Used by
 
-- [PHASE2_2_V1_1_WALKTHROUGH.md](./PHASE2_2_V1_1_WALKTHROUGH.md)
-- [PHASE2_4_V1_2_WALKTHROUGH.md](./PHASE2_4_V1_2_WALKTHROUGH.md)
-- [PHASE2_6_V1_3_WALKTHROUGH.md](./PHASE2_6_V1_3_WALKTHROUGH.md)
+- [PHASE2_7_V1_4_WALKTHROUGH.md](./PHASE2_7_V1_4_WALKTHROUGH.md)
 
 Convert + quantize (example v1.3 paths):
 

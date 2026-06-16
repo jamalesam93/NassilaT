@@ -2,7 +2,7 @@
 
 This is the main step-by-step guide. Read it once end-to-end, then execute phase by phase.
 
-**One Ring context:** Nassila aims for **one local model** serving many `task` facets over time ([`docs/ONE_RING.md`](../docs/ONE_RING.md)). This guide covers **Phase 1–2** — forge the first facet, **`l3_grounding`** → **`nassila-grounding-e4b-v1`**. Later facets (`doc_extract`, `webpage_*`, …) reuse the same JSONL discipline and eval gates before merging into **`nassila-agent-*`**.
+**Ouroboros context:** Nassila [`docs/OUROBOROS_CONTEXT.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md). This guide covers **Phase 1–2** — forge worker **Sanad** (`l3_grounding`) → **`nassila-grounding-e4b-v1.4a`**. Later workers reuse the same JSONL discipline before merging into **`nassila-agent-*`**.
 
 ---
 

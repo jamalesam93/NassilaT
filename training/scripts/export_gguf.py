@@ -28,7 +28,7 @@ def export_unsloth(adapter_dir: Path, out_dir: Path, quant: str) -> None:
         from unsloth import FastLanguageModel  # type: ignore
     except ImportError as e:
         raise SystemExit(
-            "Unsloth required on GPU machine. See PHASE2_VAST_WALKTHROUGH.md.\n"
+            "Unsloth required on GPU machine. See PHASE2_7_V1_4_WALKTHROUGH.md.\n"
             f"{e}"
         ) from e
 

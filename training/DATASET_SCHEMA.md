@@ -1,6 +1,6 @@
 # Dataset Schema
 
-All training files use **JSONL** (one JSON object per line). Each record must include a `task` field so validators and trainers can route examples under the [**One Ring**](../docs/ONE_RING.md) strategy.
+All training files use **JSONL** (one JSON object per line). Each record must include a `task` field. See [Nassila `docs/OUROBOROS_CONTEXT.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md) for the seven workers.
 
 Task ids are defined in [`src/shared/nassila-agent-tasks.ts`](../src/shared/nassila-agent-tasks.ts).
 
