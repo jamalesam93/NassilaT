@@ -123,3 +123,26 @@ Build: `python scripts/prepare_v15_train.py --base data/l3_grounding_train_v14a.
 4. **Merge v16 + v18 only** (67 boost rows total).
 
 Build: `--boost data/l3_grounding_v16_boost.jsonl data/l3_grounding_v18_boost.jsonl --out data/l3_grounding_train_v18.jsonl` → contradicted 152 / supported 308 / weak 129 / not_in_source 185 / insufficient 76; contamination 0, audit PASS, seq max 1202.
+
+## v1.8 result — major progress, one gate short (clean NO-GO)
+
+`reports/v1_8_eval_combined_report.json`: **91.43%** combined (64/70) — **first version to pass combined ≥90%**. Contamination 0. **5/6 model gates pass**; ship blocked only by **quote validity holdout 90.91%** (need ≥98%).
+
+| Gate | v1.6/7 | v1.8 | |
+|------|--------|------|---|
+| Combined expect | 88.57% ❌ | **91.43% ✅** | +2 rows |
+| Quote validity holdout | 100% | **90.91% ❌** | regression |
+| False supported holdout | 5.88% ❌ | **2.94% ✅** | fixed |
+| Supported h-001–h-010 | 10/10 | 9/10 | h-009 regressed |
+
+**Fixed vs v1.6/v1.7:** h-032, h-034, h-042, eval-012, eval-013; compound/multi mostly recovered; passage-claim prompt worked.
+
+**Remaining 6 failures:** h-009, h-043, h-045 (holdout); eval-018, eval-020, eval-024 (extended). Root cause of quote gate: **h-009** called `weak` instead of `supported` on clear paraphrase (`significantly elevated`). v1.8 weak boost over-corrected.
+
+## v1.9 fixes (current)
+
+1. **Prompt:** clarify weak vs supported (`associated with` / `significantly` → supported when excerpt clearly supports).
+2. **v19 boost (14 rows):** 6 supported-calibration, 3 nosup (h-043), 2 scope (h-045), 3 two-claim split (eval-018).
+3. **Merge v16 + v18 + v19** (81 boost rows).
+
+Build: `--boost data/l3_grounding_v16_boost.jsonl data/l3_grounding_v18_boost.jsonl data/l3_grounding_v19_boost.jsonl --out data/l3_grounding_train_v19.jsonl` → `PHASE=9`.

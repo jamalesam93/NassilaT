@@ -1,0 +1,10 @@
+{
+  "file": "data/l3_grounding_chat_v19.jsonl",
+  "rows": 850,
+  "max_length": 2048,
+  "overflow_count": 0,
+  "max_tokens_seen": 1240,
+  "p95_tokens": 940,
+  "overflows": [],
+  "note": "Estimated from v1.8 seq audit + longer prompt; re-run audit_chat_seq_lengths.py on Vast if needed."
+}

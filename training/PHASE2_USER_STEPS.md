@@ -16,12 +16,13 @@ Reports: `reports/v1_4a_*`, `reports/v1_4b_*`, `reports/holdout_failure_matrix.m
 
 ## Your checklist
 
-### v1.8 (next — Vast)
+### v1.9 (next — Vast)
 
-1. PC: `git pull` — train file `l3_grounding_train_v18.jsonl` includes **updated prompt** in chat export
-2. Vast: `PHASE=8 bash scripts/run_vast_pipeline.sh`
-3. Target: fix h-042 (passage claims), h-043/h-045 (no spurious `supported`), h-032/h-034/eval-012/013
-4. v1.4a remains ship until `tier2_gates.model_gates_passed`
+1. `git pull` → `PHASE=9 bash scripts/run_vast_pipeline.sh`
+2. Target: quote holdout ≥98% (fix h-009 over-hedge), close last 6 failures
+3. v1.8 already passes combined ≥90%; v1.9 is calibration not a reset
+
+### v1.8 (done — 91.43% combined, quote gate miss)
 
 ### v1.7 (done — zero delta vs v1.6; do not ship)
 

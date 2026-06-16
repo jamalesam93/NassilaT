@@ -129,13 +129,19 @@ python scripts/validate_dataset.py data/l3_grounding_train_v18.jsonl \
 
 850 rows; **67 boost rows** (32 v1.6 + 35 v1.8): passage-number compound, no-`supported` multi, subgroup scope, weak-when-topic-in-excerpt, insufficient design-only, hedge-in-passage.
 
-### v1.8 on Vast (current — Tier 2 go/no-go)
+### v1.8 result — 91.43% combined (quote gate miss)
+
+Combined **≥90% ✅** for the first time. Fixed h-032/034/042, eval-012/013, false-supported. **Ship blocked by quote validity 90.91%** — h-009 regressed to `weak` (over-hedging). See `nassila_training_diagnosis.md`.
+
+### v1.9 on Vast (current)
+
+Calibrate supported vs weak + close last 6 failures (h-009, h-043, h-045, eval-018/020/024).
 
 ```bash
-PHASE=8 bash scripts/run_vast_pipeline.sh
+PHASE=9 bash scripts/run_vast_pipeline.sh
 ```
 
-(`PHASE` defaults to **8**.)
+(`PHASE` defaults to **9**.)
 
 ---
 
