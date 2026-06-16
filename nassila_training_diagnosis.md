@@ -98,3 +98,28 @@ Everything else is solid: supported 10/10, contradicted 10/10, not_in_source cle
 4. **Keep v1.6 boost intact** (still clean and useful); v1.7 merges both boost files via the multi-`--boost` prepare flag.
 
 Build: `python scripts/prepare_v15_train.py --base data/l3_grounding_train_v14a.jsonl --boost data/l3_grounding_v16_boost.jsonl data/l3_grounding_v17_boost.jsonl --out data/l3_grounding_train_v17.jsonl` → 850 rows, verdict mix contradicted 145 / supported 330 / weak 114 / not_in_source 185 / insufficient 76; contamination 0, validate OK, structural audit PASS, seq max 1250 ≤ 2048.
+
+## v1.7 result — zero delta vs v1.6 (clean NO-GO; boost ineffective)
+
+`reports/v1_7_eval_combined_report.json` is **bit-for-bit identical** to v1.6 on all Tier 2 gates (88.57% combined, 4/6 pass). Same 8 failing rows with the same failure modes. Prediction inspection shows **why** the v1.7 boost did not transfer:
+
+| Row | Model behavior (root cause) |
+|-----|----------------------------|
+| h-042 | Extracted claims **from SOURCE** ("18% mortality") not **from PASSAGE** ("50%/30%") → spurious `supported` |
+| h-043 | Split correctly but used `supported` on pain conjunct; eval forbids any `supported` |
+| h-045 | Single `contradicted` on whole sentence; eval wants `not_in_source`/`insufficient` on pediatric part |
+| h-032/h-034 | `not_in_source` instead of `weak` when topic **is** in excerpt but hedged |
+| eval-012 | `not_in_source` instead of `insufficient_evidence` on design-only excerpt |
+| eval-013 | `supported` on hedged verbatim passage |
+| eval-018 | Single claim; gold expected 2 claims (gold was wrong — fixed in v1.8 eval harness) |
+
+**Lesson:** 17 boost rows at ~2% of train cannot override a systematic prompt failure (claim text from excerpt). v1.7 boost **dropped** for v1.8.
+
+## v1.8 fixes (current)
+
+1. **Prompt (train + Nassila engine):** "Each claim string must restate an assertion from the PASSAGE…" — fixes h-042-style source-as-claim regression.
+2. **Eval harness:** `eval-018` gold/expect → `contradicted` + `not_in_source`, `min_claims: 2` (removed incorrect `supported` gold).
+3. **v18 boost (35 rows, replaces v17):** 10 passage-number compound, 6 no-`supported` multi (`weak`+`not_in_source`), 4 subgroup scope, 8 weak-when-topic-in-excerpt, 4 insufficient design-only, 3 hedge-in-passage.
+4. **Merge v16 + v18 only** (67 boost rows total).
+
+Build: `--boost data/l3_grounding_v16_boost.jsonl data/l3_grounding_v18_boost.jsonl --out data/l3_grounding_train_v18.jsonl` → contradicted 152 / supported 308 / weak 129 / not_in_source 185 / insufficient 76; contamination 0, audit PASS, seq max 1202.

@@ -54,6 +54,7 @@ def build_grounding_user_prompt(passage: str, source_excerpt: str, meta: dict[st
     return "\n".join(
         [
             "Break the manuscript passage into short factual claims (atomic where possible).",
+            "Each claim string must restate an assertion from the PASSAGE (not copy SOURCE_EXCERPT sentences as claim text unless that assertion also appears in the PASSAGE).",
             "For each claim, compare ONLY to SOURCE_EXCERPT (verbatim text from the cited work).",
             "Verdict per claim:",
             "- supported: SOURCE_EXCERPT contains clear support; you MUST copy 1–3 verbatim sourceQuotes from SOURCE_EXCERPT.",

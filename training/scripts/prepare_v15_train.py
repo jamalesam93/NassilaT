@@ -34,7 +34,7 @@ DEFAULT_OUT = TRAINING_DIR / "data" / "l3_grounding_train_v16.jsonl"
 MAX_ROWS = 850
 
 # Any base row whose id starts with a boost-version prefix is replaced by the boost set.
-BOOST_REPLACE_PREFIXES = ("l3-v15-", "l3-v16-", "l3-v17-")
+BOOST_REPLACE_PREFIXES = ("l3-v15-", "l3-v16-", "l3-v17-", "l3-v18-")
 
 
 def row_valid(row: dict, line_no: int) -> bool:

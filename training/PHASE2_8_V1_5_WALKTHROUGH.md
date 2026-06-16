@@ -107,6 +107,38 @@ SKIP_TRAIN=1 PHASE=7 bash scripts/run_vast_pipeline.sh
 
 ---
 
+## v1.7 result — zero delta vs v1.6 (do not rerun v1.7)
+
+`reports/v1_7_eval_combined_report.json` matches v1.6 exactly (**88.57%**, same 8 failures). The v1.7 boost did not change model behavior — root cause was **claims copied from SOURCE_EXCERPT** instead of PASSAGE (see `nassila_training_diagnosis.md`). v1.7 boost is **archived**; use v1.8 below.
+
+---
+
+## v1.8 train file (passage-claim prompt + v18 boost)
+
+Prompt update (train + Nassila `grounding-llm.ts`): claims must restate PASSAGE assertions. Eval fix: `eval-018` → `contradicted` + `not_in_source`, `min_claims: 2`.
+
+```bash
+python scripts/prepare_v15_train.py \
+  --base data/l3_grounding_train_v14a.jsonl \
+  --boost data/l3_grounding_v16_boost.jsonl data/l3_grounding_v18_boost.jsonl \
+  --out data/l3_grounding_train_v18.jsonl
+python scripts/check_contamination.py data/l3_grounding_train_v18.jsonl
+python scripts/validate_dataset.py data/l3_grounding_train_v18.jsonl \
+  --export-chat data/l3_grounding_chat_v18.jsonl --strict-length 2048
+```
+
+850 rows; **67 boost rows** (32 v1.6 + 35 v1.8): passage-number compound, no-`supported` multi, subgroup scope, weak-when-topic-in-excerpt, insufficient design-only, hedge-in-passage.
+
+### v1.8 on Vast (current — Tier 2 go/no-go)
+
+```bash
+PHASE=8 bash scripts/run_vast_pipeline.sh
+```
+
+(`PHASE` defaults to **8**.)
+
+---
+
 ## Train file
 
 Use **`data/l3_grounding_train_v15.jsonl`** — v1.4a base + `l3_grounding_v15_boost.jsonl` (~850 rows, seq-safe).
