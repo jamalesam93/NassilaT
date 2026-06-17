@@ -12,7 +12,9 @@ from pathlib import Path
 
 DATA = Path(__file__).resolve().parent.parent / "data"
 EVAL_FILES = (
+    "eval_holdout_90.jsonl",
     "eval_holdout_45.jsonl",
+    "eval_holdout_extension_45.jsonl",
     "eval_samples_extended.jsonl",
     "eval_samples.jsonl",
 )

@@ -207,11 +207,11 @@ if [[ "$REPAIR" == "1" ]]; then
   REPAIR_FLAG="--repair"
 fi
 
-echo "--- Batch eval ---"
+echo "--- Batch eval (hardened 90-row holdout) ---"
 python scripts/run_l3_eval_batch.py \
   --base-url http://127.0.0.1:1234 \
   --model nassila-grounding \
-  --data data/eval_samples.jsonl data/eval_samples_extended.jsonl data/eval_holdout_45.jsonl \
+  --data data/eval_samples.jsonl data/eval_samples_extended.jsonl data/eval_holdout_90.jsonl \
   --chat-template --retry 1 $REPAIR_FLAG \
   --out "reports/${REPORTS_PREFIX}predictions.jsonl"
 

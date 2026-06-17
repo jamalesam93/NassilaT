@@ -37,6 +37,7 @@ def chat_completion(
     api_key: str = "lm-studio",
     temperature: float = 0.2,
     timeout: int = 180,
+    seed: int | None = None,
 ) -> str:
     base = base_url.rstrip("/")
     url = f"{base}/v1/chat/completions"
@@ -44,11 +45,13 @@ def chat_completion(
         "Content-Type": "application/json",
         "Authorization": f"Bearer {api_key}",
     }
-    payload = {
+    payload: dict = {
         "model": model,
         "messages": messages,
         "temperature": temperature,
     }
+    if seed is not None:
+        payload["seed"] = seed
     resp = requests.post(url, headers=headers, json=payload, timeout=timeout)
     resp.raise_for_status()
     data = resp.json()

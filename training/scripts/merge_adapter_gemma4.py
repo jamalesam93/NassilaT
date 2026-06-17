@@ -28,6 +28,11 @@ def main() -> int:
     parser.add_argument("--adapter-dir", type=Path, required=True)
     parser.add_argument("--out-dir", type=Path, required=True)
     parser.add_argument("--max-seq-length", type=int, default=MAX_SEQ_LENGTH)
+    parser.add_argument(
+        "--base-model",
+        default=BASE_MODEL,
+        help=f"HF base model id (default: {BASE_MODEL})",
+    )
     args = parser.parse_args()
 
     if not args.adapter_dir.exists():
@@ -45,7 +50,7 @@ def main() -> int:
         ) from e
 
     model, tokenizer = FastLanguageModel.from_pretrained(
-        model_name=BASE_MODEL,
+        model_name=args.base_model,
         max_seq_length=args.max_seq_length,
         load_in_4bit=False,
         dtype=torch.bfloat16,

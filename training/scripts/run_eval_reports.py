@@ -8,7 +8,7 @@ Usage:
 Writes:
   outputs/eval_report.json              (5 legacy core rows)
   outputs/eval_core_extended_report.json (20 extended core rows)
-  outputs/eval_holdout_report.json      (45 holdout rows)
+  outputs/eval_holdout_report.json      (90 hardened holdout rows by default)
   outputs/eval_combined_report.json     (merged summary)
 """
 
@@ -60,6 +60,12 @@ def main() -> int:
         action="store_true",
         help="Allow lightweight JSON repair when scoring",
     )
+    parser.add_argument(
+        "--holdout",
+        type=Path,
+        default=TRAINING_DIR / "data" / "eval_holdout_90.jsonl",
+        help="Holdout eval file (default: hardened 90-row harness)",
+    )
     args = parser.parse_args()
 
     if not args.predictions.exists():
@@ -69,7 +75,7 @@ def main() -> int:
     args.out_dir.mkdir(parents=True, exist_ok=True)
     legacy_core_path = TRAINING_DIR / "data" / "eval_samples.jsonl"
     extended_core_path = TRAINING_DIR / "data" / "eval_samples_extended.jsonl"
-    holdout_path = TRAINING_DIR / "data" / "eval_holdout_45.jsonl"
+    holdout_path = args.holdout
 
     legacy = evaluate_dataset(legacy_core_path, args.predictions, allow_repair=args.repair)
     extended = evaluate_dataset(extended_core_path, args.predictions, allow_repair=args.repair)
@@ -77,7 +83,7 @@ def main() -> int:
 
     print_summary(legacy, "eval_samples.jsonl (5 legacy core)")
     print_summary(extended, "eval_samples_extended.jsonl (20 extended core)")
-    print_summary(holdout, "eval_holdout_45.jsonl (45 holdout)")
+    print_summary(holdout, f"{holdout_path.name} (holdout)")
 
     p = args.prefix
     legacy_report = args.out_dir / f"{p}eval_report.json"
@@ -154,7 +160,7 @@ def main() -> int:
     )
     combined_report.write_text(json.dumps(combined, indent=2), encoding="utf-8")
 
-    print("\n=== Combined (70 eval rows) ===")
+    print(f"\n=== Combined ({all_total} eval rows) ===")
     print(json.dumps(combined["combined_totals"], indent=2))
     print("\n=== Tier 2 gates (canonical: Nassila docs/OUROBOROS_CONTEXT.md §10) ===")
     print(json.dumps(combined["tier2_gates"], indent=2))

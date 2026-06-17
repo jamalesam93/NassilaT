@@ -23,7 +23,8 @@ Optimize for **trust**, not fluent writing.
 | Set | File | Use |
 |-----|------|-----|
 | Public synthetic template | [`data/eval_samples.jsonl`](./data/eval_samples.jsonl) | CI-style checks, learning the pipeline |
-| 45-row holdout | [`data/eval_holdout_45.jsonl`](./data/eval_holdout_45.jsonl) | Balanced verdict mix with `expect` blocks for auto-scoring |
+| 45-row holdout | [`data/eval_holdout_45.jsonl`](./data/eval_holdout_45.jsonl) | Legacy regression matrix only |
+| **90-row hardened holdout** | [`data/eval_holdout_90.jsonl`](./data/eval_holdout_90.jsonl) | **Canonical Tier 2 go/no-go** (build via `build_hardened_holdout.py`) |
 | Private held-out | `eval_private.jsonl` (you create, do not commit) | Real manuscript snippets you care about |
 
 Never train on eval ids you use for go/no-go decisions.

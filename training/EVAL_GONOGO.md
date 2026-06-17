@@ -17,12 +17,13 @@ See [`outputs/baseline_report_reference.json`](./outputs/baseline_report_referen
 ## Tuned model (after Vast)
 
 ```powershell
-python scripts/run_l3_eval_batch.py --model "nassila-grounding-e4b-v1.8" `
-  --data data/eval_samples.jsonl data/eval_samples_extended.jsonl data/eval_holdout_45.jsonl `
-  --retry 1 --repair --out reports/v1_8_predictions.jsonl
+python scripts/run_l3_eval_batch.py --model "nassila-grounding-e4b-v1.10" `
+  --data data/eval_samples.jsonl data/eval_samples_extended.jsonl data/eval_holdout_90.jsonl `
+  --retry 1 --repair --out reports/v1_10_predictions.jsonl
 
 python scripts/run_eval_reports.py `
-  --predictions reports/v1_8_predictions.jsonl --repair --prefix v1_8_
+  --predictions reports/v1_10_predictions.jsonl --repair --prefix v1_10_ `
+  --holdout data/eval_holdout_90.jsonl
 ```
 
 Read `reports/v1_8_eval_combined_report.json` → `tier2_gates.model_gates_passed`.
@@ -31,7 +32,7 @@ Read `reports/v1_8_eval_combined_report.json` → `tier2_gates.model_gates_passe
 
 | Gate | Target | Slice |
 |------|--------|-------|
-| Combined expect | ≥90% (target ≥92%) | 70 rows |
+| Combined expect | ≥90% (target ≥92%) | **115** rows (90-row holdout) |
 | JSON parse (repair) | ≥98% | Combined |
 | Supported h-001–h-010 | ≥8/10 | Holdout |
 | Core legacy 5 | 5/5 | Legacy |
@@ -71,4 +72,19 @@ python scripts/prepare_v15_train.py \
   --boost data/l3_grounding_v16_boost.jsonl data/l3_grounding_v18_boost.jsonl data/l3_grounding_v110_boost.jsonl \
   --out data/l3_grounding_train_v110.jsonl
 PHASE=10 bash scripts/run_vast_pipeline.sh
+```
+
+## A/B pilot (E4B vs 12B)
+
+After v1.10 E4B baseline, run 12B arm on same data. See [`PHASE2_9_AB_PILOT_WALKTHROUGH.md`](./PHASE2_9_AB_PILOT_WALKTHROUGH.md).
+
+```bash
+python scripts/build_hardened_holdout.py
+ARM=e4b PHASE=10 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
+# new Vast instance (~24GB+)
+ARM=12b PHASE=10 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
+python scripts/compare_ab_pilot.py \
+  --baseline reports/ab_e4b_q6_k_v110/multi_seed_aggregate.json \
+  --candidate reports/ab_12b_q6_k_v110/multi_seed_aggregate.json \
+  --label "12B Q6_K"
 ```
