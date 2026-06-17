@@ -1,5 +1,5 @@
 {
-  "file": "data\\l3_grounding_train_v19.jsonl",
+  "file": "data/l3_grounding_train_v19.jsonl",
   "rows": 850,
   "verdict_counts": {
     "contradicted": 155,

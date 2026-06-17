@@ -86,6 +86,11 @@ PHASE_CONFIG = {
         "learning_rate": 1e-4,
         "output_name": "nassila-grounding-e4b-v1.9",
     },
+    "10": {
+        "num_epochs": 2,
+        "learning_rate": 1e-4,
+        "output_name": "nassila-grounding-e4b-v1.10",
+    },
 }
 
 

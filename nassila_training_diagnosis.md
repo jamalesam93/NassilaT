@@ -146,3 +146,28 @@ Build: `--boost data/l3_grounding_v16_boost.jsonl data/l3_grounding_v18_boost.js
 3. **Merge v16 + v18 + v19** (81 boost rows).
 
 Build: `--boost data/l3_grounding_v16_boost.jsonl data/l3_grounding_v18_boost.jsonl data/l3_grounding_v19_boost.jsonl --out data/l3_grounding_train_v19.jsonl` → `PHASE=9`.
+
+## v1.9 result — calibration regression vs v1.8 (clean NO-GO)
+
+`reports/v1_9_eval_combined_report.json`: **90%** combined (63/70) — **down from v1.8 91.43%**. Contamination 0. **4/6 model gates pass** (lost false-supported gate).
+
+| Gate | v1.8 | v1.9 | |
+|------|------|------|---|
+| Combined expect | **91.43% ✅** | 90% ✅ (barely) | −1 row |
+| Quote validity holdout | 90.91% ❌ | 90.91% ❌ | flat |
+| False supported holdout | **2.94% ✅** | **5.88% ❌** | regression |
+| Supported h-001–h-010 | 9/10 | 9/10 | h-009 fixed, **h-008 regressed** |
+
+**v1.9 wins vs v1.8:** h-009, eval-020, eval-024 (supported calibration worked on extended).
+
+**v1.9 losses vs v1.8:** h-008 (`weak` on adjuvant survival — same text as eval-020), h-034 (`not_in_source` vs `insufficient`), h-041 (new `supported` on sleep conjunct), eval-012 (`not_in_source` vs `insufficient`); false-supported 2/34 = h-041 + h-043.
+
+**Lesson:** v19's 6 broad supported-calibration rows overrode v18 compound discipline. h-043 unchanged (still forbidden `supported` on pain).
+
+## v1.10 fixes (current)
+
+1. **Drop v19 boost from merge** — revert to v16 + v18 + **v110** (87 boost rows).
+2. **Prompt:** compound-passage line — split conjuncts; mixed outcomes → weak/contradicted/not_in_source, never supported on bundled claims.
+3. **v110 boost (20 rows):** 3 narrow supported (h-009/h-008 pattern), 3 weak-mixed (h-034), 3 insufficient design-only (eval-012), 6 nosup compound (h-041/h-043), 3 scope split (h-045), 2 two-claim split (eval-018).
+
+Build: `--boost data/l3_grounding_v16_boost.jsonl data/l3_grounding_v18_boost.jsonl data/l3_grounding_v110_boost.jsonl --out data/l3_grounding_train_v110.jsonl` → `PHASE=10`.
