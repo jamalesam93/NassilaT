@@ -58,6 +58,17 @@ PHASE=8 bash scripts/run_vast_pipeline.sh
 
 ## No-go actions
 
-- Do **not** rerun v1.7 (zero delta vs v1.6)
-- Iterate via `l3_grounding_v18_boost.jsonl` + prompt if v1.8 still misses
+- Do **not** rerun v1.7 (zero delta vs v1.6) or **v1.9** (regressed vs v1.8: false-supported gate lost)
+- **Best clean run so far:** v1.8 at 91.43% combined (5/6 gates); ship blocked on quote validity holdout
+- Iterate via `l3_grounding_v110_boost.jsonl` (drops v19 sup overdose) — `PHASE=10`
 - Do not publish adapter as Tier 2 ship until `tier2_gates.model_gates_passed` is true
+
+## v1.10 train prep + Vast
+
+```bash
+python scripts/prepare_v15_train.py \
+  --base data/l3_grounding_train_v14a.jsonl \
+  --boost data/l3_grounding_v16_boost.jsonl data/l3_grounding_v18_boost.jsonl data/l3_grounding_v110_boost.jsonl \
+  --out data/l3_grounding_train_v110.jsonl
+PHASE=10 bash scripts/run_vast_pipeline.sh
+```

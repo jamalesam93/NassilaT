@@ -58,7 +58,7 @@ def build_grounding_user_prompt(passage: str, source_excerpt: str, meta: dict[st
             "For each claim, compare ONLY to SOURCE_EXCERPT (verbatim text from the cited work).",
             "Verdict per claim:",
             "- supported: SOURCE_EXCERPT contains clear support; you MUST copy 1–3 verbatim sourceQuotes from SOURCE_EXCERPT.",
-            "- weak: partial or vague alignment, OR the source hedges (may/might/suggest/preliminary/unclear). Do NOT use weak when the excerpt clearly supports the passage claim (including paraphrase and 'associated with' / 'significantly' wording).",
+            "- weak: partial or vague alignment, OR the source hedges (may/might/suggest/preliminary/unclear). Do NOT use weak when the excerpt clearly supports a single passage claim (including paraphrase and 'associated with' / 'significantly' wording). On compound passages, split conjuncts; if any conjunct lacks support or outcomes are mixed, use weak/contradicted/not_in_source — never supported when the passage bundles multiple claims.",
             "- not_in_source: not found in excerpt (excerpt may be incomplete).",
             "- contradicted: excerpt clearly conflicts.",
             "- insufficient_evidence: cannot tell from excerpt.",

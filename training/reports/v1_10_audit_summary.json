@@ -1,0 +1,13 @@
+{
+  "file": "data\\l3_grounding_train_v110.jsonl",
+  "rows": 850,
+  "verdict_counts": {
+    "contradicted": 154,
+    "supported": 291,
+    "weak": 141,
+    "not_in_source": 185,
+    "insufficient_evidence": 79
+  },
+  "issue_count": 0,
+  "issues": []
+}
