@@ -35,12 +35,12 @@ PHASE_CONFIG = {
     "10": {
         "num_epochs": 2,
         "learning_rate": 1e-4,
-        "output_name": "nassila-grounding-12b-v1.10",
+        "output_name": "nassila-sanad-12b-v1.10",
     },
     "10ab": {
         "num_epochs": 2,
         "learning_rate": 1e-4,
-        "output_name": "nassila-grounding-12b-v1.10-ab",
+        "output_name": "nassila-sanad-12b-v1.10-ab",
     },
 }
 

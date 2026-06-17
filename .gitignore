@@ -9,6 +9,14 @@ __pycache__/
 training/outputs/
 training/cache/
 training/data/l3_grounding_candidates.jsonl
+training/data/paper_corpus*.jsonl
+training/data/OpenAlex_*.json
+training/data/Semantic_*.json
+training/data/l3_grounding_chat_v*.jsonl
+training/data/l3_review_*.csv
+training/reports/**/seed_*_predictions.jsonl
+training/reports/*_predictions.jsonl
+training/reports/ab_*_v110/seed_*_combined_report.json
 *.log
 
 # Secrets

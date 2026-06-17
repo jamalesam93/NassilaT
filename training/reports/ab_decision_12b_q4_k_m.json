@@ -1,0 +1,34 @@
+{
+  "label": "12B Q4_K_M",
+  "recommendation": "defer_12b_to_shahid_only",
+  "all_gates_passed": false,
+  "gates": {
+    "combined_expect_delta": {
+      "value": 0.0579,
+      "min": 0.03,
+      "passed": true
+    },
+    "multi_claim_pass": {
+      "value": 0.6154,
+      "min": 0.8,
+      "passed": false
+    },
+    "quote_validity_vs_baseline": {
+      "candidate": 0.9474,
+      "baseline": 0.8947,
+      "passed": true
+    }
+  },
+  "baseline_mean": {
+    "combined_expect": 0.8812,
+    "quote_validity_holdout": 0.8947,
+    "false_supported_holdout": 0.0657,
+    "multi_claim_pass": 0.5898
+  },
+  "candidate_mean": {
+    "combined_expect": 0.9391,
+    "quote_validity_holdout": 0.9474,
+    "false_supported_holdout": 0.0423,
+    "multi_claim_pass": 0.6154
+  }
+}
