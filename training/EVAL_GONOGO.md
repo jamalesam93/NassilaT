@@ -88,3 +88,24 @@ python scripts/compare_ab_pilot.py \
   --candidate reports/ab_12b_q6_k_v110/multi_seed_aggregate.json \
   --label "12B Q6_K"
 ```
+
+### A/B result (recorded)
+
+Harness: **115 rows** (90-row holdout). Multi-seed means (42/43/44).
+
+| Arm | Combined | Quote (holdout) | False sup | Tier 2 §10 |
+|-----|----------|-----------------|-----------|------------|
+| E4B v1.10 Q6_K | 88.12% | 89.47% | 6.57% | **NO-GO** |
+| **12B v1.10 Q6_K** | **94.79%** | **100%** | **2.82%** | **PASS** (`nassila-sanad-12b`) |
+
+**Decision (dual-tier):** E4B stays default/fast tier (`nassila-sanad-e4b`). **`nassila-sanad-12b`** (checkpoint v1.10) is the optional quality tier and first Tier-2-passing Sanad checkpoint. Continue E4B **v1.11** on Vast to close the gap.
+
+### v1.11 E4B (operator — close default-tier gap)
+
+```bash
+ARM=e4b PHASE=11 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
+```
+
+Train file: `data/l3_grounding_train_v111.jsonl` (v16+v18+v110+v111 boost). Publish `exports/nassila-sanad-e4b-q6_k.gguf` when all six Tier 2 gates pass.
+
+Reports: `reports/ab_e4b_q6_k_v111/` (after run).

@@ -1,31 +1,28 @@
-# Model cards — Nassila grounding (Sanad / Ouroboros)
+# Model cards — Nassila Sanad (Ouroboros)
 
-| Version | Card | HF adapter | Eval |
-|---------|------|------------|------|
-| v1–v1.3 | *(git history)* | `QinEmPeRoR93/nassila-grounding-e4b-v1*` | NO-GO |
-| **v1.4a** | [MODEL_CARD_v1_4.md](./MODEL_CARD_v1_4.md) | `QinEmPeRoR93/nassila-grounding-e4b-v1.4a-adapter` | **SHIP** |
-| **v1.4b** | [MODEL_CARD_v1_4.md](./MODEL_CARD_v1_4.md) | `QinEmPeRoR93/nassila-grounding-e4b-v1.4b-adapter` | NO-GO |
+Public HF ids use **worker + size**; train checkpoint (v1.10, v1.11, …) is on the card only.
+
+| Artifact | Card | HF repo | Checkpoint | Tier 2 |
+|----------|------|---------|------------|--------|
+| **Sanad 12B Q6_K** | [MODEL_CARD_sanad_12b.md](./MODEL_CARD_sanad_12b.md) | `QinEmPeRoR93/nassila-sanad-12b` (private) | v1.10 | **PASS** |
+| **Sanad E4B Q6_K** | [MODEL_CARD_sanad_e4b.md](./MODEL_CARD_sanad_e4b.md) | `QinEmPeRoR93/nassila-sanad-e4b` | v1.11 (target) | pending |
+| v1.4a adapter | [archive/MODEL_CARD_v1_4.md](./archive/MODEL_CARD_v1_4.md) | `nassila-grounding-e4b-v1.4a-adapter` | v1.4a | NO-GO |
 
 **Agent brief:** [Nassila `docs/OUROBOROS_CONTEXT.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md)
 
-**Vast llama.cpp:** [LLAMA_CPP_VAST.md](./LLAMA_CPP_VAST.md) (pinned **b9608**)
+**Operator walkthrough:** [PHASE2_9_AB_PILOT_WALKTHROUGH.md](./PHASE2_9_AB_PILOT_WALKTHROUGH.md)
 
-## Identity (all E4B variants)
+## Identity
 
 | Field | Value |
 |-------|-------|
 | Task | `l3_grounding` only |
 | Worker | **Sanad** |
-| Base model | `google/gemma-4-E4B-it` |
-| Export quant | Q6_K GGUF (after merge + llama.cpp) |
+| Default base | Gemma 4 E4B · `nassila-sanad-e4b` |
+| Optional base | Gemma 4 12B · `nassila-sanad-12b` |
+| Export quant | Q6_K GGUF |
 | Excerpt type | **Abstract only** |
 
-## Eval targets
+## Eval targets (Tier 2)
 
-| Metric | Target |
-|--------|--------|
-| JSON parse (repair) | ≥95% |
-| Expect pass | ≥90% |
-| Quote validity (holdout) | ≥98% |
-| False supported | ≤5% |
-| Supported h-001–h-010 | ≥8/10 |
+See Nassila `docs/OUROBOROS_CONTEXT.md` §10 — six gates on 115-row hardened harness.

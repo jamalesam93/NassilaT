@@ -9,6 +9,7 @@ Controlled comparison on **shared v1.10 data** with a **hardened 90-row holdout*
 - Vast GPU with llama.cpp **b9608** (see [`LLAMA_CPP_VAST.md`](./LLAMA_CPP_VAST.md))
 - E4B arm: same GPU class as prior v1.x runs
 - 12B arm: **~24GB+** VRAM for QLoRA train/merge (A5000 / A6000 / 4090 with headroom)
+- **12B only:** `transformers>=5.10.2` (Gemma 4 12B = `gemma4_unified`; E4B arm uses `transformers==5.5.0`). Upgrade Unsloth + zoo before `ARM=12b` — see Step 2.
 - Local or Vast: `python scripts/build_hardened_holdout.py` (writes `data/eval_holdout_90.jsonl`)
 
 **Harness size:** 115 eval rows total = 5 legacy core + 20 extended + **90 holdout** (was 70 with 45-row holdout).
@@ -39,13 +40,26 @@ Or full A/B script with multi-seed (recommended):
 ARM=e4b PHASE=10 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
 ```
 
-**Artifacts:** `outputs/nassila-grounding-e4b-v1.10/`, `exports/*-q6_k.gguf`, `reports/v1_10_*` or `reports/ab_e4b_q6_k_v110/`.
+**Artifacts:** `outputs/nassila-sanad-e4b-v1.10/`, `exports/*-q6_k.gguf`, `reports/v1_10_*` or `reports/ab_e4b_q6_k_v110/`.
 
 ---
 
 ## Step 2 — 12B arm (same v1.10 data)
 
-Destroy/recreate Vast instance with larger GPU if needed:
+Destroy/recreate Vast instance with larger GPU if needed.
+
+**Upgrade transformers for 12B** (E4B venv is on 5.5.0; 12B needs `gemma4_unified`):
+
+```bash
+source ~/nassila/.venv/bin/activate
+pip install --upgrade unsloth-zoo
+pip install --upgrade --force-reinstall "transformers==5.10.2"
+pip install --upgrade --force-reinstall --no-deps \
+  "unsloth[colab-new] @ git+https://github.com/unslothai/unsloth.git"
+python -c "import transformers; from transformers.models.auto.configuration_auto import CONFIG_MAPPING; print(transformers.__version__, 'gemma4_unified' in CONFIG_MAPPING)"
+```
+
+Then:
 
 ```bash
 ARM=12b PHASE=10 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
@@ -53,7 +67,7 @@ ARM=12b PHASE=10 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
 
 **Train once** → merge → F16 GGUF → quantize **Q4_K_M, Q6_K, Q8_0** → eval each quant on hardened harness.
 
-**Artifacts:** `outputs/nassila-grounding-12b-v1.10/`, `reports/ab_12b_q4_k_m_v110/`, `reports/ab_12b_q6_k_v110/`, `reports/ab_12b_q8_0_v110/`.
+**Artifacts:** `outputs/nassila-sanad-12b-v1.10/`, `reports/ab_12b_q4_k_m_v110/`, `reports/ab_12b_q6_k_v110/`, `reports/ab_12b_q8_0_v110/`.
 
 ---
 
@@ -63,7 +77,7 @@ If you already have a GGUF served on port 1234:
 
 ```bash
 python scripts/run_multi_seed_eval.py \
-  --model nassila-grounding \
+  --model nassila-sanad-e4b \
   --base-url http://127.0.0.1:1234 \
   --out-dir reports/ab_e4b_q6_k_v110 \
   --seeds 42 43 44 \
@@ -93,12 +107,117 @@ Repeat for Q4_K_M and Q8_0 candidates.
 | Quote validity holdout | ≥ E4B-Q6 baseline |
 | Hard rows (optional) | h-043, h-045, h-084, h-085, h-088 pass |
 
-**Outcomes:**
+**Outcomes (v1.10 pilot — recorded):**
 
-- **adopt_12b_optional_tier** — ship E4B default + optional 12B quant ladder
-- **defer_12b_to_shahid_only** — keep iterating Sanad on E4B; reserve 12B for Shahid multimodal
+| Result | Detail |
+|--------|--------|
+| **Dual-tier adopted** | E4B default/fast; **12B Q6_K optional quality tier** |
+| E4B v1.10 Q6_K | Combined 88.12%, Tier 2 **FAIL** on hardened harness |
+| **12B v1.10 Q6_K** | Combined **94.79%**, quote 100%, Tier 2 **PASS** (first in v1.0–v1.10 arc) |
+| `compare_ab_pilot.py` | All quants → `defer_12b_to_shahid_only` on **`multi_claim >= 0.80`** only (12B Q6_K = 69.23%); not a Tier 2 ship gate |
+| Known limitation | h-043, h-045, h-088 still fail multi_claim even on 12B |
+
+Legacy script labels (superseded by dual-tier decision):
+
+- **adopt_12b_optional_tier** — all A/B sub-gates pass
+- **defer_12b_to_shahid_only** — script default when multi_claim sub-gate fails
 
 ---
+
+## Part 8 — Download reports & artifacts to PC
+
+Do this **before destroying the Vast instance**. Use **`root@`** (not your PC username).
+
+```bash
+PORT=54488
+USER=root
+HOST=72.83.150.152
+LOCAL="/mnt/e/Cursor Projects/NassilaT/training"
+
+# E4B baseline reports
+rsync -avP --partial -e "ssh -p ${PORT}" \
+  ${USER}@${HOST}:~/nassila/training/reports/ab_e4b_q6_k_v110/ \
+  "${LOCAL}/reports/ab_e4b_q6_k_v110/"
+
+# 12B all quants
+for q in q4_k_m q6_k q8_0; do
+  rsync -avP --partial -e "ssh -p ${PORT}" \
+    ${USER}@${HOST}:~/nassila/training/reports/ab_12b_${q}_v110/ \
+    "${LOCAL}/reports/ab_12b_${q}_v110/"
+done
+
+# A/B decision JSONs
+rsync -avP --partial -e "ssh -p ${PORT}" \
+  ${USER}@${HOST}:~/nassila/training/reports/ab_decision_12b_*.json \
+  "${LOCAL}/reports/"
+```
+
+Optional — adapters + GGUFs:
+
+```bash
+rsync -avP --partial -e "ssh -p ${PORT}" \
+  ${USER}@${HOST}:~/nassila/training/outputs/nassila-sanad-e4b-v1.10/lora_adapter/ \
+  "${LOCAL}/outputs/nassila-sanad-e4b-v1.10/lora_adapter/"
+
+rsync -avP --partial -e "ssh -p ${PORT}" \
+  ${USER}@${HOST}:~/nassila/training/outputs/nassila-sanad-12b-v1.10/lora_adapter/ \
+  "${LOCAL}/outputs/nassila-sanad-12b-v1.10/lora_adapter/"
+
+rsync -avP --partial -e "ssh -p ${PORT}" \
+  ${USER}@${HOST}:~/nassila/training/exports/nassila-sanad-e4b-q6_k.gguf \
+  "${LOCAL}/exports/"
+
+rsync -avP --partial -e "ssh -p ${PORT}" \
+  ${USER}@${HOST}:~/nassila/training/exports/nassila-sanad-12b-q6_k.gguf \
+  "${LOCAL}/exports/"
+```
+
+Re-run the same `rsync` if the connection drops — it resumes.
+
+---
+
+## Part 9 — Upload adapters & GGUFs to Hugging Face
+
+On Vast (or PC after rsync). HF user: **`QinEmPeRoR93`**.
+
+```bash
+huggingface-cli login
+
+# Create repos once (stable public ids; checkpoint on README only)
+hf repo create QinEmPeRoR93/nassila-sanad-e4b --type model
+# 12B repo already exists (private):
+#   QinEmPeRoR93/nassila-sanad-12b
+hf repo create QinEmPeRoR93/nassila-sanad-e4b-adapter --type model --private
+hf repo create QinEmPeRoR93/nassila-sanad-12b-adapter --type model --private
+```
+
+**GGUF (user-facing):**
+
+```bash
+cd ~/nassila/training
+
+hf upload QinEmPeRoR93/nassila-sanad-e4b \
+  exports/nassila-sanad-e4b-q6_k.gguf \
+  nassila-sanad-e4b-q6_k.gguf \
+  --repo-type model
+
+hf upload QinEmPeRoR93/nassila-sanad-12b \
+  exports/nassila-sanad-12b-q6_k.gguf \
+  nassila-sanad-12b-q6_k.gguf \
+  --repo-type model
+```
+
+**Adapters (private archive):**
+
+```bash
+cd ~/nassila/training/outputs/nassila-sanad-e4b-v1.10/lora_adapter
+hf upload QinEmPeRoR93/nassila-sanad-e4b-adapter . . --repo-type model
+
+cd ~/nassila/training/outputs/nassila-sanad-12b-v1.10/lora_adapter
+hf upload QinEmPeRoR93/nassila-sanad-12b-adapter . . --repo-type model
+```
+
+**End-of-session order:** pipeline done → read `multi_seed_aggregate.json` → rsync to PC → `hf upload` → destroy instance.
 
 ## File index
 

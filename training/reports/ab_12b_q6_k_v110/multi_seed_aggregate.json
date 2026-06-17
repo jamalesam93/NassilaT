@@ -1,0 +1,41 @@
+{
+  "model": "nassila-grounding-12b-q6_k",
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "holdout_file": "/root/nassila/training/data/eval_holdout_90.jsonl",
+  "per_seed": [
+    {
+      "seed": 42,
+      "combined_expect": 0.9479,
+      "quote_validity_holdout": 1.0,
+      "false_supported_holdout": 0.0282,
+      "multi_claim_pass": 0.6923,
+      "tier2_passed": true
+    },
+    {
+      "seed": 43,
+      "combined_expect": 0.9479,
+      "quote_validity_holdout": 1.0,
+      "false_supported_holdout": 0.0282,
+      "multi_claim_pass": 0.6923,
+      "tier2_passed": true
+    },
+    {
+      "seed": 44,
+      "combined_expect": 0.9479,
+      "quote_validity_holdout": 1.0,
+      "false_supported_holdout": 0.0282,
+      "multi_claim_pass": 0.6923,
+      "tier2_passed": true
+    }
+  ],
+  "mean_metrics": {
+    "combined_expect": 0.9479,
+    "quote_validity_holdout": 1.0,
+    "false_supported_holdout": 0.0282,
+    "multi_claim_pass": 0.6923
+  }
+}

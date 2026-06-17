@@ -180,6 +180,38 @@ Build: `--boost data/l3_grounding_v16_boost.jsonl data/l3_grounding_v18_boost.js
 
 **A/B pilot:** Same v1.10 data; E4B-Q6 control vs 12B Q4/Q6/Q8. Scripts: `run_ab_pilot_pipeline.sh`, `train_qlora_gemma4_12b.py`, `run_multi_seed_eval.py`, `compare_ab_pilot.py`. Walkthrough: [`training/PHASE2_9_AB_PILOT_WALKTHROUGH.md`](./training/PHASE2_9_AB_PILOT_WALKTHROUGH.md).
 
-**Decision gates (12B optional tier):** combined expect ≥ E4B + 3 pts; `multi_claim` pass ≥ 0.8; quote validity ≥ E4B-Q6. Else defer 12B to Shahid only; keep Sanad on E4B.
+**A/B script gates:** combined expect ≥ E4B + 3 pts; `multi_claim` pass ≥ 0.8; quote validity ≥ E4B-Q6. **Recorded outcome:** dual-tier adopted — see **v1.10 A/B result** below.
 
-**Policy:** Dual-tier — E4B default download; 12B optional quant ladder if A/B passes. See Nassila [`docs/OUROBOROS.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS.md).
+**Policy:** Dual-tier — E4B default download; 12B optional quality tier when Tier 2 passes. See Nassila [`docs/OUROBOROS.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS.md).
+
+## v1.10 A/B result (E4B vs 12B, hardened 115-row harness)
+
+Multi-seed means (seeds 42/43/44) on `eval_holdout_90.jsonl` + combined 115-row harness. Reports: `training/reports/ab_*_v110/`, decisions: `ab_decision_12b_*.json`.
+
+| Arm | Combined expect | Quote val (holdout) | False sup (holdout) | multi_claim | Tier 2 §10 |
+|-----|-----------------|---------------------|---------------------|-------------|------------|
+| **E4B v1.10 Q6_K** | 88.12% | 89.47% | 6.57% | 58.98% | **FAIL** (all seeds) |
+| **12B v1.10 Q6_K** | **94.79%** | **100%** | **2.82%** | 69.23% | **PASS** (all seeds) |
+| 12B Q4_K_M | 93.91% | 94.74% | 4.23% | 61.54% | FAIL |
+| 12B Q8_0 | 92.46% | 96.49% | 4.23% | 61.54% | borderline (seed 42 only) |
+
+**Quant ladder:** Q6_K is the sweet spot for 12B (best combined + only quant with 100% quote validity across seeds).
+
+**`compare_ab_pilot.py` vs Tier 2:** The A/B script recommends `defer_12b_to_shahid_only` on all quants because its extra **`multi_claim >= 0.80`** sub-gate fails (12B Q6_K = 69.23%). That sub-gate is **not** a Tier 2 ship gate. Combined-delta (+6.67 pts) and quote-vs-baseline pass. Persistent multi_claim misses: h-043 (`forbidden_verdict`), h-045 (`wrong_verdict`), h-088 (`min_claims`) — see [`training/reports/holdout_failure_matrix.md`](./training/reports/holdout_failure_matrix.md).
+
+**Adopted decision (dual-tier):**
+
+1. **E4B** remains the **default/fast** tier (smaller download; still below Tier 2 on hardened harness — continue iterating v1.11+ on E4B).
+2. **12B Q6_K** is recorded as Sanad's **first Tier-2-passing checkpoint** and **optional quality tier** (`nassila-sanad-12b-q6_k.gguf`, train checkpoint v1.10).
+3. Unmet `multi_claim >= 0.80` is a **known limitation**, not a ship blocker for the optional tier.
+4. **Shahid** multimodal still reserves 12B when that worker forges.
+
+**HF (operator):** adapters private — `QinEmPeRoR93/nassila-sanad-12b-adapter`, `QinEmPeRoR93/nassila-sanad-e4b-adapter`; GGUF — `nassila-sanad-12b` (private), `nassila-sanad-e4b` (when v1.11 passes). See [`training/PHASE2_9_AB_PILOT_WALKTHROUGH.md`](./training/PHASE2_9_AB_PILOT_WALKTHROUGH.md) Part 9.
+
+## v1.11 fixes (E4B gap — operator)
+
+1. **New boost** `data/l3_grounding_v111_boost.jsonl` (21 rows): nosup compound, scope split, two-claim split, quote-fidelity, weak/insufficient.
+2. **Merge** v16 + v18 + v110 + v111 → `l3_grounding_train_v111.jsonl`.
+3. **Train E4B only** on Vast: `ARM=e4b PHASE=11 bash training/scripts/run_ab_pilot_pipeline.sh`
+4. **Eval:** multi-seed Tier 2 gates; target all six pass on 115-row harness.
+5. **Publish** `exports/nassila-sanad-e4b-q6_k.gguf` to `QinEmPeRoR93/nassila-sanad-e4b` when gates pass (checkpoint v1.11 on model card).

@@ -29,17 +29,16 @@ Hugging Face E4B IT  →  QLoRA training  →  adapter  →  export Q6_K GGUF  �
 
 | Step | Document | What you do |
 |------|----------|-------------|
-| 0 | [Nassila `OUROBOROS_CONTEXT.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md) | **Agents:** workers, v1.4 state, v1.6 training |
-| 1 | [TRAINING_GUIDE.md](./TRAINING_GUIDE.md) | Full walkthrough: environment, data, train, export, test |
-| 1.1 | [CORPUS_PIPELINE.md](./CORPUS_PIPELINE.md) | Phase 1.5: merge JSON exports, backfill abstracts (PC) |
-| 1.2 | [PHASE2_8_V1_5_WALKTHROUGH.md](./PHASE2_8_V1_5_WALKTHROUGH.md) | **Current:** v1.8 Vast pipeline (Sanad) |
-| 1.2a | [PHASE2_7_V1_4_WALKTHROUGH.md](./PHASE2_7_V1_4_WALKTHROUGH.md) | v1.4 Vast pipeline (reference) |
-| 1.3 | [PHASE1_VAST_4090_WALKTHROUGH.md](./PHASE1_VAST_4090_WALKTHROUGH.md) | Phase 1: Vast smoke QLoRA |
-| 2 | [DATASET_SCHEMA.md](./DATASET_SCHEMA.md) | Exact JSONL formats for each task |
-| 3 | [EVALUATION_GUIDE.md](./EVALUATION_GUIDE.md) | Metrics and pass/fail thresholds |
-| 4 | [LM_STUDIO_INTEGRATION.md](./LM_STUDIO_INTEGRATION.md) | Serve model locally; point Nassila at it |
-| 5 | [ROADMAP.md](./ROADMAP.md) | Ouroboros phases (Sanad now → merge later) |
-| 6 | [MODEL_CARD_v1_4.md](./MODEL_CARD_v1_4.md) | Ship metrics (v1.4a SHIP, v1.4b NO-GO) |
+| 0 | [Nassila `OUROBOROS_CONTEXT.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md) | **Agents:** workers, tiers, eval gates |
+| 1 | [PHASE2_9_AB_PILOT_WALKTHROUGH.md](./PHASE2_9_AB_PILOT_WALKTHROUGH.md) | **Current:** Vast train/eval/HF (`nassila-sanad-*`) |
+| 2 | [nassila_training_diagnosis.md](../nassila_training_diagnosis.md) | Version history v1.0–v1.11 |
+| 3 | [EVAL_GONOGO.md](./EVAL_GONOGO.md) | Go/no-go decisions |
+| 4 | [DATASET_SCHEMA.md](./DATASET_SCHEMA.md) | JSONL contracts |
+| 5 | [MODEL_CARD.md](./MODEL_CARD.md) | HF README index (`sanad-12b`, `sanad-e4b`) |
+| 6 | [TRAINING_GUIDE.md](./TRAINING_GUIDE.md) | Environment + data prep (Vast → PHASE2_9) |
+| 7 | [EVALUATION_GUIDE.md](./EVALUATION_GUIDE.md) | Scripts; gates in OUROBOROS_CONTEXT §10 |
+
+Historical walkthroughs: [`archive/`](./archive/).
 
 ---
 
