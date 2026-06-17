@@ -94,6 +94,12 @@ def main() -> int:
         default=0.2,
     )
     parser.add_argument(
+        "--seed",
+        type=int,
+        default=None,
+        help="Optional decode seed (OpenAI-compatible servers)",
+    )
+    parser.add_argument(
         "--chat-template",
         action="store_true",
         help="Send system+user messages matching QLoRA train layout",
@@ -153,6 +159,7 @@ def main() -> int:
                         messages,
                         args.api_key,
                         temperature=args.temperature,
+                        seed=args.seed,
                     )
                 except Exception as e:
                     last_raw = ""

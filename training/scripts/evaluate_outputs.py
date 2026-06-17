@@ -201,25 +201,29 @@ def evaluate_l3_row(
     return result
 
 
-def holdout_category(row_id: str) -> str | None:
-    """Infer eval category from holdout id ranges (h-001..h-045)."""
+def holdout_category(row_id: str, eval_row: dict[str, Any] | None = None) -> str | None:
+    """Infer eval category from meta.eval_category or holdout id ranges (h-001..h-090)."""
+    if eval_row:
+        cat = eval_row.get("meta", {}).get("eval_category")
+        if isinstance(cat, str) and cat:
+            return cat
     if not row_id.startswith("h-"):
         return None
     try:
         n = int(row_id.split("-", 1)[1])
     except ValueError:
         return None
-    if 1 <= n <= 10:
+    if 1 <= n <= 10 or 46 <= n <= 53:
         return "supported"
-    if 11 <= n <= 19:
+    if 11 <= n <= 19 or 54 <= n <= 59:
         return "contradicted"
-    if 20 <= n <= 28:
+    if 20 <= n <= 28 or 60 <= n <= 65:
         return "not_in_source"
-    if 29 <= n <= 34:
+    if 29 <= n <= 34 or 66 <= n <= 75:
         return "weak"
-    if 35 <= n <= 39:
+    if 35 <= n <= 39 or 76 <= n <= 83:
         return "insufficient_evidence"
-    if 40 <= n <= 45:
+    if 40 <= n <= 45 or 84 <= n <= 90:
         return "multi_claim"
     return None
 
@@ -261,7 +265,7 @@ def evaluate_dataset(
 
         l3_total += 1
         row_result = evaluate_l3_row(eval_row, raw, allow_repair=allow_repair)
-        cat = holdout_category(rid)
+        cat = holdout_category(rid, eval_row)
         if cat:
             row_result["category"] = cat
             bucket = by_category.setdefault(cat, {"total": 0, "checks_passed": 0})

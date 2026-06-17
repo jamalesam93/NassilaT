@@ -171,3 +171,15 @@ Build: `--boost data/l3_grounding_v16_boost.jsonl data/l3_grounding_v18_boost.js
 3. **v110 boost (20 rows):** 3 narrow supported (h-009/h-008 pattern), 3 weak-mixed (h-034), 3 insufficient design-only (eval-012), 6 nosup compound (h-041/h-043), 3 scope split (h-045), 2 two-claim split (eval-018).
 
 Build: `--boost data/l3_grounding_v16_boost.jsonl data/l3_grounding_v18_boost.jsonl data/l3_grounding_v110_boost.jsonl --out data/l3_grounding_train_v110.jsonl` → `PHASE=10`.
+
+## Hardened harness + A/B pilot (v1.10+)
+
+**Root cause (harness brittleness):** On the legacy 45-row holdout, quote validity (10/11) and false-supported (2/34) gates flipped on **one row each**. Version seesaw (v1.8 91.43% → v1.9 90%) mixed genuine regression with measurement noise.
+
+**Fix:** `data/eval_holdout_extension_45.jsonl` (h-046..h-090) + `build_hardened_holdout.py` → **`eval_holdout_90.jsonl`** (115-row combined harness). Contamination gate includes extension; v1.10 train verified 0 overlap.
+
+**A/B pilot:** Same v1.10 data; E4B-Q6 control vs 12B Q4/Q6/Q8. Scripts: `run_ab_pilot_pipeline.sh`, `train_qlora_gemma4_12b.py`, `run_multi_seed_eval.py`, `compare_ab_pilot.py`. Walkthrough: [`training/PHASE2_9_AB_PILOT_WALKTHROUGH.md`](./training/PHASE2_9_AB_PILOT_WALKTHROUGH.md).
+
+**Decision gates (12B optional tier):** combined expect ≥ E4B + 3 pts; `multi_claim` pass ≥ 0.8; quote validity ≥ E4B-Q6. Else defer 12B to Shahid only; keep Sanad on E4B.
+
+**Policy:** Dual-tier — E4B default download; 12B optional quant ladder if A/B passes. See Nassila [`docs/OUROBOROS.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS.md).
