@@ -206,9 +206,26 @@ Multi-seed means (seeds 42/43/44) on `eval_holdout_90.jsonl` + combined 115-row 
 3. Unmet `multi_claim >= 0.80` is a **known limitation**, not a ship blocker for the optional tier.
 4. **Shahid** multimodal still reserves 12B when that worker forges.
 
-**HF (operator):** adapters private — `QinEmPeRoR93/nassila-sanad-12b-adapter`, `QinEmPeRoR93/nassila-sanad-e4b-adapter`; GGUF — `nassila-sanad-12b` (private), `nassila-sanad-e4b` (when v1.11 passes). See [`training/PHASE2_9_AB_PILOT_WALKTHROUGH.md`](./training/PHASE2_9_AB_PILOT_WALKTHROUGH.md) Part 9.
+**HF (operator):** adapters private — `QinEmPeRoR93/nassila-sanad-12b-adapter`, `QinEmPeRoR93/nassila-sanad-e4b-adapter`, `QinEmPeRoR93/nassila-sanad-31b-adapter` (v1.12); GGUF — `nassila-sanad-12b` (private), `nassila-sanad-e4b` (default-tier), `nassila-sanad-31b` (premium, Tier 2). Policy: [`docs/DUAL_TIER_POLICY.md`](./docs/DUAL_TIER_POLICY.md). See [`training/PHASE2_9_AB_PILOT_WALKTHROUGH.md`](./training/PHASE2_9_AB_PILOT_WALKTHROUGH.md) Part 9.
 
-## v1.11 fixes (E4B gap — implemented locally 2026-06-17)
+## Dual-tier ship policy (2026-06-17)
+
+- **E4B default-tier:** combined ≥88%, quote ≥88%, false-supported ≤7% (+ JSON/legacy gates). **v1.10 PASS** — shippable as `nassila-sanad-e4b`.
+- **Tier 2:** full six gates — **12B v1.10 PASS**, **31B v1.12** target.
+- **v1.11 NO-GO:** 80.58% combined regression; do not publish.
+
+## v1.12 recovery (E4B + 31B premium — implemented locally 2026-06-17)
+
+Prompt v1.12 (parity compound guardrail, scope rows `weak` only). Boost: `l3_grounding_v112_boost.jsonl` (23 rows). Train: `l3_grounding_train_v112.jsonl`. Gates: `tier_gates.py` → `e4b_default_gates` + `v110_baseline_beat`.
+
+```bash
+ARM=e4b PHASE=12 MULTI_SEED=1 bash training/scripts/run_ab_pilot_pipeline.sh
+ARM=31b PHASE=12 MULTI_SEED=1 bash training/scripts/run_ab_pilot_pipeline.sh
+```
+
+Walkthroughs: [`training/PHASE2_11_V112_WALKTHROUGH.md`](./training/PHASE2_11_V112_WALKTHROUGH.md), [`training/PHASE2_12_31B_PREMIUM_WALKTHROUGH.md`](./training/PHASE2_12_31B_PREMIUM_WALKTHROUGH.md).
+
+## v1.11 fixes (E4B gap — trained, NO-GO)
 
 **Eval harness (Step 1):**
 
@@ -228,4 +245,4 @@ Multi-seed means (seeds 42/43/44) on `eval_holdout_90.jsonl` + combined 115-row 
 ARM=e4b PHASE=11 MULTI_SEED=1 bash training/scripts/run_ab_pilot_pipeline.sh
 ```
 
-Walkthrough: [`training/PHASE2_10_V111_WALKTHROUGH.md`](./training/PHASE2_10_V111_WALKTHROUGH.md). Target: all six Tier 2 gates PASS; publish `nassila-sanad-e4b-q6_k.gguf` when gates pass.
+Walkthrough: [`training/PHASE2_10_V111_WALKTHROUGH.md`](./training/PHASE2_10_V111_WALKTHROUGH.md). **Result: NO-GO** — see `reports/ab_e4b_q6_k_v111/`. Pursue v1.12 recovery instead.

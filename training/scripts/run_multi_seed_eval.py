@@ -27,7 +27,7 @@ sys.path.insert(0, str(SCRIPT_DIR))
 
 from evaluate_outputs import evaluate_dataset  # noqa: E402
 from run_eval_reports import merge_rate  # noqa: E402
-from tier_gates import evaluate_tier2_gates  # noqa: E402
+from tier_gates import evaluate_e4b_default_gates, evaluate_tier2_gates  # noqa: E402
 
 DEFAULT_DATA = [
     TRAINING_DIR / "data" / "eval_samples.jsonl",
@@ -117,12 +117,19 @@ def score_all_slices(predictions: Path, holdout: Path, repair: bool) -> dict:
         holdout=holdout_eval,
         combined_totals=combined_totals,
     )
+    e4b_default = evaluate_e4b_default_gates(
+        legacy=legacy,
+        extended=extended,
+        holdout=holdout_eval,
+        combined_totals=combined_totals,
+    )
     return {
         "legacy": legacy,
         "extended": extended,
         "holdout": holdout_eval,
         "combined_totals": combined_totals,
         "tier2_gates": tier2,
+        "e4b_default_gates": e4b_default,
     }
 
 
@@ -198,6 +205,8 @@ def main() -> int:
                 "false_supported_holdout": r["holdout"].get("false_supported_rate"),
                 "multi_claim_pass": r["holdout"].get("category_pass_rates", {}).get("multi_claim"),
                 "tier2_passed": r["tier2_gates"]["model_gates_passed"],
+                "e4b_default_passed": r["e4b_default_gates"]["model_gates_passed"],
+                "beats_v110_baseline": r["e4b_default_gates"]["v110_baseline_beat"]["all_met"],
             }
             for r in seed_reports
         ],
@@ -207,6 +216,15 @@ def main() -> int:
             "false_supported_holdout": mean_metric(seed_reports, ["holdout", "false_supported_rate"]),
             "multi_claim_pass": mean_metric(
                 seed_reports, ["holdout", "category_pass_rates", "multi_claim"]
+            ),
+            "tier2_pass_rate": mean_metric(
+                seed_reports, ["tier2_gates", "model_gates_passed"]
+            ),
+            "e4b_default_pass_rate": mean_metric(
+                seed_reports, ["e4b_default_gates", "model_gates_passed"]
+            ),
+            "beats_v110_baseline_rate": mean_metric(
+                seed_reports, ["e4b_default_gates", "v110_baseline_beat", "all_met"]
             ),
         },
     }

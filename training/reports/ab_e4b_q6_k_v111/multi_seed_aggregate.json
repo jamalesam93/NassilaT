@@ -1,0 +1,41 @@
+{
+  "model": "nassila-sanad-e4b-q6_k",
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "holdout_file": "/root/nassila/training/data/eval_holdout_90.jsonl",
+  "per_seed": [
+    {
+      "seed": 42,
+      "combined_expect": 0.7913,
+      "quote_validity_holdout": 0.7368,
+      "false_supported_holdout": 0.1286,
+      "multi_claim_pass": 0.6154,
+      "tier2_passed": false
+    },
+    {
+      "seed": 43,
+      "combined_expect": 0.8174,
+      "quote_validity_holdout": 0.7895,
+      "false_supported_holdout": 0.1143,
+      "multi_claim_pass": 0.6923,
+      "tier2_passed": false
+    },
+    {
+      "seed": 44,
+      "combined_expect": 0.8087,
+      "quote_validity_holdout": 0.7895,
+      "false_supported_holdout": 0.1143,
+      "multi_claim_pass": 0.6923,
+      "tier2_passed": false
+    }
+  ],
+  "mean_metrics": {
+    "combined_expect": 0.8058,
+    "quote_validity_holdout": 0.7719,
+    "false_supported_holdout": 0.1191,
+    "multi_claim_pass": 0.6667
+  }
+}

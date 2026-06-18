@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
-# Nassila A/B pilot + v1.11 E4B train pipeline (Sanad naming).
+# Nassila Sanad train + eval pipeline (E4B default / 12B quality / 31B premium).
 #
 # Prerequisite: hardened holdout built:
 #   python scripts/build_hardened_holdout.py
 #
 # E4B v1.10 baseline:
-#   ARM=e4b PHASE=10 bash scripts/run_ab_pilot_pipeline.sh
+#   ARM=e4b PHASE=10 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
 #
-# E4B v1.11 (close default-tier gap):
-#   ARM=e4b PHASE=11 bash scripts/run_ab_pilot_pipeline.sh
+# E4B v1.12 recovery (default-tier ship target):
+#   ARM=e4b PHASE=12 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
 #
-# 12B arm (train once, eval Q4/Q6/Q8):
-#   ARM=12b PHASE=10 bash scripts/run_ab_pilot_pipeline.sh
+# 12B quality tier (Tier 2):
+#   ARM=12b PHASE=10 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
 #
-# Multi-seed aggregation:
-#   ARM=e4b MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
+# 31B premium tier (Tier 2, same v1.12 data):
+#   ARM=31b PHASE=12 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
 #
 set -euo pipefail
 
@@ -35,6 +35,7 @@ case "$PHASE" in
     TRAIN_FILE="data/l3_grounding_train_v110.jsonl"
     CHAT_FILE="data/l3_grounding_chat_v110.jsonl"
     CHECKPOINT_SUFFIX="v1.10"
+    REPORT_SUFFIX="v110"
     PREPARE_CMD=(
       python scripts/prepare_v15_train.py
       --base data/l3_grounding_train_v14a.jsonl
@@ -46,6 +47,7 @@ case "$PHASE" in
     TRAIN_FILE="data/l3_grounding_train_v111.jsonl"
     CHAT_FILE="data/l3_grounding_chat_v111.jsonl"
     CHECKPOINT_SUFFIX="v1.11"
+    REPORT_SUFFIX="v111"
     PREPARE_CMD=(
       python scripts/prepare_v15_train.py
       --base data/l3_grounding_train_v14a.jsonl
@@ -53,8 +55,20 @@ case "$PHASE" in
       --out "$TRAIN_FILE"
     )
     ;;
+  12)
+    TRAIN_FILE="data/l3_grounding_train_v112.jsonl"
+    CHAT_FILE="data/l3_grounding_chat_v112.jsonl"
+    CHECKPOINT_SUFFIX="v1.12"
+    REPORT_SUFFIX="v112"
+    PREPARE_CMD=(
+      python scripts/prepare_v15_train.py
+      --base data/l3_grounding_train_v14a.jsonl
+      --boost data/l3_grounding_v16_boost.jsonl data/l3_grounding_v18_boost.jsonl data/l3_grounding_v110_boost.jsonl data/l3_grounding_v112_boost.jsonl
+      --out "$TRAIN_FILE"
+    )
+    ;;
   *)
-    echo "PHASE must be 10 or 11 (got: $PHASE)" >&2
+    echo "PHASE must be 10, 11, or 12 (got: $PHASE)" >&2
     exit 1
     ;;
 esac
@@ -84,8 +98,22 @@ case "$ARM" in
     GGUF_F16="exports/nassila-sanad-12b-${CHECKPOINT_SUFFIX}-f16.gguf"
     GGUF_PUBLIC_BASENAME="nassila-sanad-12b"
     ;;
+  31b)
+    if [[ "$PHASE" != "12" ]]; then
+      echo "31B premium arm only supports PHASE=12 (got: $PHASE)" >&2
+      exit 1
+    fi
+    REPORTS_PREFIX="v1_12_31b_"
+    TRAIN_SCRIPT=(python scripts/train_qlora_gemma4_31b.py --phase "$PHASE")
+    BASE_MODEL="google/gemma-4-31B-it"
+    QUANTS=(Q4_K_M Q6_K)
+    OUTPUT_DIR="outputs/nassila-sanad-31b-${CHECKPOINT_SUFFIX}"
+    MERGED_DIR="exports/hf-merged-sanad-31b-${CHECKPOINT_SUFFIX}-bf16"
+    GGUF_F16="exports/nassila-sanad-31b-${CHECKPOINT_SUFFIX}-f16.gguf"
+    GGUF_PUBLIC_BASENAME="nassila-sanad-31b"
+    ;;
   *)
-    echo "ARM must be e4b or 12b (got: $ARM)" >&2
+    echo "ARM must be e4b, 12b, or 31b (got: $ARM)" >&2
     exit 1
     ;;
 esac
@@ -149,11 +177,7 @@ for QUANT in "${QUANTS[@]}"; do
   ls -lh "$GGUF_QUANT"
 
   REPORT_QUANT_PREFIX="${REPORTS_PREFIX}${QUANT_SUFFIX}_"
-  if [[ "$PHASE" == "10" ]]; then
-    AB_OUT="reports/ab_${ARM}_${QUANT_SUFFIX}_v110"
-  else
-    AB_OUT="reports/ab_${ARM}_${QUANT_SUFFIX}_v111"
-  fi
+  AB_OUT="reports/ab_${ARM}_${QUANT_SUFFIX}_${REPORT_SUFFIX}"
 
   echo "--- Start llama-server (${QUANT}) ---"
   "$LLAMA_BIN/llama-server" \
@@ -208,5 +232,6 @@ if [[ "$ARM" == "12b" && "$MULTI_SEED" == "1" && -f reports/ab_e4b_q6_k_v110/mul
 fi
 
 echo "=== Sanad pipeline arm=${ARM} phase=${PHASE} done ==="
-echo "Publish GGUF: exports/${GGUF_PUBLIC_BASENAME}-q6_k.gguf"
+echo "Reports: reports/ab_${ARM}_*_${REPORT_SUFFIX}/"
+echo "Publish GGUF: exports/${GGUF_PUBLIC_BASENAME}-*.gguf"
 echo "HF repos: QinEmPeRoR93/${GGUF_PUBLIC_BASENAME} (GGUF), QinEmPeRoR93/${GGUF_PUBLIC_BASENAME}-adapter (private)"
