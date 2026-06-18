@@ -24,7 +24,7 @@ TRAINING_DIR = SCRIPT_DIR.parent
 sys.path.insert(0, str(SCRIPT_DIR))
 
 from evaluate_outputs import evaluate_dataset, print_summary  # noqa: E402
-from tier_gates import evaluate_tier2_gates  # noqa: E402
+from tier_gates import evaluate_e4b_default_gates, evaluate_tier2_gates  # noqa: E402
 
 
 def merge_rate(a: dict, b: dict, key: str) -> float:
@@ -158,12 +158,20 @@ def main() -> int:
         holdout=holdout,
         combined_totals=combined["combined_totals"],
     )
+    combined["e4b_default_gates"] = evaluate_e4b_default_gates(
+        legacy=legacy,
+        extended=extended,
+        holdout=holdout,
+        combined_totals=combined["combined_totals"],
+    )
     combined_report.write_text(json.dumps(combined, indent=2), encoding="utf-8")
 
     print(f"\n=== Combined ({all_total} eval rows) ===")
     print(json.dumps(combined["combined_totals"], indent=2))
-    print("\n=== Tier 2 gates (canonical: Nassila docs/OUROBOROS_CONTEXT.md §10) ===")
+    print("\n=== Tier 2 gates (quality: 12B / 31B premium) ===")
     print(json.dumps(combined["tier2_gates"], indent=2))
+    print("\n=== E4B default-tier gates (nassila-sanad-e4b ship) ===")
+    print(json.dumps(combined["e4b_default_gates"], indent=2))
     print(f"\nWrote {legacy_report}")
     print(f"Wrote {extended_report}")
     print(f"Wrote {holdout_report}")

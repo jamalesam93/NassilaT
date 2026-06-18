@@ -17,18 +17,33 @@ language:
 library_name: llama.cpp
 ---
 
-# Nassila Sanad E4B
+# Nassila Sanad E4B (default tier)
 
-*Train checkpoint v1.11 (target) · default tier*
+*Ship checkpoint: **v1.10** (reference) · target **v1.12** recovery*
 
-Placeholder card for the **default** Sanad GGUF — Gemma 4 E4B Q6_K (~8 GB). Ships when v1.11 passes all Tier 2 gates on the 115-row harness.
+Default Sanad GGUF — Gemma 4 E4B Q6_K (~8 GB). Ships on **E4B default-tier gates**, not full Tier 2. See [`docs/DUAL_TIER_POLICY.md`](https://github.com/jamalesam93/NassilaT/blob/main/docs/DUAL_TIER_POLICY.md).
 
-Until published, use the optional quality tier [`nassila-sanad-12b`](https://huggingface.co/QinEmPeRoR93/nassila-sanad-12b) (checkpoint v1.10, Tier 2 PASS).
+## v1.10 reference metrics (115-row harness, multi-seed mean)
 
-## Train v1.11 on Vast
+| Metric | Value |
+|--------|--------|
+| Combined expect | **88.12%** |
+| Quote validity (holdout) | **89.47%** |
+| False supported (holdout) | **6.57%** |
+| E4B default-tier | **PASS** |
+| Tier 2 (quality bar) | FAIL (expected for E4B) |
+
+**Do not publish v1.11** (regressed to 80.58% combined).
+
+## v1.12 recovery train
 
 ```bash
-ARM=e4b PHASE=11 MULTI_SEED=1 bash training/scripts/run_ab_pilot_pipeline.sh
+ARM=e4b PHASE=12 MULTI_SEED=1 bash training/scripts/run_ab_pilot_pipeline.sh
 ```
 
-Publish `exports/nassila-sanad-e4b-q6_k.gguf` to this repo when gates pass. Full operator steps: [PHASE2_9_AB_PILOT_WALKTHROUGH.md](https://github.com/jamalesam93/NassilaT/blob/main/training/PHASE2_9_AB_PILOT_WALKTHROUGH.md).
+Publish when `e4b_default_gates` pass **and** `v110_baseline_beat` is met: [`PHASE2_11_V112_WALKTHROUGH.md`](https://github.com/jamalesam93/NassilaT/blob/main/training/PHASE2_11_V112_WALKTHROUGH.md).
+
+## Quality tiers (optional)
+
+- [`nassila-sanad-12b`](https://huggingface.co/QinEmPeRoR93/nassila-sanad-12b) — Tier 2 PASS (v1.10)
+- `nassila-sanad-31b` — premium, Tier 2 target (v1.12 train)

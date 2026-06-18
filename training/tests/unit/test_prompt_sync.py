@@ -36,8 +36,11 @@ def test_scope_silence_rule_present() -> None:
     prompt = build_grounding_user_prompt(FIXTURE_PASSAGE, FIXTURE_EXCERPT, FIXTURE_META)
     assert "Scope-silence rule" in prompt
     assert "never contradicted" in prompt
+    assert "parity or equality" in prompt
 
 
-def test_no_blanket_never_supported_on_compound() -> None:
+def test_v112_passage_claim_and_compound_guardrails() -> None:
     prompt = build_grounding_user_prompt(FIXTURE_PASSAGE, FIXTURE_EXCERPT, FIXTURE_META)
+    assert "not a different number from the source" in prompt
+    assert "receives weak (not supported)" in prompt
     assert "never supported when the passage bundles multiple claims" not in prompt
