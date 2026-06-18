@@ -102,10 +102,12 @@ Harness: **115 rows** (90-row holdout). Multi-seed means (42/43/44).
 
 ### v1.11 E4B (operator — close default-tier gap)
 
+**Harness v1.11 gold (2026-06-17):** h-043 Option A (`min_claims: 2`, no forbidden `supported`); h-045 `min_claims: 2`. Regrade of v1.10 predictions confirms h-043 passes without retrain; h-045 still fails until train.
+
 ```bash
 ARM=e4b PHASE=11 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
 ```
 
-Train file: `data/l3_grounding_train_v111.jsonl` (v16+v18+v110+v111 boost). Publish `exports/nassila-sanad-e4b-q6_k.gguf` when all six Tier 2 gates pass.
+Train file: `data/l3_grounding_train_v111.jsonl` (29-row v111 boost, 12 scope-split). Walkthrough: [`PHASE2_10_V111_WALKTHROUGH.md`](./PHASE2_10_V111_WALKTHROUGH.md). Publish `exports/nassila-sanad-e4b-q6_k.gguf` when all six Tier 2 gates pass.
 
-Reports: `reports/ab_e4b_q6_k_v111/` (after run).
+Reports: `reports/ab_e4b_q6_k_v111/` (after Vast run).

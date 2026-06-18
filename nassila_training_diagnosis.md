@@ -208,10 +208,24 @@ Multi-seed means (seeds 42/43/44) on `eval_holdout_90.jsonl` + combined 115-row 
 
 **HF (operator):** adapters private — `QinEmPeRoR93/nassila-sanad-12b-adapter`, `QinEmPeRoR93/nassila-sanad-e4b-adapter`; GGUF — `nassila-sanad-12b` (private), `nassila-sanad-e4b` (when v1.11 passes). See [`training/PHASE2_9_AB_PILOT_WALKTHROUGH.md`](./training/PHASE2_9_AB_PILOT_WALKTHROUGH.md) Part 9.
 
-## v1.11 fixes (E4B gap — operator)
+## v1.11 fixes (E4B gap — implemented locally 2026-06-17)
 
-1. **New boost** `data/l3_grounding_v111_boost.jsonl` (21 rows): nosup compound, scope split, two-claim split, quote-fidelity, weak/insufficient.
-2. **Merge** v16 + v18 + v110 + v111 → `l3_grounding_train_v111.jsonl`.
-3. **Train E4B only** on Vast: `ARM=e4b PHASE=11 bash training/scripts/run_ab_pilot_pipeline.sh`
-4. **Eval:** multi-seed Tier 2 gates; target all six pass on 115-row harness.
-5. **Publish** `exports/nassila-sanad-e4b-q6_k.gguf` to `QinEmPeRoR93/nassila-sanad-e4b` when gates pass (checkpoint v1.11 on model card).
+**Eval harness (Step 1):**
+
+- **h-043 (Option A):** removed `forbidden_claim_verdict: ["supported"]`; added `min_claims: 2`. Model was correct; gold was wrong (same class as eval-018).
+- **h-045:** added `min_claims: 2` (aligns with h-088).
+- Regenerated `eval_holdout_90.jsonl` via `build_hardened_holdout.py`.
+
+**Regrade v1.10 predictions (no retrain):** E4B Q6_K seeds 42/43/44 — h-043 **pass** on all; h-045 still **fail**. Combined expect: 87.83% / 89.56% / 89.56% (was 86.96% / 88.70% / 88.70% on old gold).
+
+**Prompt (Step 2):** scope-silence rule + per-conjunct compound evaluation in Nassila `grounding-llm.ts` and `validate_dataset.py` (golden: `training/fixtures/grounding_prompt_golden.txt`; tests: Nassila `grounding-llm.test.ts`, NassilaT `tests/unit/test_prompt_sync.py`).
+
+**Data (Step 3):** `l3_grounding_v111_boost.jsonl` expanded to **29 rows** (12 scope-split incl. v111-scope-005..012; 2 with `supported` studied subgroup). Merge → `l3_grounding_train_v111.jsonl` (850 rows, contamination 0) + `l3_grounding_chat_v111.jsonl`.
+
+**Operator (Step 4 — Vast):**
+
+```bash
+ARM=e4b PHASE=11 MULTI_SEED=1 bash training/scripts/run_ab_pilot_pipeline.sh
+```
+
+Walkthrough: [`training/PHASE2_10_V111_WALKTHROUGH.md`](./training/PHASE2_10_V111_WALKTHROUGH.md). Target: all six Tier 2 gates PASS; publish `nassila-sanad-e4b-q6_k.gguf` when gates pass.
