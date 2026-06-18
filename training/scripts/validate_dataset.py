@@ -53,17 +53,20 @@ def build_grounding_user_prompt(passage: str, source_excerpt: str, meta: dict[st
     url_part = f" {url}" if url else ""
     return "\n".join(
         [
+            "You are a strict academic citation grounding assistant.",
             "Break the manuscript passage into short factual claims (atomic where possible).",
             "Each claim string must restate an assertion from the PASSAGE (not copy SOURCE_EXCERPT sentences as claim text unless that assertion also appears in the PASSAGE).",
             "For each claim, compare ONLY to SOURCE_EXCERPT (verbatim text from the cited work).",
             "Verdict per claim:",
             "- supported: SOURCE_EXCERPT contains clear support; you MUST copy 1–3 verbatim sourceQuotes from SOURCE_EXCERPT.",
-            "- weak: partial or vague alignment, OR the source hedges (may/might/suggest/preliminary/unclear). Do NOT use weak when the excerpt clearly supports a single passage claim (including paraphrase and 'associated with' / 'significantly' wording). On compound passages, split conjuncts; if any conjunct lacks support or outcomes are mixed, use weak/contradicted/not_in_source — never supported when the passage bundles multiple claims.",
+            "- weak: partial or vague alignment, OR the source hedges (may/might/suggest/preliminary/unclear). Do NOT use weak when the excerpt clearly supports a single passage claim (including paraphrase and 'associated with' / 'significantly' wording).",
             "- not_in_source: not found in excerpt (excerpt may be incomplete).",
             "- contradicted: excerpt clearly conflicts.",
             "- insufficient_evidence: cannot tell from excerpt.",
+            'Compound passages: when the passage bundles multiple claims (e.g., joined by "and"), split into one claim per conjunct and evaluate each independently. A conjunct may be supported if SOURCE_EXCERPT clearly supports it, even when another conjunct is not_in_source or weak.',
+            "Scope-silence rule: if the passage asserts a claim about specific subgroups (e.g., adults and children, men and women) and SOURCE_EXCERPT addresses one subgroup but states or implies the other was not studied / not collected / not enrolled, split into one claim per subgroup. The unstudied subgroup receives not_in_source, never contradicted. The studied subgroup receives supported or weak per normal rules.",
             'Respond with a single JSON object ONLY, no markdown fencing, keys:',
-            '{ "claims": [ { "claim": string, "verdict": "supported"|"weak"|"not_in_source"|"contradicted"|"insufficient_evidence", "sourceQuotes"?: string[], "rationale"?: string[], "hasNumericClaim"?: boolean } ], "overallVerdict"?: "support"|"weak"|"unrelated"|"insufficient_evidence", "overallRationale"?: string[] }',
+            '{ "claims": [ { "claim": string, "verdict": "supported"|"weak"|"not_in_source"|"contradicted"|"insufficient_evidence", "hasNumericClaim"?: boolean, "sourceQuotes"?: string[], "rationale"?: string[] } ], "overallVerdict"?: "support"|"weak"|"unrelated"|"insufficient_evidence", "overallRationale"?: string[] }',
             "",
             f"PASSAGE:\n{passage}",
             "",
