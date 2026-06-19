@@ -7,13 +7,16 @@
 # E4B v1.10 baseline:
 #   ARM=e4b PHASE=10 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
 #
-# E4B v1.12 recovery (default-tier ship target):
+# E4B v1.12 recovery (default-tier ship; A6000 ~100GB disk OK):
 #   ARM=e4b PHASE=12 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
 #
-# 12B quality tier (Tier 2):
+# 12B quality tier v1.12 (Tier 2; A100 80GB+ recommended — run after E4B v1.12 gates):
+#   ARM=12b PHASE=12 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
+#
+# 12B v1.10 baseline (historical A/B; Q4/Q6/Q8 ladder):
 #   ARM=12b PHASE=10 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
 #
-# 31B premium tier (Tier 2, same v1.12 data):
+# 31B optional experiment (Tier 2, same v1.12 data; after 12B on A100):
 #   ARM=31b PHASE=12 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
 #
 set -euo pipefail
@@ -85,18 +88,23 @@ case "$ARM" in
     GGUF_PUBLIC_BASENAME="nassila-sanad-e4b"
     ;;
   12b)
-    if [[ "$PHASE" != "10" ]]; then
-      echo "12B arm only supports PHASE=10 (got: $PHASE)" >&2
+    if [[ "$PHASE" != "10" && "$PHASE" != "12" ]]; then
+      echo "12B arm supports PHASE=10 (baseline) or PHASE=12 (quality ship); got: $PHASE" >&2
       exit 1
     fi
-    REPORTS_PREFIX="v1_10_12b_"
     TRAIN_SCRIPT=(python scripts/train_qlora_gemma4_12b.py --phase "$PHASE")
     BASE_MODEL="google/gemma-4-12B-it"
-    QUANTS=(Q4_K_M Q6_K Q8_0)
     OUTPUT_DIR="outputs/nassila-sanad-12b-${CHECKPOINT_SUFFIX}"
     MERGED_DIR="exports/hf-merged-sanad-12b-${CHECKPOINT_SUFFIX}-bf16"
     GGUF_F16="exports/nassila-sanad-12b-${CHECKPOINT_SUFFIX}-f16.gguf"
     GGUF_PUBLIC_BASENAME="nassila-sanad-12b"
+    if [[ "$PHASE" == "12" ]]; then
+      REPORTS_PREFIX="v12_12b_"
+      QUANTS=(Q6_K)
+    else
+      REPORTS_PREFIX="v1_10_12b_"
+      QUANTS=(Q4_K_M Q6_K Q8_0)
+    fi
     ;;
   31b)
     if [[ "$PHASE" != "12" ]]; then
@@ -217,7 +225,7 @@ for QUANT in "${QUANTS[@]}"; do
   wait "$SERVER_PID" 2>/dev/null || true
 done
 
-if [[ "$ARM" == "12b" && "$MULTI_SEED" == "1" && -f reports/ab_e4b_q6_k_v110/multi_seed_aggregate.json ]]; then
+if [[ "$ARM" == "12b" && "$PHASE" == "10" && "$MULTI_SEED" == "1" && -f reports/ab_e4b_q6_k_v110/multi_seed_aggregate.json ]]; then
   for QUANT in Q4_K_M Q6_K Q8_0; do
     QUANT_SUFFIX=$(echo "$QUANT" | tr '[:upper:]' '[:lower:]')
     CAND="reports/ab_12b_${QUANT_SUFFIX}_v110/multi_seed_aggregate.json"

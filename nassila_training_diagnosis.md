@@ -214,16 +214,22 @@ Multi-seed means (seeds 42/43/44) on `eval_holdout_90.jsonl` + combined 115-row 
 - **Tier 2:** full six gates — **12B v1.10 PASS**, **31B v1.12** target.
 - **v1.11 NO-GO:** 80.58% combined regression; do not publish.
 
-## v1.12 recovery (E4B + 31B premium — implemented locally 2026-06-17)
+## v1.12 recovery (E4B + 12B quality + optional 31B — implemented 2026-06-17)
 
-Prompt v1.12 (parity compound guardrail, scope rows `weak` only). Boost: `l3_grounding_v112_boost.jsonl` (23 rows). Train: `l3_grounding_train_v112.jsonl`. Gates: `tier_gates.py` → `e4b_default_gates` + `v110_baseline_beat`.
+Prompt v1.12 (parity compound guardrail, scope rows `weak` only). Boost: `l3_grounding_v112_boost.jsonl` (23 rows). Train: `l3_grounding_train_v112.jsonl`.
+
+**Instance plan:**
+
+1. **A6000 ~100 GB** — `ARM=e4b PHASE=12` → rsync `reports/ab_e4b_q6_k_v112/` → destroy
+2. **A100 80GB+** — `ARM=12b PHASE=12` (main quality tier) → optional `ARM=31b PHASE=12`
 
 ```bash
 ARM=e4b PHASE=12 MULTI_SEED=1 bash training/scripts/run_ab_pilot_pipeline.sh
-ARM=31b PHASE=12 MULTI_SEED=1 bash training/scripts/run_ab_pilot_pipeline.sh
+ARM=12b PHASE=12 MULTI_SEED=1 bash training/scripts/run_ab_pilot_pipeline.sh
+ARM=31b PHASE=12 MULTI_SEED=1 bash training/scripts/run_ab_pilot_pipeline.sh  # optional
 ```
 
-Walkthroughs: [`training/PHASE2_11_V112_WALKTHROUGH.md`](./training/PHASE2_11_V112_WALKTHROUGH.md), [`training/PHASE2_12_31B_PREMIUM_WALKTHROUGH.md`](./training/PHASE2_12_31B_PREMIUM_WALKTHROUGH.md).
+Walkthroughs: [`training/PHASE2_11_V112_WALKTHROUGH.md`](./training/PHASE2_11_V112_WALKTHROUGH.md), [`training/PHASE2_12_12B_QUALITY_WALKTHROUGH.md`](./training/PHASE2_12_12B_QUALITY_WALKTHROUGH.md), [`training/PHASE2_12_31B_PREMIUM_WALKTHROUGH.md`](./training/PHASE2_12_31B_PREMIUM_WALKTHROUGH.md).
 
 ## v1.11 fixes (E4B gap — trained, NO-GO)
 

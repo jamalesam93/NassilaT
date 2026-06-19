@@ -119,18 +119,28 @@ Multi-seed mean: **80.58%** combined, **77.19%** quote, **11.91%** false-support
 
 Reports: `reports/ab_e4b_q6_k_v111/`. **Keep v1.10 as best E4B** until v1.12 recovery passes.
 
-### v1.12 E4B recovery (operator — default-tier ship)
+### v1.12 E4B recovery (operator — A6000 ~100GB)
 
 ```bash
 ARM=e4b PHASE=12 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
 ```
 
-Train: `data/l3_grounding_train_v112.jsonl`. Walkthrough: [`PHASE2_11_V112_WALKTHROUGH.md`](./PHASE2_11_V112_WALKTHROUGH.md). Publish E4B when `e4b_default_gates` + `v110_baseline_beat` pass. **v1.10 already qualifies** on default-tier if you need to ship before v1.12 completes.
+Train: `data/l3_grounding_train_v112.jsonl`. Walkthrough: [`PHASE2_11_V112_WALKTHROUGH.md`](./PHASE2_11_V112_WALKTHROUGH.md). Rsync `reports/ab_e4b_q6_k_v112/` → destroy instance.
 
-### v1.12 31B premium (operator — Tier 2)
+### v1.12 12B quality (operator — A100, main product)
+
+Run **only after** E4B `v110_baseline_beat` passes.
+
+```bash
+ARM=12b PHASE=12 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
+```
+
+Walkthrough: [`PHASE2_12_12B_QUALITY_WALKTHROUGH.md`](./PHASE2_12_12B_QUALITY_WALKTHROUGH.md). Publish when `tier2_gates` pass.
+
+### v1.12 31B (optional — same A100 after 12B)
 
 ```bash
 ARM=31b PHASE=12 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
 ```
 
-Walkthrough: [`PHASE2_12_31B_PREMIUM_WALKTHROUGH.md`](./PHASE2_12_31B_PREMIUM_WALKTHROUGH.md). Publish when `tier2_gates.model_gates_passed` is true.
+Walkthrough: [`PHASE2_12_31B_PREMIUM_WALKTHROUGH.md`](./PHASE2_12_31B_PREMIUM_WALKTHROUGH.md).
