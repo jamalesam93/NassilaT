@@ -2,11 +2,21 @@
 
 Recovers from v1.11 regression. Spec: [`V112_RECOVERY_PLAN.md`](../V112_RECOVERY_PLAN.md). Policy: [`docs/DUAL_TIER_POLICY.md`](../docs/DUAL_TIER_POLICY.md).
 
+**12B quality train** is a **separate A100 instance** — see [`PHASE2_12_12B_QUALITY_WALKTHROUGH.md`](./PHASE2_12_12B_QUALITY_WALKTHROUGH.md).
+
 ## What changed vs v1.11
 
 1. **Prompt v1.12** — passage-number discipline + parity compound guardrail; scope rows use `weak` only.
 2. **Boost** — `l3_grounding_v112_boost.jsonl` (23 rows, 6 scope, all `weak` on studied subgroup).
 3. **Gates** — ship E4B on **E4B default-tier**, not Tier 2. Tier 2 remains for 12B/31B.
+
+## Instance (E4B only)
+
+| Field | Value |
+|-------|--------|
+| GPU | **A6000** (48 GB) or similar — sufficient for E4B QLoRA |
+| Disk | **~100 GB** OK for E4B (train + merge + Q6_K eval) |
+| Do **not** run 12B/31B on this disk — destroy after rsync |
 
 ## Local prep (done in repo)
 
@@ -36,10 +46,21 @@ ARM=e4b PHASE=12 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
 
 If v1.12 fails baseline beat, **keep shipping v1.10 E4B** — do not publish v1.11.
 
-## Rsync before destroy
+**Stop gate for 12B spend:** only rent A100 for 12B v1.12 after E4B `v110_baseline_beat` is met (confirms v1.12 recipe is safe).
 
-```bash
-scp -r root@<host>:/root/nassila/training/reports/ab_e4b_q6_k_v112 ./training/reports/
+## Rsync before destroy (required)
+
+```powershell
+scp -r -P <PORT> root@<host>:/root/nassila/training/reports/ab_e4b_q6_k_v112 "E:\Cursor Projects\NassilaT\training\reports\"
 ```
 
-Include `seed_*_predictions.jsonl` for forensics.
+Must include `seed_*_predictions.jsonl` for forensics.
+
+Optional disk cleanup on instance after quantize (if tight on 100 GB):
+
+```bash
+rm -f exports/nassila-sanad-e4b-v1.12-f16.gguf
+rm -rf exports/hf-merged-sanad-e4b-v1.12-bf16
+```
+
+Keep `reports/ab_e4b_q6_k_v112/` until rsync completes. GGUF upload to HF can wait until ship decision on PC.

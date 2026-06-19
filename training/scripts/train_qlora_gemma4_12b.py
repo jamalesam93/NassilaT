@@ -2,13 +2,17 @@
 """
 QLoRA fine-tuning for Nassila L3 grounding on Gemma 4 12B (A/B pilot arm).
 
-Same recipe as E4B (2 ep, 1e-4, LoRA r=16) on shared v1.10 data.
-Requires ~24GB+ GPU (Vast A5000/A6000/4090 with headroom).
+Same recipe as E4B (2 ep, 1e-4, LoRA r=16). v1.12 uses shared v1.12 data + prompt.
+Requires ~24GB+ GPU for QLoRA (Vast A6000/A100).
 
 Usage:
   python scripts/train_qlora_gemma4_12b.py --phase 10 \\
     --train-file data/l3_grounding_train_v110.jsonl \\
     --chat-file data/l3_grounding_chat_v110.jsonl
+
+  python scripts/train_qlora_gemma4_12b.py --phase 12 \\
+    --train-file data/l3_grounding_train_v112.jsonl \\
+    --chat-file data/l3_grounding_chat_v112.jsonl
 """
 
 from __future__ import annotations
@@ -41,6 +45,11 @@ PHASE_CONFIG = {
         "num_epochs": 2,
         "learning_rate": 1e-4,
         "output_name": "nassila-sanad-12b-v1.10-ab",
+    },
+    "12": {
+        "num_epochs": 2,
+        "learning_rate": 1e-4,
+        "output_name": "nassila-sanad-12b-v1.12",
     },
 }
 
