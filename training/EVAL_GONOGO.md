@@ -117,15 +117,23 @@ Harness: **115 rows** (90-row holdout). Multi-seed means (42/43/44).
 
 Multi-seed mean: **80.58%** combined, **77.19%** quote, **11.91%** false-supported. Root cause: relaxed compound `supported` + scope boost with `supported` studied subgroup. h-043 passes; h-045/h-088 still fail with forbidden `supported`.
 
-Reports: `reports/ab_e4b_q6_k_v111/`. **Keep v1.10 as best E4B** until v1.12 recovery passes.
+Reports: `reports/ab_e4b_q6_k_v111/`. Do not publish.
 
-### v1.12 E4B recovery (operator — A6000 ~100GB)
+### v1.12 E4B — **GO** (ship `nassila-sanad-e4b`, checkpoint v1.12)
 
-```bash
-ARM=e4b PHASE=12 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
-```
+Multi-seed mean (seeds 42/43/44, Q6_K, 115-row harness): **89.27%** combined, **92.98%** quote (holdout), **3.81%** false-supported (holdout).
 
-Train: `data/l3_grounding_train_v112.jsonl`. Walkthrough: [`PHASE2_11_V112_WALKTHROUGH.md`](./PHASE2_11_V112_WALKTHROUGH.md). Rsync `reports/ab_e4b_q6_k_v112/` → destroy instance.
+| Check | Result |
+|-------|--------|
+| `e4b_default_gates.model_gates_passed` | **true** (3/3 seeds) |
+| `v110_baseline_beat.all_met` | **true** (3/3 seeds) |
+| `tier2_gates.model_gates_passed` | false (expected for E4B) |
+
+Reports: `reports/ab_e4b_q6_k_v112/`. Walkthrough: [`PHASE2_11_V112_WALKTHROUGH.md`](./PHASE2_11_V112_WALKTHROUGH.md).
+
+**Publish:** `exports/nassila-sanad-e4b-q6_k.gguf` → `QinEmPeRoR93/nassila-sanad-e4b`. Model card: [`MODEL_CARD_sanad_e4b.md`](./MODEL_CARD_sanad_e4b.md).
+
+**12B v1.12 spend:** greenlit (`v110_baseline_beat` met).
 
 ### v1.12 12B quality (operator — A100, main product)
 
@@ -137,10 +145,10 @@ ARM=12b PHASE=12 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
 
 Walkthrough: [`PHASE2_12_12B_QUALITY_WALKTHROUGH.md`](./PHASE2_12_12B_QUALITY_WALKTHROUGH.md). Publish when `tier2_gates` pass.
 
-### v1.12 31B (optional — same A100 after 12B)
+### v1.13 12B multi_claim (operator — 12B only, after v1.12)
 
 ```bash
-ARM=31b PHASE=12 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
+ARM=12b PHASE=13 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
 ```
 
-Walkthrough: [`PHASE2_12_31B_PREMIUM_WALKTHROUGH.md`](./PHASE2_12_31B_PREMIUM_WALKTHROUGH.md).
+Boost: `l3_grounding_v113_boost.jsonl` (12 parity subgroup-split rows). Walkthrough: [`PHASE2_13_12B_MULTI_CLAIM_WALKTHROUGH.md`](./PHASE2_13_12B_MULTI_CLAIM_WALKTHROUGH.md). Target: h-045 + h-088 pass; `multi_claim` ≥80%.

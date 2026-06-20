@@ -13,6 +13,10 @@ Usage:
   python scripts/train_qlora_gemma4_12b.py --phase 12 \\
     --train-file data/l3_grounding_train_v112.jsonl \\
     --chat-file data/l3_grounding_chat_v112.jsonl
+
+  python scripts/train_qlora_gemma4_12b.py --phase 13 \\
+    --train-file data/l3_grounding_train_v113.jsonl \\
+    --chat-file data/l3_grounding_chat_v113.jsonl
 """
 
 from __future__ import annotations
@@ -50,6 +54,11 @@ PHASE_CONFIG = {
         "num_epochs": 2,
         "learning_rate": 1e-4,
         "output_name": "nassila-sanad-12b-v1.12",
+    },
+    "13": {
+        "num_epochs": 2,
+        "learning_rate": 1e-4,
+        "output_name": "nassila-sanad-12b-v1.13",
     },
 }
 
