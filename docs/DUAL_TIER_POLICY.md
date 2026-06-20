@@ -13,7 +13,7 @@
 
 **Operator instances:** E4B v1.12 on **A6000 ~100 GB**; 12B (+ optional 31B) on **A100 80GB+ / ≥200–500 GB disk**.
 
-**Do not conflate:** Tier 2 is the **quality/premium** bar. E4B ships on the **default-tier** bar anchored to v1.10 observed capacity.
+**Do not conflate:** Tier 2 is the **quality/premium** bar. E4B ships on the **default-tier** bar (v1.12 checkpoint **GO** as of 2026-06-19).
 
 ## E4B default-tier gates (`tier_gates.py`)
 
@@ -26,9 +26,9 @@
 | Quote validity (holdout) | ≥ **88%** | 89.47% |
 | False supported (holdout) | ≤ **7%** | 6.57% |
 
-**Ship `nassila-sanad-e4b` when:** `e4b_default_gates.model_gates_passed` is true on multi-seed eval.
+**Ship `nassila-sanad-e4b` when:** `e4b_default_gates.model_gates_passed` is true on multi-seed eval. **Current ship checkpoint: v1.12** (89.27% / 92.98% / 3.81% mean).
 
-**v1.12 recovery minimum:** `v110_baseline_beat.all_met` — must not regress below v1.10 on combined, quote, or false-supported (even if default-tier passes).
+**v1.12 recovery minimum:** `v110_baseline_beat.all_met` — must not regress below v1.10 on combined, quote, or false-supported. **Met on all seeds (2026-06-19).**
 
 ## Tier 2 gates (12B / 31B premium)
 
@@ -45,7 +45,7 @@ Unchanged — see Nassila `docs/OUROBOROS_CONTEXT.md` §10:
 
 ## v1.11 lesson
 
-Do **not** require E4B to pass Tier 2. v1.11 chased Tier 2 via relaxed compound `supported` rules and regressed to **80.58%** combined. **v1.10 remains the E4B reference checkpoint** until v1.12 beats it on the default-tier + baseline beat bar.
+Do **not** require E4B to pass Tier 2. v1.11 chased Tier 2 via relaxed compound `supported` rules and regressed to **80.58%** combined. **v1.12 recovered and ships** — beats v1.10 on combined, quote, and false-supported.
 
 ## Train / eval commands
 
@@ -54,14 +54,14 @@ Do **not** require E4B to pass Tier 2. v1.11 chased Tier 2 via relaxed compound 
 ARM=e4b PHASE=12 MULTI_SEED=1 bash training/scripts/run_ab_pilot_pipeline.sh
 # → rsync reports/ab_e4b_q6_k_v112/ → destroy
 
-# Instance 2 — A100 80GB+: 12B v1.12 quality (Tier 2) — run only if E4B baseline beat passes
+# Instance 2 — A100: 12B v1.12 quality (Tier 2 PASS recorded)
 ARM=12b PHASE=12 MULTI_SEED=1 bash training/scripts/run_ab_pilot_pipeline.sh
 
-# Same A100 — 31B optional experiment (after 12B)
-ARM=31b PHASE=12 MULTI_SEED=1 bash training/scripts/run_ab_pilot_pipeline.sh
+# Instance 3 — A100: 12B v1.13 multi_claim (h-045 / h-088) — 12B only
+ARM=12b PHASE=13 MULTI_SEED=1 bash training/scripts/run_ab_pilot_pipeline.sh
 ```
 
-Walkthroughs: [`PHASE2_11_V112_WALKTHROUGH.md`](training/PHASE2_11_V112_WALKTHROUGH.md) (E4B), [`PHASE2_12_12B_QUALITY_WALKTHROUGH.md`](training/PHASE2_12_12B_QUALITY_WALKTHROUGH.md) (12B), [`PHASE2_12_31B_PREMIUM_WALKTHROUGH.md`](training/PHASE2_12_31B_PREMIUM_WALKTHROUGH.md) (31B optional).
+Walkthroughs: [`PHASE2_11_V112_WALKTHROUGH.md`](training/PHASE2_11_V112_WALKTHROUGH.md) (E4B), [`PHASE2_12_12B_QUALITY_WALKTHROUGH.md`](training/PHASE2_12_12B_QUALITY_WALKTHROUGH.md) (12B v1.12), [`PHASE2_13_12B_MULTI_CLAIM_WALKTHROUGH.md`](training/PHASE2_13_12B_MULTI_CLAIM_WALKTHROUGH.md) (12B v1.13).
 
 ## App inference note
 

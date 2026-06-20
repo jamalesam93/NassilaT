@@ -208,28 +208,35 @@ Multi-seed means (seeds 42/43/44) on `eval_holdout_90.jsonl` + combined 115-row 
 
 **HF (operator):** adapters private — `QinEmPeRoR93/nassila-sanad-12b-adapter`, `QinEmPeRoR93/nassila-sanad-e4b-adapter`, `QinEmPeRoR93/nassila-sanad-31b-adapter` (v1.12); GGUF — `nassila-sanad-12b` (private), `nassila-sanad-e4b` (default-tier), `nassila-sanad-31b` (premium, Tier 2). Policy: [`docs/DUAL_TIER_POLICY.md`](./docs/DUAL_TIER_POLICY.md). See [`training/PHASE2_9_AB_PILOT_WALKTHROUGH.md`](./training/PHASE2_9_AB_PILOT_WALKTHROUGH.md) Part 9.
 
-## Dual-tier ship policy (2026-06-17)
+## Dual-tier ship policy (2026-06-19)
 
-- **E4B default-tier:** combined ≥88%, quote ≥88%, false-supported ≤7% (+ JSON/legacy gates). **v1.10 PASS** — shippable as `nassila-sanad-e4b`.
-- **Tier 2:** full six gates — **12B v1.10 PASS**, **31B v1.12** target.
-- **v1.11 NO-GO:** 80.58% combined regression; do not publish.
+- **E4B default-tier:** combined ≥88%, quote ≥88%, false-supported ≤7% (+ JSON/legacy gates). **v1.12 PASS** — ship as `nassila-sanad-e4b` (89.27% / 92.98% / 3.81% mean). v1.10 superseded; v1.11 do not publish.
+- **Tier 2:** full six gates — **12B v1.10 PASS** (fallback); **12B v1.12** main quality target; **31B v1.12** optional premium.
 
-## v1.12 recovery (E4B + 12B quality + optional 31B — implemented 2026-06-17)
+## v1.12 E4B result (2026-06-19 — **GO**)
 
-Prompt v1.12 (parity compound guardrail, scope rows `weak` only). Boost: `l3_grounding_v112_boost.jsonl` (23 rows). Train: `l3_grounding_train_v112.jsonl`.
+Multi-seed mean (Q6_K, 115-row harness): **89.27%** combined, **92.98%** quote, **3.81%** false-supported. All seeds: `e4b_default_gates` + `v110_baseline_beat` pass. Reports: `reports/ab_e4b_q6_k_v112/`.
 
-**Instance plan:**
+## v1.12 results (2026-06-19)
 
-1. **A6000 ~100 GB** — `ARM=e4b PHASE=12` → rsync `reports/ab_e4b_q6_k_v112/` → destroy
-2. **A100 80GB+** — `ARM=12b PHASE=12` (main quality tier) → optional `ARM=31b PHASE=12`
+| Arm | Combined | Quote | False sup | Gate |
+|-----|----------|-------|-----------|------|
+| E4B v1.12 Q6_K | 89.27% | 92.98% | 3.81% | **E4B default PASS** |
+| 12B v1.12 Q6_K | 94.20% | 100% | 2.86% | **Tier 2 PASS** |
+
+Reports: `reports/ab_e4b_q6_k_v112/`, `reports/ab_12b_q6_k_v112/`. 12B h-043 pass; h-045 / h-088 still fail (`multi_claim` 69.23%).
+
+## v1.13 — 12B multi_claim boost (next)
+
+12 rows `l3_grounding_v113_boost.jsonl` (`v113_parity_subgroup_split`). **12B only** — no E4B train, no prompt change.
 
 ```bash
-ARM=e4b PHASE=12 MULTI_SEED=1 bash training/scripts/run_ab_pilot_pipeline.sh
-ARM=12b PHASE=12 MULTI_SEED=1 bash training/scripts/run_ab_pilot_pipeline.sh
-ARM=31b PHASE=12 MULTI_SEED=1 bash training/scripts/run_ab_pilot_pipeline.sh  # optional
+ARM=12b PHASE=13 MULTI_SEED=1 bash training/scripts/run_ab_pilot_pipeline.sh
 ```
 
-Walkthroughs: [`training/PHASE2_11_V112_WALKTHROUGH.md`](./training/PHASE2_11_V112_WALKTHROUGH.md), [`training/PHASE2_12_12B_QUALITY_WALKTHROUGH.md`](./training/PHASE2_12_12B_QUALITY_WALKTHROUGH.md), [`training/PHASE2_12_31B_PREMIUM_WALKTHROUGH.md`](./training/PHASE2_12_31B_PREMIUM_WALKTHROUGH.md).
+Walkthrough: [`training/PHASE2_13_12B_MULTI_CLAIM_WALKTHROUGH.md`](./training/PHASE2_13_12B_MULTI_CLAIM_WALKTHROUGH.md).
+
+## v1.12 recovery (archive)
 
 ## v1.11 fixes (E4B gap — trained, NO-GO)
 

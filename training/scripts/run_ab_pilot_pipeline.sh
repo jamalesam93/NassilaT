@@ -10,8 +10,8 @@
 # E4B v1.12 recovery (default-tier ship; A6000 ~100GB disk OK):
 #   ARM=e4b PHASE=12 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
 #
-# 12B quality tier v1.12 (Tier 2; A100 80GB+ recommended — run after E4B v1.12 gates):
-#   ARM=12b PHASE=12 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
+# 12B v1.13 multi_claim boost (12B only — h-045 / h-088 parity splits):
+#   ARM=12b PHASE=13 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
 #
 # 12B v1.10 baseline (historical A/B; Q4/Q6/Q8 ladder):
 #   ARM=12b PHASE=10 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
@@ -70,14 +70,30 @@ case "$PHASE" in
       --out "$TRAIN_FILE"
     )
     ;;
+  13)
+    TRAIN_FILE="data/l3_grounding_train_v113.jsonl"
+    CHAT_FILE="data/l3_grounding_chat_v113.jsonl"
+    CHECKPOINT_SUFFIX="v1.13"
+    REPORT_SUFFIX="v113"
+    PREPARE_CMD=(
+      python scripts/prepare_v15_train.py
+      --base data/l3_grounding_train_v14a.jsonl
+      --boost data/l3_grounding_v16_boost.jsonl data/l3_grounding_v18_boost.jsonl data/l3_grounding_v110_boost.jsonl data/l3_grounding_v112_boost.jsonl data/l3_grounding_v113_boost.jsonl
+      --out "$TRAIN_FILE"
+    )
+    ;;
   *)
-    echo "PHASE must be 10, 11, or 12 (got: $PHASE)" >&2
+    echo "PHASE must be 10, 11, 12, or 13 (got: $PHASE)" >&2
     exit 1
     ;;
 esac
 
 case "$ARM" in
   e4b)
+    if [[ "$PHASE" == "13" ]]; then
+      echo "PHASE=13 is 12B-only (v1.13 multi_claim boost); use ARM=12b" >&2
+      exit 1
+    fi
     REPORTS_PREFIX="v${PHASE}_"
     TRAIN_SCRIPT=(python scripts/train_qlora_gemma4_e4b.py --phase "$PHASE")
     BASE_MODEL="google/gemma-4-E4B-it"
@@ -88,8 +104,8 @@ case "$ARM" in
     GGUF_PUBLIC_BASENAME="nassila-sanad-e4b"
     ;;
   12b)
-    if [[ "$PHASE" != "10" && "$PHASE" != "12" ]]; then
-      echo "12B arm supports PHASE=10 (baseline) or PHASE=12 (quality ship); got: $PHASE" >&2
+    if [[ "$PHASE" != "10" && "$PHASE" != "12" && "$PHASE" != "13" ]]; then
+      echo "12B arm supports PHASE=10 (baseline), 12 (quality), or 13 (multi_claim boost); got: $PHASE" >&2
       exit 1
     fi
     TRAIN_SCRIPT=(python scripts/train_qlora_gemma4_12b.py --phase "$PHASE")
@@ -98,12 +114,12 @@ case "$ARM" in
     MERGED_DIR="exports/hf-merged-sanad-12b-${CHECKPOINT_SUFFIX}-bf16"
     GGUF_F16="exports/nassila-sanad-12b-${CHECKPOINT_SUFFIX}-f16.gguf"
     GGUF_PUBLIC_BASENAME="nassila-sanad-12b"
-    if [[ "$PHASE" == "12" ]]; then
-      REPORTS_PREFIX="v12_12b_"
-      QUANTS=(Q6_K)
-    else
+    if [[ "$PHASE" == "10" ]]; then
       REPORTS_PREFIX="v1_10_12b_"
       QUANTS=(Q4_K_M Q6_K Q8_0)
+    else
+      REPORTS_PREFIX="v${PHASE}_12b_"
+      QUANTS=(Q6_K)
     fi
     ;;
   31b)

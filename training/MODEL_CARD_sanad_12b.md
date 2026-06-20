@@ -19,19 +19,31 @@ library_name: llama.cpp
 
 # Nassila Sanad 12B
 
-*Ship target: **v1.12** · fallback reference: v1.10 (Tier 2 PASS on pre-gold-fix harness)*
+*Ship: **v1.12** Tier 2 PASS · **v1.13** pending (h-045 / h-088 boost)*
 
-**Main quality tier** — Gemma 4 12B Q6_K (~9 GB). Same v1.12 data + prompt as E4B recovery. Default fast tier: [`nassila-sanad-e4b`](https://huggingface.co/QinEmPeRoR93/nassila-sanad-e4b).
+**Main quality tier** — Gemma 4 12B Q6_K (~9 GB). Same v1.12 data + prompt as E4B recovery. Default fast tier: [`nassila-sanad-e4b`](https://huggingface.co/QinEmPeRoR93/nassila-sanad-e4b) (**v1.12 ship**).
 
-## v1.12 train (operator — A100)
+## v1.12 eval (115-row harness, multi-seed mean — 2026-06-19)
+
+| Gate | Result | Target |
+|------|--------|--------|
+| Combined expect pass | **94.20%** | ≥90% |
+| Quote validity (holdout) | **100%** | ≥98% |
+| False supported (holdout) | **2.86%** | ≤5% |
+| multi_claim (holdout) | **69.23%** | (not ship gate) |
+| **Tier 2** | **PASS** (3/3 seeds) | all six |
+
+Reports: `training/reports/ab_12b_q6_k_v112/`. h-043 pass; h-045 / h-088 still fail (bundled single claim).
+
+## v1.13 train (operator — 12B only, multi_claim boost)
 
 ```bash
-ARM=12b PHASE=12 MULTI_SEED=1 bash training/scripts/run_ab_pilot_pipeline.sh
+ARM=12b PHASE=13 MULTI_SEED=1 bash training/scripts/run_ab_pilot_pipeline.sh
 ```
 
-Walkthrough: [`PHASE2_12_12B_QUALITY_WALKTHROUGH.md`](https://github.com/jamalesam93/NassilaT/blob/main/training/PHASE2_12_12B_QUALITY_WALKTHROUGH.md). Run after E4B v1.12 `v110_baseline_beat` passes.
+Walkthrough: [`PHASE2_13_12B_MULTI_CLAIM_WALKTHROUGH.md`](https://github.com/jamalesam93/NassilaT/blob/main/training/PHASE2_13_12B_MULTI_CLAIM_WALKTHROUGH.md). Target: h-045 + h-088 pass; `multi_claim` ≥80%.
 
-## v1.10 reference metrics (115-row harness, multi-seed mean)
+## v1.10 reference (pre-gold-fix harness)
 
 | Gate | Result | Target |
 |------|--------|--------|
