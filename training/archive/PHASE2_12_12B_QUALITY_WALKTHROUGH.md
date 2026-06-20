@@ -2,7 +2,7 @@
 
 **Co-equal with E4B v1.12** — same data, prompt, and boost as E4B recovery. Targets **Tier 2** on the 115-row harness (corrected v1.11 gold).
 
-Policy: [`docs/DUAL_TIER_POLICY.md`](../docs/DUAL_TIER_POLICY.md). Spec: [`V112_RECOVERY_PLAN.md`](../V112_RECOVERY_PLAN.md).
+Policy: [`docs/DUAL_TIER_POLICY.md`](../../docs/DUAL_TIER_POLICY.md). Spec: [`V112_RECOVERY_PLAN.md`](./V112_RECOVERY_PLAN.md).
 
 ## Instance
 
@@ -10,7 +10,7 @@ Policy: [`docs/DUAL_TIER_POLICY.md`](../docs/DUAL_TIER_POLICY.md). Spec: [`V112_
 |-------|--------|
 | GPU | **A100 80GB+** (or A6000 48GB if 12B only) |
 | Disk | **≥200 GB** recommended (12B merge + F16 + Q6_K + base cache) |
-| Prerequisite | **E4B v1.12** finished on PC; `e4b_default_gates` + `v110_baseline_beat` pass before spending on 12B |
+| Prerequisite | **E4B v1.12 GO (2026-06-19)** — `e4b_default_gates` + `v110_baseline_beat` met on all seeds |
 
 Do **not** run 12B v1.12 on the same **100 GB** disk used for E4B-only — 12B HF merge + F16 GGUF needs more headroom.
 

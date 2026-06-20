@@ -10,8 +10,11 @@
 # E4B v1.12 recovery (default-tier ship; A6000 ~100GB disk OK):
 #   ARM=e4b PHASE=12 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
 #
-# 12B v1.13 multi_claim boost (12B only — h-045 / h-088 parity splits):
+# 12B v1.13 multi_claim boost (12B only — failed; do not publish):
 #   ARM=12b PHASE=13 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
+#
+# 12B v1.14 recovery (cap 874 + v114 counterbalance; see docs/V113_12B_REGRESSION_FIX_REPORT.md):
+#   ARM=12b PHASE=14 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
 #
 # 12B v1.10 baseline (historical A/B; Q4/Q6/Q8 ladder):
 #   ARM=12b PHASE=10 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
@@ -42,6 +45,7 @@ case "$PHASE" in
     PREPARE_CMD=(
       python scripts/prepare_v15_train.py
       --base data/l3_grounding_train_v14a.jsonl
+      --max-rows 850
       --boost data/l3_grounding_v16_boost.jsonl data/l3_grounding_v18_boost.jsonl data/l3_grounding_v110_boost.jsonl
       --out "$TRAIN_FILE"
     )
@@ -54,6 +58,7 @@ case "$PHASE" in
     PREPARE_CMD=(
       python scripts/prepare_v15_train.py
       --base data/l3_grounding_train_v14a.jsonl
+      --max-rows 850
       --boost data/l3_grounding_v16_boost.jsonl data/l3_grounding_v18_boost.jsonl data/l3_grounding_v110_boost.jsonl data/l3_grounding_v111_boost.jsonl
       --out "$TRAIN_FILE"
     )
@@ -66,6 +71,7 @@ case "$PHASE" in
     PREPARE_CMD=(
       python scripts/prepare_v15_train.py
       --base data/l3_grounding_train_v14a.jsonl
+      --max-rows 850
       --boost data/l3_grounding_v16_boost.jsonl data/l3_grounding_v18_boost.jsonl data/l3_grounding_v110_boost.jsonl data/l3_grounding_v112_boost.jsonl
       --out "$TRAIN_FILE"
     )
@@ -78,20 +84,33 @@ case "$PHASE" in
     PREPARE_CMD=(
       python scripts/prepare_v15_train.py
       --base data/l3_grounding_train_v14a.jsonl
+      --max-rows 850
       --boost data/l3_grounding_v16_boost.jsonl data/l3_grounding_v18_boost.jsonl data/l3_grounding_v110_boost.jsonl data/l3_grounding_v112_boost.jsonl data/l3_grounding_v113_boost.jsonl
       --out "$TRAIN_FILE"
     )
     ;;
+  14)
+    TRAIN_FILE="data/l3_grounding_train_v114.jsonl"
+    CHAT_FILE="data/l3_grounding_chat_v114.jsonl"
+    CHECKPOINT_SUFFIX="v1.14"
+    REPORT_SUFFIX="v114"
+    PREPARE_CMD=(
+      python scripts/prepare_v15_train.py
+      --base data/l3_grounding_train_v14a.jsonl
+      --boost data/l3_grounding_v16_boost.jsonl data/l3_grounding_v18_boost.jsonl data/l3_grounding_v110_boost.jsonl data/l3_grounding_v112_boost.jsonl data/l3_grounding_v113_boost.jsonl data/l3_grounding_v114_boost.jsonl
+      --out "$TRAIN_FILE"
+    )
+    ;;
   *)
-    echo "PHASE must be 10, 11, 12, or 13 (got: $PHASE)" >&2
+    echo "PHASE must be 10, 11, 12, 13, or 14 (got: $PHASE)" >&2
     exit 1
     ;;
 esac
 
 case "$ARM" in
   e4b)
-    if [[ "$PHASE" == "13" ]]; then
-      echo "PHASE=13 is 12B-only (v1.13 multi_claim boost); use ARM=12b" >&2
+    if [[ "$PHASE" == "13" || "$PHASE" == "14" ]]; then
+      echo "PHASE=${PHASE} is 12B-only (v1.13/v1.14 multi_claim); use ARM=12b" >&2
       exit 1
     fi
     REPORTS_PREFIX="v${PHASE}_"
@@ -104,8 +123,8 @@ case "$ARM" in
     GGUF_PUBLIC_BASENAME="nassila-sanad-e4b"
     ;;
   12b)
-    if [[ "$PHASE" != "10" && "$PHASE" != "12" && "$PHASE" != "13" ]]; then
-      echo "12B arm supports PHASE=10 (baseline), 12 (quality), or 13 (multi_claim boost); got: $PHASE" >&2
+    if [[ "$PHASE" != "10" && "$PHASE" != "12" && "$PHASE" != "13" && "$PHASE" != "14" ]]; then
+      echo "12B arm supports PHASE=10 (baseline), 12 (quality), 13 (multi_claim boost), or 14 (v1.14 recovery); got: $PHASE" >&2
       exit 1
     fi
     TRAIN_SCRIPT=(python scripts/train_qlora_gemma4_12b.py --phase "$PHASE")

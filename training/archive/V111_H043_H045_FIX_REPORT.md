@@ -4,7 +4,7 @@
 > **Source of truth:** `training/data/eval_holdout_90.jsonl`, `training/scripts/evaluate_outputs.py`, and the actual multi-seed predictions under `training/reports/ab_*/seed_*_predictions.jsonl`.
 > **Date:** 2026-06-18.
 
-**Implementation status (2026-06-17):** Steps 1–3 complete locally. Eval gold fixed; v1.10 regrade confirms h-043 pass (seeds 42–44: combined 87.83% / 89.56% / 89.56%); h-045 still fail. Prompt scope-silence + per-conjunct compound rule synced (TS + Python + golden fixture). v111 boost expanded to 29 rows (12 scope-split); train v111 rebuilt (contamination 0). **Pending:** Vast `ARM=e4b PHASE=11 MULTI_SEED=1` — see [`training/PHASE2_10_V111_WALKTHROUGH.md`](training/PHASE2_10_V111_WALKTHROUGH.md).
+**Implementation status (2026-06-17):** Steps 1–3 complete locally. Eval gold fixed; v1.10 regrade confirms h-043 pass (seeds 42–44: combined 87.83% / 89.56% / 89.56%); h-045 still fail. Prompt scope-silence + per-conjunct compound rule synced (TS + Python + golden fixture). v111 boost expanded to 29 rows (12 scope-split); train v111 rebuilt (contamination 0). **Pending:** Vast `ARM=e4b PHASE=11 MULTI_SEED=1` — see [`training/archive/PHASE2_10_V111_WALKTHROUGH.md`](training/archive/PHASE2_10_V111_WALKTHROUGH.md).
 
 ---
 

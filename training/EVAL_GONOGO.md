@@ -2,7 +2,7 @@
 
 **Canonical gates:** [Nassila `docs/OUROBOROS_CONTEXT.md` §10](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md). Do not duplicate thresholds here — use §10 and `scripts/tier_gates.py`.
 
-**Checkpoint:** `nassila-grounding-e4b-v1.4a` (Tier 1). **Ship target:** Tier 2 model gates + Tier 2b app guardrail.
+**Ship checkpoints:** E4B **v1.12** (default-tier), 12B **v1.12** (Tier 2). **Current train:** v1.14+ multi_claim loop. See [`POST_V113_MAP.md`](./POST_V113_MAP.md).
 
 ## Baseline reference
 
@@ -129,26 +129,33 @@ Multi-seed mean (seeds 42/43/44, Q6_K, 115-row harness): **89.27%** combined, **
 | `v110_baseline_beat.all_met` | **true** (3/3 seeds) |
 | `tier2_gates.model_gates_passed` | false (expected for E4B) |
 
-Reports: `reports/ab_e4b_q6_k_v112/`. Walkthrough: [`PHASE2_11_V112_WALKTHROUGH.md`](./PHASE2_11_V112_WALKTHROUGH.md).
+Reports: `reports/ab_e4b_q6_k_v112/`. Walkthrough (archive): [`archive/PHASE2_11_V112_WALKTHROUGH.md`](./archive/PHASE2_11_V112_WALKTHROUGH.md).
 
 **Publish:** `exports/nassila-sanad-e4b-q6_k.gguf` → `QinEmPeRoR93/nassila-sanad-e4b`. Model card: [`MODEL_CARD_sanad_e4b.md`](./MODEL_CARD_sanad_e4b.md).
 
 **12B v1.12 spend:** greenlit (`v110_baseline_beat` met).
 
-### v1.12 12B quality (operator — A100, main product)
+### v1.12 12B quality — **GO** (ship quality tier)
 
-Run **only after** E4B `v110_baseline_beat` passes.
+Multi-seed mean (Q6_K): **94.20%** combined, **100%** quote, **2.86%** false-supported. **Tier 2 PASS** (3/3 seeds). Reports: `reports/ab_12b_q6_k_v112/`.
 
-```bash
-ARM=12b PHASE=12 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
-```
+**Publish:** `exports/nassila-sanad-12b-q6_k.gguf` → `QinEmPeRoR93/nassila-sanad-12b`. h-045 / h-088 still fail (`multi_claim` 69.23%); known limitation, not a Tier 2 blocker.
 
-Walkthrough: [`PHASE2_12_12B_QUALITY_WALKTHROUGH.md`](./PHASE2_12_12B_QUALITY_WALKTHROUGH.md). Publish when `tier2_gates` pass.
+### v1.13 12B multi_claim — **NO-GO** (do not publish)
 
-### v1.13 12B multi_claim (operator — 12B only, after v1.12)
+Trained 2026-06; reports: `reports/ab_12b_q6_k_v113/`.
 
-```bash
-ARM=12b PHASE=13 MULTI_SEED=1 bash scripts/run_ab_pilot_pipeline.sh
-```
+| Metric | v1.12 | v1.13 mean | Tier 2 |
+|--------|-------|------------|--------|
+| Combined expect | 94.20% | **88.99%** | ≥90% FAIL |
+| Quote (holdout) | 100% | **94.74%** | ≥98% FAIL |
+| JSON parse (repair) | 100% | **~95.7%** | ≥98% FAIL |
+| Tier 2 pass | 3/3 | **0/3** | FAIL |
 
-Boost: `l3_grounding_v113_boost.jsonl` (12 parity subgroup-split rows). Walkthrough: [`PHASE2_13_12B_MULTI_CLAIM_WALKTHROUGH.md`](./PHASE2_13_12B_MULTI_CLAIM_WALKTHROUGH.md). Target: h-045 + h-088 pass; `multi_claim` ≥80%.
+**h-045 / h-088:** regressed from bundled `min_claims` fail (v1.12) to **`parse_json`** (`No JSON object`) on all seeds — boost did not fix splits; destabilized outputs.
+
+**Keep shipping 12B v1.12.** Do not publish v1.13 GGUF. Walkthrough (archive): [`archive/PHASE2_13_12B_MULTI_CLAIM_WALKTHROUGH.md`](./archive/PHASE2_13_12B_MULTI_CLAIM_WALKTHROUGH.md).
+
+### v1.14+ 12B multi_claim — **in progress**
+
+See [`POST_V113_MAP.md`](./POST_V113_MAP.md) and [`PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md`](./PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md). Append GO/NO-GO here after each Vast run.

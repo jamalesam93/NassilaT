@@ -4,8 +4,9 @@ Build the v1.x Sanad QLoRA train file (default: v1.6).
 
 Merges the v1.4a base rows with a targeted, decontaminated boost set
 (paraphrase-supported, quote-fidelity, contrastive not_in_source, weak,
-insufficient_evidence, multi-claim partial). Keeps the ~850 row budget
-(OUROBOROS_CONTEXT §11) and HARD-FAILS on train/eval contamination.
+insufficient_evidence, multi-claim partial). Default cap 874 rows (v1.14+);
+pass --max-rows 850 to reproduce v1.12/v1.13 merges.
+(default 874 for v1.14+; pass --max-rows 850 to reproduce v1.12/v1.13 cap) and HARD-FAILS on train/eval contamination.
 
 Usage:
   python scripts/prepare_v15_train.py --base data/l3_grounding_train_v14a.jsonl
@@ -31,7 +32,7 @@ DEFAULT_BASE = TRAINING_DIR / "data" / "l3_grounding_train_v14a.jsonl"
 FALLBACK_BASE = TRAINING_DIR / "data" / "l3_grounding_train.jsonl"
 BOOST_FILE = TRAINING_DIR / "data" / "l3_grounding_v16_boost.jsonl"
 DEFAULT_OUT = TRAINING_DIR / "data" / "l3_grounding_train_v16.jsonl"
-MAX_ROWS = 850
+MAX_ROWS = 874
 
 # Any base row whose id starts with a boost-version prefix is replaced by the boost set.
 BOOST_REPLACE_PREFIXES = ("l3-v15-", "l3-v16-", "l3-v17-", "l3-v18-", "l3-v19-")

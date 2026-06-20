@@ -1,6 +1,6 @@
 # Phase 2.10 — E4B v1.11 (h-043 / h-045 fix)
 
-Closes the E4B Tier 2 gap on the **115-row harness** after v1.10 A/B. Implementation spec: [`V111_H043_H045_FIX_REPORT.md`](../V111_H043_H045_FIX_REPORT.md).
+Closes the E4B Tier 2 gap on the **115-row harness** after v1.10 A/B. Implementation spec: [`V111_H043_H045_FIX_REPORT.md`](./V111_H043_H045_FIX_REPORT.md).
 
 **Local prep (done):** eval gold fix, prompt scope-silence sync, v111 boost expanded (29 rows → 12 scope-split), `l3_grounding_train_v111.jsonl` + `l3_grounding_chat_v111.jsonl` (contamination 0).
 

@@ -1,6 +1,7 @@
 # Nassila L3 grounding — training diagnosis
 
-> **Canonical themes** for Sanad (`l3_grounding`) v1.0–v1.6. Summarized in [Nassila `docs/OUROBOROS_CONTEXT.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md) §9. Full holdout matrix: [`training/reports/holdout_failure_matrix.md`](./training/reports/holdout_failure_matrix.md).
+> **Operator map:** [`training/POST_V113_MAP.md`](./training/POST_V113_MAP.md) · **GO/NO-GO:** [`training/EVAL_GONOGO.md`](./training/EVAL_GONOGO.md)  
+> **Canonical themes** below for Sanad v1.0–v1.6; v1.10+ decisions in EVAL_GONOGO. Holdout matrix: [`training/reports/holdout_failure_matrix.md`](./training/reports/holdout_failure_matrix.md).
 
 ## Whack-a-mole (v1.0–v1.3)
 
@@ -226,17 +227,25 @@ Multi-seed mean (Q6_K, 115-row harness): **89.27%** combined, **92.98%** quote, 
 
 Reports: `reports/ab_e4b_q6_k_v112/`, `reports/ab_12b_q6_k_v112/`. 12B h-043 pass; h-045 / h-088 still fail (`multi_claim` 69.23%).
 
-## v1.13 — 12B multi_claim boost (next)
+## v1.13 — 12B multi_claim boost (**NO-GO**, 2026-06)
 
-12 rows `l3_grounding_v113_boost.jsonl` (`v113_parity_subgroup_split`). **12B only** — no E4B train, no prompt change.
+12 rows `l3_grounding_v113_boost.jsonl` (`v113_parity_subgroup_split`). **12B only** — no E4B train, no prompt change. Reports: `reports/ab_12b_q6_k_v113/`.
 
-```bash
-ARM=12b PHASE=13 MULTI_SEED=1 bash training/scripts/run_ab_pilot_pipeline.sh
-```
+| Metric | v1.12 | v1.13 mean |
+|--------|-------|------------|
+| Combined expect | 94.20% | **88.99%** |
+| Quote (holdout) | 100% | **94.74%** |
+| JSON parse (repair) | 100% | **~95.7%** |
+| Tier 2 | PASS (3/3) | **FAIL (0/3)** |
+| multi_claim | 69.23% | **64.10%** |
 
-Walkthrough: [`training/PHASE2_13_12B_MULTI_CLAIM_WALKTHROUGH.md`](./training/PHASE2_13_12B_MULTI_CLAIM_WALKTHROUGH.md).
+**Root cause:** regression vs v1.12 — not a split fix. **h-045 / h-088** worsened from single-claim `min_claims` fail to **`parse_json`** (`No JSON object` on all seeds). Likely boost overfit + possible partial GGUF from SSH drop during F16 export (re-eval with `SKIP_TRAIN=1` if verifying).
 
-## v1.12 recovery (archive)
+**Decision:** **Do not publish v1.13.** Keep **12B v1.12** as quality ship. Walkthrough (archive): [`training/archive/PHASE2_13_12B_MULTI_CLAIM_WALKTHROUGH.md`](./training/archive/PHASE2_13_12B_MULTI_CLAIM_WALKTHROUGH.md).
+
+## v1.14+ — next
+
+See [`training/POST_V113_MAP.md`](./training/POST_V113_MAP.md) and [`training/PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md`](./training/PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md).
 
 ## v1.11 fixes (E4B gap — trained, NO-GO)
 
@@ -258,4 +267,4 @@ Walkthrough: [`training/PHASE2_13_12B_MULTI_CLAIM_WALKTHROUGH.md`](./training/PH
 ARM=e4b PHASE=11 MULTI_SEED=1 bash training/scripts/run_ab_pilot_pipeline.sh
 ```
 
-Walkthrough: [`training/PHASE2_10_V111_WALKTHROUGH.md`](./training/PHASE2_10_V111_WALKTHROUGH.md). **Result: NO-GO** — see `reports/ab_e4b_q6_k_v111/`. Pursue v1.12 recovery instead.
+Walkthrough: [`training/archive/PHASE2_10_V111_WALKTHROUGH.md`](./training/PHASE2_10_V111_WALKTHROUGH.md). **Result: NO-GO** — see `reports/ab_e4b_q6_k_v111/`. Pursue v1.12 recovery instead.

@@ -87,4 +87,4 @@ python scripts/generate_l3_from_corpus.py --target-rows 400 --export-review data
 python scripts/validate_dataset.py data/l3_grounding_train.jsonl
 ```
 
-See [PHASE2_7_V1_4_WALKTHROUGH.md](./PHASE2_7_V1_4_WALKTHROUGH.md) for QLoRA on Vast.
+See [archive/PHASE2_7_V1_4_WALKTHROUGH.md](./archive/PHASE2_7_V1_4_WALKTHROUGH.md) for QLoRA on Vast.
