@@ -2,19 +2,20 @@
 
 **North star:** one local model identity (**Ouroboros**) for all Nassila AI tasks, forged **one worker at a time**. **Agent brief:** [Nassila `docs/OUROBOROS_CONTEXT.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md). Vision: [`docs/OUROBOROS.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS.md).
 
-**v1 ships only** worker **Sanad** (`l3_grounding`) → **`nassila-grounding-e4b-v1.4a`** (Gemma 4 E4B). Later workers merge into **`nassila-agent-*`**.
+**Current arc (Sanad):** E4B **v1.12** + 12B **v1.12** ship on HF. **v1.13 NO-GO** — iterate **v1.14+** on 12B for h-045/h-088. See [`POST_V113_MAP.md`](./POST_V113_MAP.md).
 
 ---
 
 ## Ouroboros phases (product + training)
 
 | Phase | Worker | Task id(s) | Artifact | Base model |
-|-------|-------|------------|----------|------------|
+|-------|--------|------------|----------|------------|
 | **0** | Baseline eval | `l3_grounding` | Stock Gemma 4 E4B Q6_K | E4B |
 | **0.5** | App guardrails | — | JSON repair, retry, caps | — (app code) |
 | **1** | Cloud QLoRA setup | `l3_grounding` | Smoke LoRA on Vast | E4B |
 | **1.5** | Paper corpus (PC) | — | `paper_corpus_enriched.jsonl` | — |
-| **2** | L3 dataset + train | `l3_grounding` | `nassila-grounding-e4b-v1` | E4B |
+| **2** | L3 Sanad train/eval | `l3_grounding` | `nassila-sanad-e4b` / `nassila-sanad-12b` | E4B / 12B |
+| **2b** | 12B multi_claim loop | `l3_grounding` | v1.14+ until h-045/h-088 fixed | 12B |
 | **3** | Manuscript ingest | `doc_extract` | Facet or agent merge | E4B → 12B |
 | **3b** | Cited PDF text | `source_pdf_extract` | Same | E4B |
 | **4** | Tables / figures | `table_figure_grounding` | `nassila-agent-e12b-v1` | 12B multimodal |
@@ -25,61 +26,30 @@
 
 ---
 
-## Phase 0 — Baseline (complete)
+## Phase 2 — Sanad ship status
 
-- Stock **Gemma 4 E4B Q6_K** in LM Studio
-- 50-row eval harness → **100% JSON with repair**, **82% expect pass**, ~**9.8 s/row**
-- **Go** for Phase 0.5 / Phase 1
+| Milestone | Status |
+|-----------|--------|
+| E4B v1.12 default-tier | **GO** — `nassila-sanad-e4b` |
+| 12B v1.12 Tier 2 | **GO** — `nassila-sanad-12b` |
+| 12B v1.13 multi_claim boost | **NO-GO** — do not publish |
+| 12B v1.14+ | **In progress** — [`PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md`](./PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md) |
+| Product Sanad UI | Nassila — deferred until model arc stable or v1.12 gaps accepted |
+| Tier 3 (full-text) | **Not met** — needs Masdar + harness |
 
----
-
-## Phase 0.5 — App guardrails (complete)
-
-Implemented in Nassila engine/renderer:
-
-- [`grounding-json-repair.ts`](../src/engine/manuscript/grounding-json-repair.ts)
-- Passage/excerpt caps (1500 / 4200 chars)
-- One LLM retry on parse failure
-- LM Studio preset (port 1234)
+Historical v1.0–v1.13 walkthroughs: [`archive/`](./archive/).
 
 ---
 
-## Phase 1 — Environment + smoke QLoRA (complete)
-
-**Goal:** Prove 4-bit load + one training step on cloud GPU.
-
-| Step | Doc |
-|------|-----|
-| Vast + RTX 4090 + WSL2 | [`PHASE1_VAST_4090_WALKTHROUGH.md`](./PHASE1_VAST_4090_WALKTHROUGH.md) |
-
-**Exit:** Smoke adapter saved (HF `nassila-grounding-phase1-smoke`).
-
----
-
-## Phase 1.5 — Paper corpus (PC-only, in progress)
-
-**Goal:** Merge JSON exports, backfill abstracts, grow library as you add more JSON files.
+## Phase 1.5 — Paper corpus (in progress)
 
 | Step | Doc / script |
 |------|----------------|
 | Ingest | [`CORPUS_PIPELINE.md`](./CORPUS_PIPELINE.md), `scripts/build_paper_corpus.py` |
 | Abstract backfill | `scripts/enrich_corpus_abstracts.py` |
-| Fulltext PDF fetch | **Deferred** — separate sprint before Phase 3b |
+| Fulltext PDF fetch | **Deferred** — before Phase 3b |
 
 **Exit:** `data/paper_corpus_enriched.jsonl` with ≥2,000 papers abstract ≥120 chars.
-
----
-
-## Phase 2 — L3 production model (v1 ship)
-
-**Goal:** `nassila-grounding-e4b-v1` beats baseline on eval harness. **Abstract-only** `source_excerpt`.
-
-| Step | Action |
-|------|--------|
-| Labels | `scripts/generate_l3_from_corpus.py` → `l3_grounding_train.jsonl` (300–500 rows, tier up if needed) |
-| Train | [`PHASE2_7_V1_4_WALKTHROUGH.md`](./PHASE2_7_V1_4_WALKTHROUGH.md) — QLoRA + `run_vast_pipeline.sh` |
-| Eval | [`EVALUATION_GUIDE.md`](./EVALUATION_GUIDE.md) — JSON ≥95–99%, expect ≥90% |
-| Publish | [`HF_PUBLISH.md`](./HF_PUBLISH.md); app preset + version bump **1.2.0** |
 
 ---
 
@@ -90,11 +60,11 @@ Train each task with its JSONL ([`DATASET_SCHEMA.md`](./DATASET_SCHEMA.md)), eva
 | Task | Unblocks in app |
 |------|-----------------|
 | `doc_extract` | Better PDF/DOCX than pdfjs-only |
-| `source_pdf_extract` | `pdf_pending` rows in manuscript audit |
+| `source_pdf_extract` | Body text for Sanad → Tier 3 |
 | `table_figure_grounding` | Figure/table claims |
-| `webpage_metadata` / `webpage_classify` | [`docs/WEBPAGE_ROADMAP.md`](../docs/WEBPAGE_ROADMAP.md) |
+| `webpage_metadata` / `webpage_classify` | [`docs/WEBPAGE_ROADMAP.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/WEBPAGE_ROADMAP.md) |
 
-**12B pivot:** When multimodal ingest/grounding facets ship; E4B remains valid for text-only L3 tier.
+**Start Maktab/Masdar planning** when 12B v1.14+ stabilizes or you accept v1.12 known gaps.
 
 ---
 
@@ -104,18 +74,8 @@ Train each task with its JSONL ([`DATASET_SCHEMA.md`](./DATASET_SCHEMA.md)), eva
 |-----------|--------|
 | L3 engine (`grounding-llm.ts`) | Ready |
 | Manuscript audit UI | **Not mounted** in shipping app |
-| Task router (multi-task) | **Future** — constants in [`nassila-agent-tasks.ts`](../src/shared/nassila-agent-tasks.ts) |
-| Model download UX | Planned (HF URL, resumable) |
-
----
-
-## Publishing this pack
-
-`training/` is **gitignored** locally until L3 is production-ready. When publishing:
-
-1. Remove `/training/` from `.gitignore` (or use separate repo per [`docs/NEW_REPOSITORY.md`](../docs/NEW_REPOSITORY.md))
-2. Ship eval reports + GGUF on Hugging Face
-3. Link [Nassila `docs/OUROBOROS_CONTEXT.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md) from README
+| Ouroboros worker shell | Spec in Nassila `docs/DESIGN.md` — not built |
+| Task router (multi-task) | **Future** — [`nassila-agent-tasks.ts`](https://github.com/jamalesam93/Nassila/blob/main/src/shared/nassila-agent-tasks.ts) |
 
 ---
 
@@ -123,11 +83,10 @@ Train each task with its JSONL ([`DATASET_SCHEMA.md`](./DATASET_SCHEMA.md)), eva
 
 | Doc | Purpose |
 |-----|---------|
-| [Nassila `docs/OUROBOROS_CONTEXT.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md) | **Agent entry** — workers, v1.4, v1.5 |
-| [`docs/OUROBOROS.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS.md) | Product vision + workers registry |
+| [`POST_V113_MAP.md`](./POST_V113_MAP.md) | **Current operator map** |
 | [`README.md`](./README.md) | Training pack index |
+| [`docs/DUAL_TIER_POLICY.md`](../docs/DUAL_TIER_POLICY.md) | E4B vs 12B gates |
+| [`EVAL_GONOGO.md`](./EVAL_GONOGO.md) | GO/NO-GO log |
+| [`PHASE2_9_AB_PILOT_WALKTHROUGH.md`](./PHASE2_9_AB_PILOT_WALKTHROUGH.md) | A/B pipeline |
 | [`DATASET_SCHEMA.md`](./DATASET_SCHEMA.md) | JSONL per task |
-| [`LM_STUDIO_INTEGRATION.md`](./LM_STUDIO_INTEGRATION.md) | Inference + presets |
-| [`PHASE1_VAST_4090_WALKTHROUGH.md`](./PHASE1_VAST_4090_WALKTHROUGH.md) | Phase 1 Vast walkthrough |
-| [`CORPUS_PIPELINE.md`](./CORPUS_PIPELINE.md) | Phase 1.5 corpus ingest |
-| [`PHASE2_7_V1_4_WALKTHROUGH.md`](./PHASE2_7_V1_4_WALKTHROUGH.md) | Current Vast train (v1.4) |
+| [`CORPUS_PIPELINE.md`](./CORPUS_PIPELINE.md) | Phase 1.5 corpus |

@@ -6,7 +6,8 @@ How to run your **baseline or fine-tuned** Gemma model in LM Studio and connect 
 
 | Artifact | Tasks (v1 / future) |
 |----------|---------------------|
-| `nassila-grounding-e4b-v1` | `l3_grounding` only |
+| `nassila-sanad-e4b` | `l3_grounding` only |
+| `nassila-sanad-12b` | `l3_grounding` (quality tier) |
 | `nassila-agent-e12b-v1` | All facets (planned) |
 
 ---
@@ -149,7 +150,7 @@ curl http://localhost:1234/v1/chat/completions ^
 
 ## Fine-tuned model workflow
 
-1. Train QLoRA → export GGUF Q6_K (see [TRAINING_GUIDE.md](./TRAINING_GUIDE.md))
+1. Train QLoRA → export GGUF Q6_K (see [PHASE2_9_AB_PILOT_WALKTHROUGH.md](./PHASE2_9_AB_PILOT_WALKTHROUGH.md))
 2. Import new GGUF into LM Studio
 3. Optionally **unload** baseline model to save VRAM
 4. Start server with **tuned** model selected
@@ -190,5 +191,5 @@ Keep baseline GGUF for A/B comparison.
 
 ## Related
 
-- [TRAINING_GUIDE.md](./TRAINING_GUIDE.md) — export GGUF after training
+- [PHASE2_9_AB_PILOT_WALKTHROUGH.md](./PHASE2_9_AB_PILOT_WALKTHROUGH.md) — export GGUF after training
 - [scripts/lmstudio_smoke_test.py](./scripts/lmstudio_smoke_test.py) — automated smoke test

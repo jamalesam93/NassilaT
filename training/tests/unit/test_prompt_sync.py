@@ -24,7 +24,7 @@ GOLDEN_PATH = TRAINING_ROOT / "fixtures" / "grounding_prompt_golden.txt"
 
 
 def test_grounding_user_prompt_matches_golden() -> None:
-    golden = GOLDEN_PATH.read_text(encoding="utf-8")
+    golden = GOLDEN_PATH.read_text(encoding="utf-8").replace("\r\n", "\n").rstrip("\n")
     actual = build_grounding_user_prompt(FIXTURE_PASSAGE, FIXTURE_EXCERPT, FIXTURE_META)
     assert actual == golden, (
         "build_grounding_user_prompt drifted from fixtures/grounding_prompt_golden.txt; "
@@ -42,5 +42,6 @@ def test_scope_silence_rule_present() -> None:
 def test_v112_passage_claim_and_compound_guardrails() -> None:
     prompt = build_grounding_user_prompt(FIXTURE_PASSAGE, FIXTURE_EXCERPT, FIXTURE_META)
     assert "not a different number from the source" in prompt
+    assert "Approximate passage numbers" in prompt
     assert "receives weak (not supported)" in prompt
     assert "never supported when the passage bundles multiple claims" not in prompt

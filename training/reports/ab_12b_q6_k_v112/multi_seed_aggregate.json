@@ -1,0 +1,50 @@
+{
+  "model": "nassila-sanad-12b-q6_k",
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "holdout_file": "/root/nassila/training/data/eval_holdout_90.jsonl",
+  "per_seed": [
+    {
+      "seed": 42,
+      "combined_expect": 0.9478,
+      "quote_validity_holdout": 1.0,
+      "false_supported_holdout": 0.0286,
+      "multi_claim_pass": 0.6923,
+      "tier2_passed": true,
+      "e4b_default_passed": true,
+      "beats_v110_baseline": true
+    },
+    {
+      "seed": 43,
+      "combined_expect": 0.9391,
+      "quote_validity_holdout": 1.0,
+      "false_supported_holdout": 0.0286,
+      "multi_claim_pass": 0.6923,
+      "tier2_passed": true,
+      "e4b_default_passed": true,
+      "beats_v110_baseline": true
+    },
+    {
+      "seed": 44,
+      "combined_expect": 0.9391,
+      "quote_validity_holdout": 1.0,
+      "false_supported_holdout": 0.0286,
+      "multi_claim_pass": 0.6923,
+      "tier2_passed": true,
+      "e4b_default_passed": true,
+      "beats_v110_baseline": true
+    }
+  ],
+  "mean_metrics": {
+    "combined_expect": 0.942,
+    "quote_validity_holdout": 1.0,
+    "false_supported_holdout": 0.0286,
+    "multi_claim_pass": 0.6923,
+    "tier2_pass_rate": 1.0,
+    "e4b_default_pass_rate": 1.0,
+    "beats_v110_baseline_rate": 1.0
+  }
+}

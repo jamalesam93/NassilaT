@@ -60,6 +60,11 @@ PHASE_CONFIG = {
         "learning_rate": 1e-4,
         "output_name": "nassila-sanad-12b-v1.13",
     },
+    "14": {
+        "num_epochs": 2,
+        "learning_rate": 1e-4,
+        "output_name": "nassila-sanad-12b-v1.14",
+    },
 }
 
 

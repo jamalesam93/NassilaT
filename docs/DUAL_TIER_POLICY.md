@@ -57,11 +57,15 @@ ARM=e4b PHASE=12 MULTI_SEED=1 bash training/scripts/run_ab_pilot_pipeline.sh
 # Instance 2 — A100: 12B v1.12 quality (Tier 2 PASS recorded)
 ARM=12b PHASE=12 MULTI_SEED=1 bash training/scripts/run_ab_pilot_pipeline.sh
 
-# Instance 3 — A100: 12B v1.13 multi_claim (h-045 / h-088) — 12B only
-ARM=12b PHASE=13 MULTI_SEED=1 bash training/scripts/run_ab_pilot_pipeline.sh
+# Instance 3 — A100: 12B v1.14+ multi_claim (after v1.13 NO-GO)
+ARM=12b PHASE=14 MULTI_SEED=1 bash training/scripts/run_ab_pilot_pipeline.sh
 ```
 
-Walkthroughs: [`PHASE2_11_V112_WALKTHROUGH.md`](training/PHASE2_11_V112_WALKTHROUGH.md) (E4B), [`PHASE2_12_12B_QUALITY_WALKTHROUGH.md`](training/PHASE2_12_12B_QUALITY_WALKTHROUGH.md) (12B v1.12), [`PHASE2_13_12B_MULTI_CLAIM_WALKTHROUGH.md`](training/PHASE2_13_12B_MULTI_CLAIM_WALKTHROUGH.md) (12B v1.13).
+**Ship frozen:** E4B **v1.12**, 12B **v1.12**. v1.13 **NO-GO** — do not publish.
+
+**Active:** [`training/POST_V113_MAP.md`](../training/POST_V113_MAP.md) · [`training/PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md`](../training/PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md)
+
+**Archive:** v1.11–v1.13 walkthroughs in [`training/archive/`](../training/archive/).
 
 ## App inference note
 

@@ -1,6 +1,10 @@
-# Hugging Face publish — `nassila-grounding-e4b-v1`
+# Hugging Face publish — `nassila-sanad-*`
 
-## Repositories
+**Current HF repos:** `QinEmPeRoR93/nassila-sanad-e4b`, `QinEmPeRoR93/nassila-sanad-12b` (see [`MODEL_CARD_sanad_e4b.md`](./MODEL_CARD_sanad_e4b.md), [`MODEL_CARD_sanad_12b.md`](./MODEL_CARD_sanad_12b.md)). Pipeline: [`PHASE2_9_AB_PILOT_WALKTHROUGH.md`](./PHASE2_9_AB_PILOT_WALKTHROUGH.md).
+
+Legacy naming below (`nassila-grounding-e4b-v1`) — replace with worker ids above.
+
+## Repositories (legacy example)
 
 | Repo | Contents |
 |------|----------|
