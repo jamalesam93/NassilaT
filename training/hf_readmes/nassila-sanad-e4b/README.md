@@ -50,5 +50,3 @@ Requires a recent llama.cpp build with `gemma4_unified` support.
 - Advisory only; not bundled in the Nassila installer.
 
 Base: [`google/gemma-4-E4B-it`](https://huggingface.co/google/gemma-4-E4B-it) · [Gemma Terms of Use](https://ai.google.dev/gemma/terms)
-
-**HF README source:** [`hf_readmes/nassila-sanad-e4b/README.md`](./hf_readmes/nassila-sanad-e4b/README.md)

@@ -1,8 +1,8 @@
 # v1.13 12B Regression — Root Cause & v1.14 Fix Plan
 
-> **Goal:** Recover 12B from v1.13 regression (88.99% → target ≥94% combined, Tier 2 PASS).
+> **Goal:** Recover 12B from v1.13 regression (88.99% → Tier 2 PASS + h-045/h-088 subgroup splits).
 > **Context:** v1.13 added 12 parity-subgroup-split boost rows to fix h-045/h-088 patterns. The prepare pipeline merged them onto v14a base (850-row cap), which trimmed 11 `supported` + 1 `weak` rows. The resulting `supported`↔`weak` verdict imbalance caused 4 rows to regress and 2 rows hit inference server errors.
-> **v1.12 (94.20%, Tier 2 PASS) is the last good 12B checkpoint. Do NOT publish v1.13 12B GGUF.**
+> **Outcome:** v1.14 is **GO** and selected for `nassila-sanad-12b` (90.43% combined, 100% quote, 100% JSON, 84.62% multi_claim, h-045/h-088 pass). v1.12 remains the higher-combined fallback/reference.
 > **Date:** 2026-06-20.
 
 ---

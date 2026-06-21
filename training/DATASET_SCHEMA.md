@@ -122,9 +122,11 @@ Optional `output.overallVerdict`:
 
 ---
 
-## Task: `doc_extract` (planned)
+## Task: `doc_extract` (planned — Tier 3)
 
 Manuscript ingest: PDF or DOCX → structured plain text for downstream L3. **Not** a replacement for Marker or layout engines; complements pdfjs/mammoth.
+
+**Planning:** [`PHASE3_TIER3_GROUNDWORK.md`](./PHASE3_TIER3_GROUNDWORK.md) (NassilaT).
 
 ### Input fields (draft)
 
@@ -146,9 +148,11 @@ Full schema TBD when Phase 3 dataset work starts.
 
 ---
 
-## Task: `source_pdf_extract` (planned)
+## Task: `source_pdf_extract` (planned — Tier 3)
 
 Cited open-access PDF → excerpt text for L3 when HTML/abstract is insufficient.
+
+**Planning:** [`PHASE3_TIER3_GROUNDWORK.md`](./PHASE3_TIER3_GROUNDWORK.md) (NassilaT). OA full-text fetch deferred in [`CORPUS_PIPELINE.md`](./CORPUS_PIPELINE.md) until this task starts.
 
 ### Input fields (draft)
 

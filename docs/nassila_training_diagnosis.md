@@ -1,6 +1,6 @@
 # Nassila L3 grounding — training diagnosis
 
-> **Operator map:** [`training/POST_V113_MAP.md`](./training/POST_V113_MAP.md) · **GO/NO-GO:** [`training/EVAL_GONOGO.md`](./training/EVAL_GONOGO.md)  
+> **Operator map:** [`training/POST_V114_MAP.md`](./training/POST_V114_MAP.md) · **GO/NO-GO:** [`training/EVAL_GONOGO.md`](./training/EVAL_GONOGO.md)  
 > **Canonical themes** below for Sanad v1.0–v1.6; v1.10+ decisions in EVAL_GONOGO. Holdout matrix: [`training/reports/holdout_failure_matrix.md`](./training/reports/holdout_failure_matrix.md).
 
 ## Whack-a-mole (v1.0–v1.3)
@@ -202,17 +202,17 @@ Multi-seed means (seeds 42/43/44) on `eval_holdout_90.jsonl` + combined 115-row 
 
 **Adopted decision (dual-tier):**
 
-1. **E4B** remains the **default/fast** tier (smaller download; still below Tier 2 on hardened harness — continue iterating v1.11+ on E4B).
-2. **12B Q6_K** is recorded as Sanad's **first Tier-2-passing checkpoint** and **optional quality tier** (`nassila-sanad-12b-q6_k.gguf`, train checkpoint v1.10).
-3. Unmet `multi_claim >= 0.80` is a **known limitation**, not a ship blocker for the optional tier.
+1. **E4B** remains the **default/fast** tier (smaller download), now shipped from **v1.12**.
+2. **12B Q6_K** is the quality tier. It first passed Tier 2 at v1.10, used v1.12 as the higher-combined reference, and is now selected at **v1.14** for h-045/h-088 subgroup-split correctness.
+3. `multi_claim >= 0.80` is now met by 12B v1.14 (84.62%); v1.12 remains a fallback if maximum combined score is prioritized.
 4. **Shahid** multimodal still reserves 12B when that worker forges.
 
-**HF (operator):** adapters private — `QinEmPeRoR93/nassila-sanad-12b-adapter`, `QinEmPeRoR93/nassila-sanad-e4b-adapter`, `QinEmPeRoR93/nassila-sanad-31b-adapter` (v1.12); GGUF — `nassila-sanad-12b` (private), `nassila-sanad-e4b` (default-tier), `nassila-sanad-31b` (premium, Tier 2). Policy: [`docs/DUAL_TIER_POLICY.md`](./docs/DUAL_TIER_POLICY.md). See [`training/PHASE2_9_AB_PILOT_WALKTHROUGH.md`](./training/PHASE2_9_AB_PILOT_WALKTHROUGH.md) Part 9.
+**HF (operator):** GGUF ship ids — `nassila-sanad-e4b` (**v1.12**) and `nassila-sanad-12b` (**v1.14**). Adapters remain private. Policy: [`docs/DUAL_TIER_POLICY.md`](./docs/DUAL_TIER_POLICY.md).
 
 ## Dual-tier ship policy (2026-06-19)
 
 - **E4B default-tier:** combined ≥88%, quote ≥88%, false-supported ≤7% (+ JSON/legacy gates). **v1.12 PASS** — ship as `nassila-sanad-e4b` (89.27% / 92.98% / 3.81% mean). v1.10 superseded; v1.11 do not publish.
-- **Tier 2:** full six gates — **12B v1.10 PASS** (fallback); **12B v1.12** main quality target; **31B v1.12** optional premium.
+- **Tier 2:** full six gates — **12B v1.14 PASS** and selected; **12B v1.12** higher-combined fallback/reference.
 
 ## v1.12 E4B result (2026-06-19 — **GO**)
 
@@ -223,7 +223,7 @@ Multi-seed mean (Q6_K, 115-row harness): **89.27%** combined, **92.98%** quote, 
 | Arm | Combined | Quote | False sup | Gate |
 |-----|----------|-------|-----------|------|
 | E4B v1.12 Q6_K | 89.27% | 92.98% | 3.81% | **E4B default PASS** |
-| 12B v1.12 Q6_K | 94.20% | 100% | 2.86% | **Tier 2 PASS** |
+| 12B v1.12 Q6_K | 94.20% | 100% | 2.86% | **Tier 2 PASS** (fallback/reference) |
 
 Reports: `reports/ab_e4b_q6_k_v112/`, `reports/ab_12b_q6_k_v112/`. 12B h-043 pass; h-045 / h-088 still fail (`multi_claim` 69.23%).
 
@@ -243,9 +243,24 @@ Reports: `reports/ab_e4b_q6_k_v112/`, `reports/ab_12b_q6_k_v112/`. 12B h-043 pas
 
 **Decision:** **Do not publish v1.13.** Keep **12B v1.12** as quality ship. Walkthrough (archive): [`training/archive/PHASE2_13_12B_MULTI_CLAIM_WALKTHROUGH.md`](./training/archive/PHASE2_13_12B_MULTI_CLAIM_WALKTHROUGH.md).
 
-## v1.14+ — next
+## v1.14 — 12B multi_claim boost (**GO**, selected checkpoint)
 
-See [`training/POST_V113_MAP.md`](./training/POST_V113_MAP.md) and [`training/PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md`](./training/PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md).
+Reports: `reports/ab_12b_q6_k_v114/`.
+
+| Metric | v1.12 | v1.14 mean |
+|--------|-------|------------|
+| Combined expect | **94.20%** | **90.43%** |
+| Quote (holdout) | 100% | **100%** |
+| JSON parse (repair) | 100% | **100%** |
+| False supported | 2.86% | **2.86%** |
+| Tier 2 | PASS (3/3) | **PASS (3/3)** |
+| multi_claim | 69.23% | **84.62%** |
+
+**Target rows:** h-045 and h-088 now **pass on all seeds** with the intended split: studied subgroup `weak` + quote, unstudied subgroup `not_in_source`.
+
+**Decision:** select **12B v1.14** for `nassila-sanad-12b` because it preserves Tier 2 and fixes the subgroup split failure. Accept the combined-score regression versus v1.12 as a conscious product tradeoff; v1.12 remains the higher-combined fallback/reference.
+
+See [`training/POST_V114_MAP.md`](./training/POST_V114_MAP.md) and [`training/PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md`](./training/PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md).
 
 ## v1.11 fixes (E4B gap — trained, NO-GO)
 

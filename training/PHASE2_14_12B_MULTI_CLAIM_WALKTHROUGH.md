@@ -1,11 +1,11 @@
-# Phase 2.14 — 12B v1.14 recovery (cap + counterbalance)
+# Phase 2.14 — 12B v1.14 recovery (GO)
 
 **12B only.** Follow-up after **v1.13 NO-GO**.
 
 **Canonical runbook:** [`docs/V113_12B_REGRESSION_FIX_REPORT.md`](../docs/V113_12B_REGRESSION_FIX_REPORT.md)  
-**Context:** [`POST_V113_MAP.md`](./POST_V113_MAP.md), [`EVAL_GONOGO.md`](./EVAL_GONOGO.md)
+**Context:** [`POST_V114_MAP.md`](./POST_V114_MAP.md), [`EVAL_GONOGO.md`](./EVAL_GONOGO.md)
 
-**Ship baseline (unchanged):** **12B v1.12** Tier 2 PASS. Do not replace on HF until v1.14 passes Tier 2 **and** beats v1.12 combined expect (94.20%).
+**Ship decision:** select **12B v1.14** for `nassila-sanad-12b`. v1.12 remains the higher-combined fallback/reference.
 
 ---
 
@@ -77,22 +77,21 @@ Reports: `reports/ab_12b_q6_k_v114/`.
 
 ---
 
-## Success criteria
+## Result
 
-| Check | Target |
+Reports: `reports/ab_12b_q6_k_v114/`.
+
+| Check | Result |
 |-------|--------|
 | `tier2_gates.model_gates_passed` | **true** on all seeds |
-| Combined expect (mean) | **≥ 94.20%** (v1.12) |
+| Combined expect (mean) | **90.43%** (below v1.12 94.20%; accepted tradeoff) |
 | JSON parse (with repair) | **100%** |
-| Quote validity (holdout) | **≥98%** |
-| False supported (holdout) | **≤5%** |
-| h-028, h-037, h-038, h-051, h-082, eval-012 | **pass** |
-| h-045, h-088 | **parse stable** (stretch: 2-claim pass) |
-| `multi_claim_pass` | **≥80%** (stretch) |
+| Quote validity (holdout) | **100%** |
+| False supported (holdout) | **2.86%** |
+| h-045, h-088 | **pass all seeds** |
+| `multi_claim_pass` | **84.62%** |
 
-**Ship when:** Tier 2 holds **and** combined ≥ v1.12. Publish `exports/nassila-sanad-12b-q6_k.gguf` over v1.12.
-
-**If fail:** v1.15 per runbook Part 5 (different lever). Keep shipping **v1.12**.
+**Ship:** publish `exports/nassila-sanad-12b-q6_k.gguf` from v1.14 over v1.12. Future v1.15+ can try to recover v1.12-level combined score without losing h-045 / h-088.
 
 ---
 

@@ -227,4 +227,4 @@ Inspect `tier2_gates` in `*_eval_combined_report.json`. **Go** when `model_gates
 
 **Product safety:** app quote-substring guardrail in `grounding-llm.ts` (Tier 2b) — not scored in NassilaT; verify in Nassila unit tests.
 
-**No-go** if any Tier 2 model gate fails — keep last **GO** checkpoint on HF (currently 12B **v1.12**), diagnose in [`EVAL_GONOGO.md`](./EVAL_GONOGO.md), iterate per [`POST_V113_MAP.md`](./POST_V113_MAP.md).
+**No-go** if any Tier 2 model gate fails — keep last **GO** checkpoint on HF (currently 12B **v1.14**), diagnose in [`EVAL_GONOGO.md`](./EVAL_GONOGO.md), iterate per [`POST_V114_MAP.md`](./POST_V114_MAP.md).

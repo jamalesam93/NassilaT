@@ -60,4 +60,3 @@ Include all `seed_*_predictions.jsonl` files.
 ## Session order (A100)
 
 1. **12B v1.12** (main) — `ARM=12b PHASE=12`
-2. **31B** (optional side quest) — [`PHASE2_12_31B_PREMIUM_WALKTHROUGH.md`](./PHASE2_12_31B_PREMIUM_WALKTHROUGH.md)
