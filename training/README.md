@@ -4,7 +4,7 @@ Fine-tune **Nassila Sanad** (`l3_grounding`) on Gemma 4 E4B / 12B; export Q6_K G
 
 **Strategy:** [Ouroboros](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS.md) — seven workers, one facet at a time. **Agent brief:** [Nassila `docs/OUROBOROS_CONTEXT.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md).
 
-**Current work:** [`POST_V113_MAP.md`](./POST_V113_MAP.md) · [`PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md`](./PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md)
+**Current work:** [`POST_V114_MAP.md`](./POST_V114_MAP.md) · [`LAPTOP_SMOKE_TEST.md`](./LAPTOP_SMOKE_TEST.md) · [`PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md`](./PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md)
 
 Documentation-first: schemas, scripts, eval harnesses. No model weights in git.
 
@@ -15,14 +15,15 @@ Documentation-first: schemas, scripts, eval harnesses. No model weights in git.
 | Step | Document | What you do |
 |------|----------|-------------|
 | 0 | [Nassila `OUROBOROS_CONTEXT.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md) | Workers, tiers, eval gates |
-| 1 | [POST_V113_MAP.md](./POST_V113_MAP.md) | Where we are after v1.13 NO-GO |
-| 2 | [PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md](./PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md) | Next 12B Vast run |
-| 3 | [PHASE2_9_AB_PILOT_WALKTHROUGH.md](./PHASE2_9_AB_PILOT_WALKTHROUGH.md) | A/B pipeline + HF publish |
-| 4 | [`docs/DUAL_TIER_POLICY.md`](../docs/DUAL_TIER_POLICY.md) | Ship gates |
-| 5 | [EVAL_GONOGO.md](./EVAL_GONOGO.md) | GO/NO-GO log |
-| 6 | [MODEL_CARD.md](./MODEL_CARD.md) | HF card index |
-| 7 | [DATASET_SCHEMA.md](./DATASET_SCHEMA.md) | JSONL contracts |
-| 8 | [EVALUATION_GUIDE.md](./EVALUATION_GUIDE.md) | How to score |
+| 1 | [POST_V114_MAP.md](./POST_V114_MAP.md) | Current operator map (v1.14 selected) |
+| 2 | [LAPTOP_SMOKE_TEST.md](./LAPTOP_SMOKE_TEST.md) | Local GGUF acceptance (E4B + 12B) |
+| 3 | [PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md](./PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md) | v1.14 12B GO record |
+| 4 | [PHASE2_9_AB_PILOT_WALKTHROUGH.md](./PHASE2_9_AB_PILOT_WALKTHROUGH.md) | A/B pipeline + HF publish |
+| 5 | [`docs/DUAL_TIER_POLICY.md`](../docs/DUAL_TIER_POLICY.md) | Ship gates |
+| 6 | [EVAL_GONOGO.md](./EVAL_GONOGO.md) | GO/NO-GO log |
+| 7 | [MODEL_CARD.md](./MODEL_CARD.md) | HF card index |
+| 8 | [DATASET_SCHEMA.md](./DATASET_SCHEMA.md) | JSONL contracts |
+| 9 | [EVALUATION_GUIDE.md](./EVALUATION_GUIDE.md) | How to score |
 
 Historical: [`archive/`](./archive/).
 
@@ -33,17 +34,16 @@ Historical: [`archive/`](./archive/).
 ```
 training/
   README.md
-  POST_V113_MAP.md              ← operator map
+  POST_V114_MAP.md              ← operator map
+  LAPTOP_SMOKE_TEST.md          ← local GGUF acceptance
   ROADMAP.md
   PHASE2_9_AB_PILOT_WALKTHROUGH.md
   PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md
-  PHASE2_12_31B_PREMIUM_WALKTHROUGH.md   ← optional
   EVAL_GONOGO.md
   EVALUATION_GUIDE.md
   MODEL_CARD.md
   MODEL_CARD_sanad_e4b.md
   MODEL_CARD_sanad_12b.md
-  MODEL_CARD_sanad_31b.md
   DATASET_SCHEMA.md
   CORPUS_PIPELINE.md
   LM_STUDIO_INTEGRATION.md
@@ -62,9 +62,9 @@ training/
 | HF id | Checkpoint | Role |
 |-------|------------|------|
 | `nassila-sanad-e4b` | **v1.12** | Default ~8 GB |
-| `nassila-sanad-12b` | **v1.12** | Quality Tier 2 |
+| `nassila-sanad-12b` | **v1.14** | Quality Tier 2 + subgroup split fix |
 
-v1.13 **NO-GO** — keep v1.12 on HF until v1.14+ passes.
+v1.13 **NO-GO**. v1.12 remains the higher-combined 12B fallback/reference.
 
 ---
 

@@ -1,0 +1,64 @@
+{
+  "eval_file": "/root/nassila/training/data/eval_samples.jsonl",
+  "total_l3_rows": 5,
+  "json_parse_rate_strict": 1.0,
+  "json_parse_rate_with_repair": 1.0,
+  "repair_used_count": 0,
+  "expect_checks_pass_rate": 0.4,
+  "quote_validity_rate": 0.3333,
+  "false_supported_rate": 0.0,
+  "category_pass_rates": {},
+  "per_row": [
+    {
+      "id": "eval-001",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "any_claim_verdict missing ['supported']"
+      ]
+    },
+    {
+      "id": "eval-002",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": []
+    },
+    {
+      "id": "eval-003",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "any_claim_verdict missing ['contradicted', 'not_in_source', 'weak']"
+      ]
+    },
+    {
+      "id": "eval-004",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": []
+    },
+    {
+      "id": "eval-005",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "min_claims:1<2"
+      ]
+    }
+  ]
+}

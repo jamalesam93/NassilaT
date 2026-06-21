@@ -1,0 +1,39 @@
+{
+  "predictions_file": "outputs/v1_2_predictions.jsonl",
+  "repair_allowed": true,
+  "core_eval": {
+    "eval_file": "/root/nassila/training/data/eval_samples.jsonl",
+    "total_l3_rows": 5,
+    "json_parse_rate_strict": 1.0,
+    "json_parse_rate_with_repair": 1.0,
+    "repair_used_count": 0,
+    "expect_checks_pass_rate": 0.4,
+    "quote_validity_rate": 0.3333,
+    "false_supported_rate": 0.0,
+    "category_pass_rates": {}
+  },
+  "holdout_eval": {
+    "eval_file": "/root/nassila/training/data/eval_holdout_45.jsonl",
+    "total_l3_rows": 45,
+    "json_parse_rate_strict": 1.0,
+    "json_parse_rate_with_repair": 1.0,
+    "repair_used_count": 0,
+    "expect_checks_pass_rate": 0.9111,
+    "quote_validity_rate": 0.9091,
+    "false_supported_rate": 0.0,
+    "category_pass_rates": {
+      "supported": 0.9,
+      "contradicted": 0.8889,
+      "not_in_source": 1.0,
+      "weak": 1.0,
+      "insufficient_evidence": 1.0,
+      "multi_claim": 0.6667
+    }
+  },
+  "combined_totals": {
+    "total_l3_rows": 50,
+    "expect_checks_pass_rate": 0.86,
+    "json_parse_rate_strict": 1.0,
+    "json_parse_rate_with_repair": 1.0
+  }
+}

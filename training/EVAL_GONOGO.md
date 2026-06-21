@@ -2,7 +2,7 @@
 
 **Canonical gates:** [Nassila `docs/OUROBOROS_CONTEXT.md` §10](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md). Do not duplicate thresholds here — use §10 and `scripts/tier_gates.py`.
 
-**Ship checkpoints:** E4B **v1.12** (default-tier), 12B **v1.12** (Tier 2). **Current train:** v1.14+ multi_claim loop. See [`POST_V113_MAP.md`](./POST_V113_MAP.md).
+**Ship checkpoints:** E4B **v1.12** (default-tier), 12B **v1.14** (Tier 2 + h-045/h-088 split fix). See [`POST_V114_MAP.md`](./POST_V114_MAP.md).
 
 ## Baseline reference
 
@@ -30,7 +30,7 @@ Read `reports/v1_8_eval_combined_report.json` → `tier2_gates.model_gates_passe
 
 ## Ship gates (dual-tier — canonical: [`docs/DUAL_TIER_POLICY.md`](../docs/DUAL_TIER_POLICY.md))
 
-### Tier 2 — 12B / 31B premium only
+### Tier 2 — 12B quality tier only
 
 | Gate | Target | Slice |
 |------|--------|-------|
@@ -111,7 +111,7 @@ Harness: **115 rows** (90-row holdout). Multi-seed means (42/43/44).
 | E4B v1.10 Q6_K | 88.12% | 89.47% | 6.57% | **NO-GO** |
 | **12B v1.10 Q6_K** | **94.79%** | **100%** | **2.82%** | **PASS** (`nassila-sanad-12b`) |
 
-**Decision (dual-tier):** E4B ships on **E4B default-tier** (`e4b_default_gates`). **`nassila-sanad-12b`** (v1.10) is quality tier (Tier 2 PASS). **`nassila-sanad-31b`** (v1.12 train) is premium tier (Tier 2 target).
+**Decision (dual-tier):** E4B ships on **E4B default-tier** (`e4b_default_gates`). **`nassila-sanad-12b`** moved from v1.10 → v1.12 → **v1.14** as quality tier.
 
 ### v1.11 E4B — **NO-GO** (do not publish)
 
@@ -135,11 +135,11 @@ Reports: `reports/ab_e4b_q6_k_v112/`. Walkthrough (archive): [`archive/PHASE2_11
 
 **12B v1.12 spend:** greenlit (`v110_baseline_beat` met).
 
-### v1.12 12B quality — **GO** (ship quality tier)
+### v1.12 12B quality — **GO** (reference / fallback quality tier)
 
 Multi-seed mean (Q6_K): **94.20%** combined, **100%** quote, **2.86%** false-supported. **Tier 2 PASS** (3/3 seeds). Reports: `reports/ab_12b_q6_k_v112/`.
 
-**Publish:** `exports/nassila-sanad-12b-q6_k.gguf` → `QinEmPeRoR93/nassila-sanad-12b`. h-045 / h-088 still fail (`multi_claim` 69.23%); known limitation, not a Tier 2 blocker.
+Keep as fallback/reference. h-045 / h-088 still fail (`multi_claim` 69.23%); known limitation, not a Tier 2 blocker.
 
 ### v1.13 12B multi_claim — **NO-GO** (do not publish)
 
@@ -156,6 +156,17 @@ Trained 2026-06; reports: `reports/ab_12b_q6_k_v113/`.
 
 **Keep shipping 12B v1.12.** Do not publish v1.13 GGUF. Walkthrough (archive): [`archive/PHASE2_13_12B_MULTI_CLAIM_WALKTHROUGH.md`](./archive/PHASE2_13_12B_MULTI_CLAIM_WALKTHROUGH.md).
 
-### v1.14+ 12B multi_claim — **in progress**
+### v1.14 12B multi_claim — **GO** (selected quality tier)
 
-See [`POST_V113_MAP.md`](./POST_V113_MAP.md) and [`PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md`](./PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md). Append GO/NO-GO here after each Vast run.
+Multi-seed mean (Q6_K): **90.43%** combined, **100%** quote, **2.86%** false-supported, **84.62%** `multi_claim`. **Tier 2 PASS** (3/3 seeds). Reports: `reports/ab_12b_q6_k_v114/`.
+
+| Metric | v1.12 | v1.14 | Decision |
+|--------|-------|-------|----------|
+| Combined expect | **94.20%** | **90.43%** | regression accepted |
+| Quote (holdout) | 100% | **100%** | PASS |
+| JSON parse (repair) | 100% | **100%** | PASS |
+| multi_claim | 69.23% | **84.62%** | target met |
+| h-045 / h-088 | fail | **pass all seeds** | target met |
+| Tier 2 pass | 3/3 | **3/3** | PASS |
+
+**Publish:** `exports/nassila-sanad-12b-q6_k.gguf` from **v1.14** → `QinEmPeRoR93/nassila-sanad-12b`. v1.12 remains the higher-combined fallback/reference.

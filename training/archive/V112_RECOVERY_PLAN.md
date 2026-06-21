@@ -1,6 +1,6 @@
-# v1.12 Recovery Plan — E4B Sanad + 31B premium
+# v1.12 Recovery Plan — E4B Sanad
 
-> **Goal:** Recover from v1.11 regression; E4B ships on **default-tier** gates. **12B v1.12** is the **main quality tier** (Tier 2). **31B** is optional on the same A100 session.
+> **Goal:** Recover from v1.11 regression; E4B ships on **default-tier** gates. **12B v1.12** is the **main quality tier** (Tier 2).
 > **Policy:** [`docs/DUAL_TIER_POLICY.md`](docs/DUAL_TIER_POLICY.md)
 > **Context:** v1.11 introduced per-conjunct `supported` permission + 12 scope-boost rows; E4B over-applied both, causing a `supported` epidemic (false-supported 6.57%→11.91%, 12 rows regressed).
 > **v1.10 (88.12%) was the prior E4B reference. v1.11 regressed — do NOT publish. v1.12 ships as `nassila-sanad-e4b` (2026-06-19).**

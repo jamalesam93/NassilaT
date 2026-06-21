@@ -63,19 +63,32 @@ Example endpoints:
 
 ---
 
-## Step 3 — Test with smoke script
+## Step 3 — Laptop smoke test (ship GGUF acceptance)
+
+After downloading `nassila-sanad-e4b-q6_k.gguf` or `nassila-sanad-12b-q6_k.gguf`, run the 4-row acceptance wrapper:
+
+```powershell
+cd training
+.\scripts\run_laptop_smoke.ps1 -Model "PASTE_LM_STUDIO_MODEL_ID" -Arm e4b
+.\scripts\run_laptop_smoke.ps1 -Model "PASTE_LM_STUDIO_MODEL_ID" -Arm 12b
+```
+
+Full runbook: [`LAPTOP_SMOKE_TEST.md`](./LAPTOP_SMOKE_TEST.md). Record results in `outputs/LAPTOP_SMOKE_SIGNOFF.md`.
+
+### Quick single-row test
 
 ```powershell
 cd training
 python scripts/lmstudio_smoke_test.py `
   --base-url http://localhost:1234 `
   --model "google/gemma-4-e4b" `
-  --task l3_grounding
+  --task l3_grounding `
+  --chat-template --retry 1 --repair
 ```
 
 Replace `--model` with the exact identifier LM Studio shows.
 
-Expected: HTTP 200, non-empty content, ideally parseable JSON for `l3_grounding` task.
+Expected: HTTP 200, parseable Sanad JSON for `l3_grounding` task.
 
 ---
 
@@ -191,5 +204,6 @@ Keep baseline GGUF for A/B comparison.
 
 ## Related
 
+- [`LAPTOP_SMOKE_TEST.md`](./LAPTOP_SMOKE_TEST.md) — ship GGUF acceptance (4-row smoke)
 - [PHASE2_9_AB_PILOT_WALKTHROUGH.md](./PHASE2_9_AB_PILOT_WALKTHROUGH.md) — export GGUF after training
 - [scripts/lmstudio_smoke_test.py](./scripts/lmstudio_smoke_test.py) — automated smoke test

@@ -10,7 +10,7 @@ Recovers from v1.11 regression. Spec: [`V112_RECOVERY_PLAN.md`](./V112_RECOVERY_
 
 1. **Prompt v1.12** — passage-number discipline + parity compound guardrail; scope rows use `weak` only.
 2. **Boost** — `l3_grounding_v112_boost.jsonl` (23 rows, 6 scope, all `weak` on studied subgroup).
-3. **Gates** — ship E4B on **E4B default-tier**, not Tier 2. Tier 2 remains for 12B/31B.
+3. **Gates** — ship E4B on **E4B default-tier**, not Tier 2. Tier 2 remains for 12B.
 
 ## Instance (E4B only)
 
@@ -18,7 +18,7 @@ Recovers from v1.11 regression. Spec: [`V112_RECOVERY_PLAN.md`](./V112_RECOVERY_
 |-------|--------|
 | GPU | **A6000** (48 GB) or similar — sufficient for E4B QLoRA |
 | Disk | **~100 GB** OK for E4B (train + merge + Q6_K eval) |
-| Do **not** run 12B/31B on this disk — destroy after rsync |
+| Do **not** run 12B on this disk — destroy after rsync |
 
 ## Local prep (done in repo)
 

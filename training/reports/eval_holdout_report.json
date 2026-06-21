@@ -1,0 +1,478 @@
+{
+  "eval_file": "/root/nassila/training/data/eval_holdout_45.jsonl",
+  "total_l3_rows": 45,
+  "json_parse_rate_strict": 1.0,
+  "json_parse_rate_with_repair": 1.0,
+  "repair_used_count": 0,
+  "expect_checks_pass_rate": 0.9111,
+  "quote_validity_rate": 0.9091,
+  "false_supported_rate": 0.0,
+  "category_pass_rates": {
+    "supported": 0.9,
+    "contradicted": 0.8889,
+    "not_in_source": 1.0,
+    "weak": 1.0,
+    "insufficient_evidence": 1.0,
+    "multi_claim": 0.6667
+  },
+  "per_row": [
+    {
+      "id": "h-001",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "supported"
+    },
+    {
+      "id": "h-002",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "supported"
+    },
+    {
+      "id": "h-003",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "supported"
+    },
+    {
+      "id": "h-004",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "supported"
+    },
+    {
+      "id": "h-005",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "supported"
+    },
+    {
+      "id": "h-006",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "supported"
+    },
+    {
+      "id": "h-007",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "supported"
+    },
+    {
+      "id": "h-008",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "supported"
+    },
+    {
+      "id": "h-009",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "supported"
+    },
+    {
+      "id": "h-010",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "any_claim_verdict missing ['supported']"
+      ],
+      "category": "supported"
+    },
+    {
+      "id": "h-011",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "contradicted"
+    },
+    {
+      "id": "h-012",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "contradicted"
+    },
+    {
+      "id": "h-013",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "any_claim_verdict missing ['contradicted']"
+      ],
+      "category": "contradicted"
+    },
+    {
+      "id": "h-014",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "contradicted"
+    },
+    {
+      "id": "h-015",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "contradicted"
+    },
+    {
+      "id": "h-016",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "contradicted"
+    },
+    {
+      "id": "h-017",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "contradicted"
+    },
+    {
+      "id": "h-018",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "contradicted"
+    },
+    {
+      "id": "h-019",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "contradicted"
+    },
+    {
+      "id": "h-020",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "not_in_source"
+    },
+    {
+      "id": "h-021",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "not_in_source"
+    },
+    {
+      "id": "h-022",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "not_in_source"
+    },
+    {
+      "id": "h-023",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "not_in_source"
+    },
+    {
+      "id": "h-024",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "not_in_source"
+    },
+    {
+      "id": "h-025",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "not_in_source"
+    },
+    {
+      "id": "h-026",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "not_in_source"
+    },
+    {
+      "id": "h-027",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "not_in_source"
+    },
+    {
+      "id": "h-028",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "not_in_source"
+    },
+    {
+      "id": "h-029",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "weak"
+    },
+    {
+      "id": "h-030",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "weak"
+    },
+    {
+      "id": "h-031",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "weak"
+    },
+    {
+      "id": "h-032",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "weak"
+    },
+    {
+      "id": "h-033",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "weak"
+    },
+    {
+      "id": "h-034",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "weak"
+    },
+    {
+      "id": "h-035",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "insufficient_evidence"
+    },
+    {
+      "id": "h-036",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "insufficient_evidence"
+    },
+    {
+      "id": "h-037",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "insufficient_evidence"
+    },
+    {
+      "id": "h-038",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "insufficient_evidence"
+    },
+    {
+      "id": "h-039",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "insufficient_evidence"
+    },
+    {
+      "id": "h-040",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "multi_claim"
+    },
+    {
+      "id": "h-041",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "multi_claim"
+    },
+    {
+      "id": "h-042",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "multi_claim"
+    },
+    {
+      "id": "h-043",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "any_claim_verdict missing ['not_in_source', 'insufficient_evidence']"
+      ],
+      "category": "multi_claim"
+    },
+    {
+      "id": "h-044",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "category": "multi_claim"
+    },
+    {
+      "id": "h-045",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "any_claim_verdict missing ['not_in_source', 'insufficient_evidence']"
+      ],
+      "category": "multi_claim"
+    }
+  ]
+}
