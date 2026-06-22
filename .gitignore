@@ -26,3 +26,6 @@ training/reports/ab_*_v110/seed_*_combined_report.json
 # OS
 .DS_Store
 Thumbs.db
+
+# Local Ollama Modelfiles (machine-specific GGUF paths — use HF README templates instead)
+training/fixtures/Modelfile.*
