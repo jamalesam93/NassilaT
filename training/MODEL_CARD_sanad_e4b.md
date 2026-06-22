@@ -46,6 +46,25 @@ llama-server -m nassila-sanad-e4b-q6_k.gguf \
 
 Requires a recent llama.cpp build with `gemma4_unified` support.
 
+## Ollama
+
+Pull directly from Hugging Face (requires Ollama 0.5+; repos must be **public**):
+
+```bash
+ollama pull huggingface.co/QinEmPeRoR93/nassila-sanad-e4b:Q6_K
+```
+
+Then use `nassila-sanad-e4b:Q6_K` as the model name in Nassila's Ollama preset.
+
+**Modelfile fallback** (if the pull tag is not yet indexed, or for private repos with `HF_TOKEN` set):
+
+```
+FROM https://huggingface.co/QinEmPeRoR93/nassila-sanad-e4b/resolve/main/nassila-sanad-e4b-q6_k.gguf
+PARAMETER num_ctx 4096
+```
+
+Save as `Modelfile` and run `ollama create nassila-sanad-e4b -f Modelfile`.
+
 - Trained on abstracts, not full paper body text yet.
 - Advisory only; not bundled in the Nassila installer.
 

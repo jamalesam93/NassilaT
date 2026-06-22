@@ -148,3 +148,66 @@ If **either fails** → record failure mode; do not mark release verified.
 - [`scripts/lmstudio_smoke_test.py`](./scripts/lmstudio_smoke_test.py) — ping + single row
 - [`scripts/run_l3_eval_batch.py`](./scripts/run_l3_eval_batch.py) — batch inference
 - [`EVALUATION_GUIDE.md`](./EVALUATION_GUIDE.md) — full eval harness
+
+---
+
+## Ollama smoke (optional)
+
+Confirms the Hugging Face pull path and quant tag work end-to-end. **Recommended on a second machine** to validate the `hf.co/…` pull + model name.
+
+### Pull
+
+> **Note:** HF repos must be **public** for direct `ollama pull` to work without a token. If private, use the Modelfile fallback below with `HF_TOKEN` set.
+
+```bash
+ollama pull huggingface.co/QinEmPeRoR93/nassila-sanad-e4b:Q6_K
+# For 12B (needs ~12 GB+ VRAM):
+ollama pull huggingface.co/QinEmPeRoR93/nassila-sanad-12b:Q6_K
+```
+
+**Modelfile fallback** (works for private repos with `HF_TOKEN`):
+
+```
+FROM https://huggingface.co/QinEmPeRoR93/nassila-sanad-e4b/resolve/main/nassila-sanad-e4b-q6_k.gguf
+PARAMETER num_ctx 4096
+```
+
+Save as `Modelfile` and run `ollama create nassila-sanad-e4b -f Modelfile`.
+
+### Sanity ping
+
+```bash
+ollama run nassila-sanad-e4b:Q6_K "ping"
+```
+
+### Eval via Ollama's OpenAI-compatible endpoint
+
+Ollama exposes `http://localhost:11434`. Use the same canonical 4-row smoke set:
+
+```powershell
+cd training
+python scripts/run_l3_eval_batch.py `
+  --base-url http://localhost:11434 `
+  --model nassila-sanad-e4b:Q6_K `
+  --data data/eval_holdout_90.jsonl data/eval_samples.jsonl `
+  --id h-001 eval-004 h-045 h-088 `
+  --chat-template --retry 1 --repair `
+  --out outputs/laptop_smoke_ollama_e4b.jsonl
+
+python scripts/score_laptop_smoke.py `
+  --predictions outputs/laptop_smoke_ollama_e4b.jsonl `
+  --report outputs/laptop_smoke_ollama_e4b_report.json
+```
+
+### Pass criteria
+
+Same as LM Studio smoke (see [Pass criteria](#pass-criteria)). Record results in the sign-off.
+
+### Troubleshooting
+
+| Symptom | Fix |
+|---------|-----|
+| `pull` fails / 404 | Verify repo name: `QinEmPeRoR93/nassila-sanad-e4b`; Ollama 0.5+ required for HF pull |
+| Wrong quant tag | Try without tag suffix: `ollama pull hf.co/QinEmPeRoR93/nassila-sanad-e4b` |
+| Connection refused on :11434 | Start Ollama: `ollama serve` |
+| h-045 parse fail on 12B | Blocker — compare raw output in `.jsonl` |
