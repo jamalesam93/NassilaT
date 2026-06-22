@@ -1,2 +1,0 @@
-FROM D:\LM_Studio_Models\lmstudio-community\nassila-sanad-12b-q6_k\nassila-sanad-12b-q6_k.gguf
-PARAMETER num_ctx 4096

@@ -109,8 +109,9 @@ Use this as the operator map after v1.14 ship. Detail lives in linked docs; chec
 - [x] Model cards + HF READMEs match ship metrics ([`HF_RELEASE_VERIFY.md`](./HF_RELEASE_VERIFY.md))
 - [x] Public repos: `QinEmPeRoR93/nassila-sanad-e4b` (v1.12), `nassila-sanad-12b` (v1.14)
 - [x] v1.13 GGUF **not** published
-- [x] HF README **Ollama** section (`hf.co/...` pull + Modelfile fallback)
+- [x] HF README **Ollama** section — **live on Hub** (uploaded 2026-06-22; `hf.co/...` pull + Modelfile fallback)
 - [x] Ollama `hf.co/QinEmPeRoR93/nassila-sanad-e4b:Q6_K` smoke on a second machine (confirm quant tag) — procedure recorded in [`LAPTOP_SMOKE_TEST.md`](./LAPTOP_SMOKE_TEST.md)
+- [x] Machine-local `training/fixtures/Modelfile.*` **gitignored** (portable templates stay in HF READMEs)
 
 ### C. Nassila app — Passage grounding (Sanad UX)
 
