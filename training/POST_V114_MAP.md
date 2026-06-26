@@ -66,7 +66,7 @@ Local acceptance **PASS** (2026-06-21, RTX 4060 8 GB): [`outputs/LAPTOP_SMOKE_SI
 
 HF verify **PASS**: [`HF_RELEASE_VERIFY.md`](./HF_RELEASE_VERIFY.md) · [`outputs/hf_release_verify_report.json`](./outputs/hf_release_verify_report.json).
 
-**Current focus:** Nassila product checklist (§ Phase checklist — sections C–D). Optional: HF README Ollama section + Ollama pull smoke (§ B).
+**Current focus:** Re-run real manuscript audit after L1/OA fixes (uncommitted Nassila batch); then audit progress UX; then Maktab/Masdar (Tier 3 groundwork).
 
 ---
 
@@ -88,7 +88,7 @@ Optional later work: recover v1.12-level combined score while preserving v1.14 h
 
 ## Phase checklist — done vs left
 
-**Last updated:** 2026-06-22 (P0: Ollama HF README sections + laptop smoke Ollama path)
+**Last updated:** 2026-06-27 (manuscript audit smoke + L1/OA fixes; security P0/P1 batch in Nassila, uncommitted)
 
 Use this as the operator map after v1.14 ship. Detail lives in linked docs; check boxes here only.
 
@@ -125,9 +125,12 @@ Use this as the operator map after v1.14 ship. Detail lives in linked docs; chec
 - [x] **Set up Sanad** modal — HF links, runner links, Ollama copy command ([`src/shared/sanad-setup-links.ts`](https://github.com/jamalesam93/Nassila/blob/main/src/shared/sanad-setup-links.ts))
 - [x] Auto-prompt once (Passage grounding tab or enable Sanad); dismiss + test-connection suppress
 - [x] Manuscript **Sanad bar** — toggle, tier, Setup / Configure links
-- [x] EN + AR i18n for grounding UI
-- [ ] End-user **Help → full reference** (workers, Ollama, HF, privacy) — deferred until loop IA stable
-- [ ] Refresh [`USER_GUIDE.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/USER_GUIDE.md) to match shipping UI (still says audit tab unmounted)
+- [x] **Settings → General → Manuscript source fetch** — one-time **Unpaywall email** (saved locally in `manuscript-audit-preferences.json`; used only for `api.unpaywall.org` DOI OA lookups from the desktop app, not Nassila servers)
+- [x] Loop hint + **Open Settings** when Unpaywall email unset (unlocks OA full-text path alongside Europe PMC / registry abstract)
+- [x] External **Marker** PDF CLI import **removed** — manuscript PDF ingest uses bundled pdf.js only ([Nassila `55a88ec`](https://github.com/jamalesam93/Nassila/commit/55a88ec))
+- [x] EN + AR i18n for grounding UI + source-fetch strings
+- [ ] End-user **Help → full reference** (workers, Ollama, HF, privacy, Unpaywall) — deferred until loop IA stable
+- [x] Refresh [`USER_GUIDE.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/USER_GUIDE.md) — Unpaywall one-time setup, loop evidence panels, coverage labels
 
 ### D. Nassila app — Ouroboros loop & workers
 
@@ -136,6 +139,13 @@ Use this as the operator map after v1.14 ship. Detail lives in linked docs; chec
 - [x] Tasnif / Sharh integrated inline (bibliography drawer + loop detail) — not separate tabs
 - [x] Manuscript audit engine + L3 grounding wired when user runs loop audit
 - [x] Raqim + Tasnif live in bibliography mode
+- [x] **Loop evidence UX** — passage window, source excerpt, verbatim quotes, and OA link in `LoopAuditDetail`; `sourceExcerpt` stored per cite site in audit engine
+- [x] **DOCX references fallback** — numbered bibliography block detected when no `References` / `Bibliography` heading ([`segments.ts`](https://github.com/jamalesam93/Nassila/blob/main/src/engine/manuscript/segments.ts); `tests/unit/manuscript-segments.test.ts`)
+- [x] **L1 multi-registry fallback** — DOI: Crossref/DataCite → OpenAlex → PubMed-by-DOI; PMID: PubMed → OpenAlex; DOI+PMID cross-fallback; identifier normalization (`verify.ts`, `tests/unit/manuscript-verify-registry.test.ts`)
+- [x] **OA fetch hardening** — `oa:fetchOaUrl` allows public `http://` Unpaywall links, soft-fails invalid URLs (no main-process throw spam), tries PDF → URL → landing-page candidates (`ipc-oa.ts`, `use-manuscript-audit.ts`)
+- [ ] **Real manuscript audit smoke** — first full run completed (76 cites, Sanad on); L1/OA fixes applied after false misses + empty panel during run; **re-run + sign-off pending**
+- [ ] **Audit progress UX** — stream partial `findings` during run + `N / M` reference counter (today: right panel empty until `setReport` at end)
+- [x] Debug instrumentation removed (`agent-debug-log`, ingest fetch logs) — v1.1.0 ship prep
 - [ ] **Maktab** — manuscript ingest LLM facet (stub → loop-fed structure)
 - [ ] **Masdar** — cited source PDF / OA fetch chunks for Sanad (stub → loop-fed excerpts)
 - [ ] Sanad **without** manual copy-paste between modules (requires Maktab + Masdar)
@@ -149,6 +159,7 @@ Use this as the operator map after v1.14 ship. Detail lives in linked docs; chec
 - [x] Nassila `AGENTS.md` — Ouroboros rules, Sanad checkpoints
 - [x] This file (`POST_V114_MAP.md`) as operator map
 - [x] NassilaT HF READMEs mention Ollama path (see B)
+- [x] Nassila [`docs/SECURITY-FIX-PLAN.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/SECURITY-FIX-PLAN.md) — SEC-01–07 checklist (P0/P1 implemented locally; **not yet committed**)
 - [ ] In-app Help mirrors user-facing truth (see C)
 
 ### F. Tier 3+ (future — after Tier 2 product stable)
@@ -159,11 +170,14 @@ Use this as the operator map after v1.14 ship. Detail lives in linked docs; chec
 
 ---
 
-**Suggested next actions (pick one track):**
+**Suggested next actions (ordered):**
 
-1. **Product:** Run one real manuscript audit on your LM Studio E4B setup; file gaps only if blocking.
-2. **Docs:** Add Ollama section to HF READMEs + smoke `hf.co/...` pull once.
-3. **Training:** Park v1.15 until Tier 3 corpus work starts, unless combined-score regression becomes a product blocker.
+1. **Product (P0):** **Commit + push** Nassila **v1.1.0** (Sanad + Ouroboros loop milestone). Restart `npm run dev` so main-process IPC picks up changes.
+2. **Product (P0):** **Re-run manuscript audit smoke** on the same DOCX (Unpaywall email set, Sanad E4B on): confirm fewer false L1 “not found” flags, no `oa:fetchOaUrl` terminal spam, cited sources populate at end, excerpts/quotes sensible in detail panel. Record pass/fail in a short note or `LAPTOP_SMOKE`-style sign-off.
+3. **Product (P1):** **Audit progress UX** — partial findings table + progress counter during long runs (76+ cites); optional per-cite LLM timeout.
+4. **Product (P1):** **Maktab / Masdar** stubs → loop-fed ingest and cited-PDF excerpts ([`PHASE3_TIER3_GROUNDWORK.md`](./PHASE3_TIER3_GROUNDWORK.md)).
+5. **Docs (P2):** In-app Help when loop IA + smoke are stable (see C).
+6. **Training (P2):** Park **v1.15** until Tier 3 corpus.
 
 ---
 
