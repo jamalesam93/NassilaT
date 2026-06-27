@@ -66,7 +66,7 @@ Local acceptance **PASS** (2026-06-21, RTX 4060 8 GB): [`outputs/LAPTOP_SMOKE_SI
 
 HF verify **PASS**: [`HF_RELEASE_VERIFY.md`](./HF_RELEASE_VERIFY.md) · [`outputs/hf_release_verify_report.json`](./outputs/hf_release_verify_report.json).
 
-**Current focus:** Re-run real manuscript audit after L1/OA fixes (uncommitted Nassila batch); then audit progress UX; then Maktab/Masdar (Tier 3 groundwork).
+**Current focus:** Audit progress UX (P1); Maktab/Masdar groundwork (P1); institutional full-text access (Tier 3 / Masdar).
 
 ---
 
@@ -88,7 +88,7 @@ Optional later work: recover v1.12-level combined score while preserving v1.14 h
 
 ## Phase checklist — done vs left
 
-**Last updated:** 2026-06-27 (manuscript audit smoke + L1/OA fixes; security P0/P1 batch in Nassila, uncommitted)
+**Last updated:** 2026-06-28 (manuscript audit smoke **PASS** — bibliography-first workflow; Nassila v1.1.1 ship batch)
 
 Use this as the operator map after v1.14 ship. Detail lives in linked docs; check boxes here only.
 
@@ -143,11 +143,14 @@ Use this as the operator map after v1.14 ship. Detail lives in linked docs; chec
 - [x] **DOCX references fallback** — numbered bibliography block detected when no `References` / `Bibliography` heading ([`segments.ts`](https://github.com/jamalesam93/Nassila/blob/main/src/engine/manuscript/segments.ts); `tests/unit/manuscript-segments.test.ts`)
 - [x] **L1 multi-registry fallback** — DOI: Crossref/DataCite → OpenAlex → PubMed-by-DOI; PMID: PubMed → OpenAlex; DOI+PMID cross-fallback; identifier normalization (`verify.ts`, `tests/unit/manuscript-verify-registry.test.ts`)
 - [x] **OA fetch hardening** — `oa:fetchOaUrl` allows public `http://` Unpaywall links, soft-fails invalid URLs (no main-process throw spam), tries PDF → URL → landing-page candidates (`ipc-oa.ts`, `use-manuscript-audit.ts`)
-- [ ] **Real manuscript audit smoke** — first full run completed (76 cites, Sanad on); L1/OA fixes applied after false misses + empty panel during run; **re-run + sign-off pending**
+- [x] **Real manuscript audit smoke** — full run on operator DOCX (~76 cites, Sanad E4B on); sign-off [`MANUSCRIPT_AUDIT_SMOKE_SIGNOFF.md`](./MANUSCRIPT_AUDIT_SMOKE_SIGNOFF.md). **Operator rule:** chaotic or unverified embedded references → **Bibliography first** (import, verify, dedupe, attach DOIs), then re-audit.
+- [x] **Bibliography-first workflow** — documented in Nassila `PRODUCT.md` / `USER_GUIDE.md`; loop UI hint + switch to Bibliography (v1.1.1).
+- [ ] **Send references to Bibliography** — one-click export of manuscript `referencesText` → Raqim store (P1).
+- [ ] **Audit from Bibliography store** — match in-text cites to curated citation rows when library is already clean (P1).
 - [ ] **Audit progress UX** — stream partial `findings` during run + `N / M` reference counter (today: right panel empty until `setReport` at end)
 - [x] Debug instrumentation removed (`agent-debug-log`, ingest fetch logs) — v1.1.0 ship prep
 - [ ] **Maktab** — manuscript ingest LLM facet (stub → loop-fed structure)
-- [ ] **Masdar** — cited source PDF / OA fetch chunks for Sanad (stub → loop-fed excerpts)
+- [ ] **Masdar** — cited source PDF / OA fetch chunks for Sanad (stub → loop-fed excerpts); **institutional access** (library proxy / login session) is **not** Unpaywall email — Tier 3; see sign-off § institutional access
 - [ ] Sanad **without** manual copy-paste between modules (requires Maktab + Masdar)
 - [ ] **Shahid** — table/figure evidence (Tier 3+, disabled)
 - [ ] **Sharh** — richer LLM explanations (deterministic copy only today)
@@ -159,11 +162,12 @@ Use this as the operator map after v1.14 ship. Detail lives in linked docs; chec
 - [x] Nassila `AGENTS.md` — Ouroboros rules, Sanad checkpoints
 - [x] This file (`POST_V114_MAP.md`) as operator map
 - [x] NassilaT HF READMEs mention Ollama path (see B)
-- [x] Nassila [`docs/SECURITY-FIX-PLAN.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/SECURITY-FIX-PLAN.md) — SEC-01–07 checklist (P0/P1 implemented locally; **not yet committed**)
+- [x] Nassila [`docs/SECURITY-FIX-PLAN.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/SECURITY-FIX-PLAN.md) — SEC-01–07 implemented (v1.1.1)
 - [ ] In-app Help mirrors user-facing truth (see C)
 
 ### F. Tier 3+ (future — after Tier 2 product stable)
 
+- [ ] **Institutional full-text access** — library proxy prefix or sandboxed publisher/login session for paywalled DOIs (separate from Unpaywall email; boosts Sanad when OA APIs have no copy). Security review required (SEC-06).
 - [ ] Maktab / Masdar training corpus ([`PHASE3_TIER3_GROUNDWORK.md`](./PHASE3_TIER3_GROUNDWORK.md))
 - [ ] Full-text excerpt eval (not abstract-only)
 - [ ] Merged Ouroboros model (`nassila-agent-e12b-v1`) — research track only
@@ -172,10 +176,10 @@ Use this as the operator map after v1.14 ship. Detail lives in linked docs; chec
 
 **Suggested next actions (ordered):**
 
-1. **Product (P0):** **Commit + push** Nassila **v1.1.0** (Sanad + Ouroboros loop milestone). Restart `npm run dev` so main-process IPC picks up changes.
-2. **Product (P0):** **Re-run manuscript audit smoke** on the same DOCX (Unpaywall email set, Sanad E4B on): confirm fewer false L1 “not found” flags, no `oa:fetchOaUrl` terminal spam, cited sources populate at end, excerpts/quotes sensible in detail panel. Record pass/fail in a short note or `LAPTOP_SMOKE`-style sign-off.
-3. **Product (P1):** **Audit progress UX** — partial findings table + progress counter during long runs (76+ cites); optional per-cite LLM timeout.
-4. **Product (P1):** **Maktab / Masdar** stubs → loop-fed ingest and cited-PDF excerpts ([`PHASE3_TIER3_GROUNDWORK.md`](./PHASE3_TIER3_GROUNDWORK.md)).
+1. **Product (P1):** **Audit progress UX** — partial findings table + progress counter during long runs (76+ cites); optional per-cite LLM timeout.
+2. **Product (P1):** **Bibliography bridge** — export manuscript references → Raqim; optional audit-from-store when library is curated.
+3. **Product (P1):** **Maktab / Masdar** stubs → loop-fed ingest and cited-PDF excerpts ([`PHASE3_TIER3_GROUNDWORK.md`](./PHASE3_TIER3_GROUNDWORK.md)).
+4. **Product (Tier 3):** **Institutional access** design — proxy prefix or login webview for paywalled full text (not Unpaywall email).
 5. **Docs (P2):** In-app Help when loop IA + smoke are stable (see C).
 6. **Training (P2):** Park **v1.15** until Tier 3 corpus.
 
