@@ -66,7 +66,7 @@ Local acceptance **PASS** (2026-06-21, RTX 4060 8 GB): [`outputs/LAPTOP_SMOKE_SI
 
 HF verify **PASS**: [`HF_RELEASE_VERIFY.md`](./HF_RELEASE_VERIFY.md) · [`outputs/hf_release_verify_report.json`](./outputs/hf_release_verify_report.json).
 
-**Current focus:** Audit progress UX (P1); Maktab/Masdar groundwork (P1); institutional full-text access (Tier 3 / Masdar).
+**Current focus:** Maktab/Masdar groundwork (P1); institutional full-text access (Tier 3 / Masdar); in-app Help (P2).
 
 ---
 
@@ -88,7 +88,7 @@ Optional later work: recover v1.12-level combined score while preserving v1.14 h
 
 ## Phase checklist — done vs left
 
-**Last updated:** 2026-06-28 (manuscript audit smoke **PASS** — bibliography-first workflow; Nassila v1.1.1 ship batch)
+**Last updated:** 2026-06-21 (Bibliography bridge shipped in Nassila; loop UX polish; audit progress UX operator-complete)
 
 Use this as the operator map after v1.14 ship. Detail lives in linked docs; check boxes here only.
 
@@ -145,9 +145,12 @@ Use this as the operator map after v1.14 ship. Detail lives in linked docs; chec
 - [x] **OA fetch hardening** — `oa:fetchOaUrl` allows public `http://` Unpaywall links, soft-fails invalid URLs (no main-process throw spam), tries PDF → URL → landing-page candidates (`ipc-oa.ts`, `use-manuscript-audit.ts`)
 - [x] **Real manuscript audit smoke** — full run on operator DOCX (~76 cites, Sanad E4B on); sign-off [`MANUSCRIPT_AUDIT_SMOKE_SIGNOFF.md`](./MANUSCRIPT_AUDIT_SMOKE_SIGNOFF.md). **Operator rule:** chaotic or unverified embedded references → **Bibliography first** (import, verify, dedupe, attach DOIs), then re-audit.
 - [x] **Bibliography-first workflow** — documented in Nassila `PRODUCT.md` / `USER_GUIDE.md`; loop UI hint + switch to Bibliography (v1.1.1).
-- [ ] **Send references to Bibliography** — one-click export of manuscript `referencesText` → Raqim store (P1).
-- [ ] **Audit from Bibliography store** — match in-text cites to curated citation rows when library is already clean (P1).
-- [ ] **Audit progress UX** — stream partial `findings` during run + `N / M` reference counter (today: right panel empty until `setReport` at end)
+- [x] **Send references to Bibliography** — one-click export of manuscript `referencesText` → Raqim (`bibliography-bridge.ts`, `use-bibliography-bridge.ts`; `manuscript-ref:N` ids preserve numeric cite keys).
+- [x] **Audit from Bibliography store** — optional loop toggle uses curated Raqim rows instead of re-parsing embedded refs; preview allows body + library when enabled (`manuscript-preview.ts`, `use-manuscript-audit.ts`).
+- [x] **Audit progress UX** — partial findings + `N / M` counter during long runs (operator-complete).
+- [x] **PDF IMRAD References heading** — `9. References` detected on PDF export (`segments.ts` numbered header).
+- [x] **Loop audit detail UX** — deduped L3 rollup reasons; compact layer summary + cite-site list (`LoopAuditDetail.tsx`, `grounding-llm.ts`).
+- [x] **Cited-sources table header** — opaque sticky header (no bleed-through on scroll).
 - [x] Debug instrumentation removed (`agent-debug-log`, ingest fetch logs) — v1.1.0 ship prep
 - [ ] **Maktab** — manuscript ingest LLM facet (stub → loop-fed structure)
 - [ ] **Masdar** — cited source PDF / OA fetch chunks for Sanad (stub → loop-fed excerpts); **institutional access** (library proxy / login session) is **not** Unpaywall email — Tier 3; see sign-off § institutional access
@@ -176,12 +179,10 @@ Use this as the operator map after v1.14 ship. Detail lives in linked docs; chec
 
 **Suggested next actions (ordered):**
 
-1. **Product (P1):** **Audit progress UX** — partial findings table + progress counter during long runs (76+ cites); optional per-cite LLM timeout.
-2. **Product (P1):** **Bibliography bridge** — export manuscript references → Raqim; optional audit-from-store when library is curated.
-3. **Product (P1):** **Maktab / Masdar** stubs → loop-fed ingest and cited-PDF excerpts ([`PHASE3_TIER3_GROUNDWORK.md`](./PHASE3_TIER3_GROUNDWORK.md)).
-4. **Product (Tier 3):** **Institutional access** design — proxy prefix or login webview for paywalled full text (not Unpaywall email).
-5. **Docs (P2):** In-app Help when loop IA + smoke are stable (see C).
-6. **Training (P2):** Park **v1.15** until Tier 3 corpus.
+1. **Product (P1):** **Maktab / Masdar** stubs → loop-fed ingest and cited-PDF excerpts ([`PHASE3_TIER3_GROUNDWORK.md`](./PHASE3_TIER3_GROUNDWORK.md)).
+2. **Product (Tier 3):** **Institutional access** design — proxy prefix or login webview for paywalled full text (not Unpaywall email).
+3. **Docs (P2):** In-app Help when loop IA is stable (see C).
+4. **Training (P2):** Park **v1.15** until Tier 3 corpus.
 
 ---
 
