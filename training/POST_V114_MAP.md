@@ -66,7 +66,7 @@ Local acceptance **PASS** (2026-06-21, RTX 4060 8 GB): [`outputs/LAPTOP_SMOKE_SI
 
 HF verify **PASS**: [`HF_RELEASE_VERIFY.md`](./HF_RELEASE_VERIFY.md) · [`outputs/hf_release_verify_report.json`](./outputs/hf_release_verify_report.json).
 
-**Current focus:** Maktab/Masdar groundwork (P1); institutional full-text access (Tier 3 / Masdar); in-app Help (P2).
+**Current focus:** Maktab/Masdar groundwork (P1); institutional full-text access (Tier 3 / Masdar); in-app Help (P2). Nassila app **v1.1.2** shipped on GitHub ([release notes](https://github.com/jamalesam93/Nassila/blob/main/release-artifacts/v1.1.2-RELEASE_NOTES.md)).
 
 ---
 
@@ -88,7 +88,7 @@ Optional later work: recover v1.12-level combined score while preserving v1.14 h
 
 ## Phase checklist — done vs left
 
-**Last updated:** 2026-06-21 (Bibliography bridge shipped in Nassila; loop UX polish; audit progress UX operator-complete)
+**Last updated:** 2026-06-28 (Nassila **v1.1.2** on GitHub — bibliography bridge, PDF import parity, verify-via-IPC; installer uploaded)
 
 Use this as the operator map after v1.14 ship. Detail lives in linked docs; check boxes here only.
 
@@ -151,6 +151,9 @@ Use this as the operator map after v1.14 ship. Detail lives in linked docs; chec
 - [x] **PDF IMRAD References heading** — `9. References` detected on PDF export (`segments.ts` numbered header).
 - [x] **Loop audit detail UX** — deduped L3 rollup reasons; compact layer summary + cite-site list (`LoopAuditDetail.tsx`, `grounding-llm.ts`).
 - [x] **Cited-sources table header** — opaque sticky header (no bleed-through on scroll).
+- [x] **Bibliography PDF import** — Raqim import uses manuscript-grade PDF extractor (`extractManuscriptFromPdf`); numbered entries split at DOCX parity ([`document.ts`](https://github.com/jamalesam93/Nassila/blob/main/src/engine/parser/document.ts); v1.1.2).
+- [x] **Bibliography verify references** — unified L1+L2 runs in main process via `registry:verifyUnified` IPC so **Verify references** works in packaged builds (production CSP blocks renderer registry fetch; v1.1.2).
+- [x] **Nassila v1.1.2 release** — Windows installer on GitHub Releases (`Nassila Setup 1.1.2.exe`); supersedes v1.1.0/v1.1.1 for new installs.
 - [x] Debug instrumentation removed (`agent-debug-log`, ingest fetch logs) — v1.1.0 ship prep
 - [ ] **Maktab** — manuscript ingest LLM facet (stub → loop-fed structure)
 - [ ] **Masdar** — cited source PDF / OA fetch chunks for Sanad (stub → loop-fed excerpts); **institutional access** (library proxy / login session) is **not** Unpaywall email — Tier 3; see sign-off § institutional access
@@ -166,6 +169,7 @@ Use this as the operator map after v1.14 ship. Detail lives in linked docs; chec
 - [x] This file (`POST_V114_MAP.md`) as operator map
 - [x] NassilaT HF READMEs mention Ollama path (see B)
 - [x] Nassila [`docs/SECURITY-FIX-PLAN.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/SECURITY-FIX-PLAN.md) — SEC-01–07 implemented (v1.1.1)
+- [x] Nassila `README.md` + `CHANGELOG.md` — v1.1.2 ship (bibliography bridge, PDF import, verify IPC)
 - [ ] In-app Help mirrors user-facing truth (see C)
 
 ### F. Tier 3+ (future — after Tier 2 product stable)
