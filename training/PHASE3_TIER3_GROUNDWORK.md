@@ -2,7 +2,7 @@
 
 Planning doc for full-text Sanad after E4B v1.12 + 12B v1.14 ship and laptop smoke pass.
 
-**Operator map:** [`POST_V114_MAP.md`](./POST_V114_MAP.md) · **Corpus:** [`CORPUS_PIPELINE.md`](./CORPUS_PIPELINE.md) · **Schema:** [`DATASET_SCHEMA.md`](./DATASET_SCHEMA.md)
+**Operator map:** [`OUROBOROS_OPERATOR_MAP.md`](./OUROBOROS_OPERATOR_MAP.md) · **Corpus:** [`CORPUS_PIPELINE.md`](./CORPUS_PIPELINE.md) · **Schema:** [`DATASET_SCHEMA.md`](./DATASET_SCHEMA.md)
 
 ---
 
@@ -94,7 +94,7 @@ flowchart LR
 
 ## Out of scope (this phase)
 
-- 12B v1.15 combined-score recovery (optional; see [`POST_V114_MAP.md`](./POST_V114_MAP.md))
+- 12B v1.15 combined-score recovery (optional; see [`OUROBOROS_OPERATOR_MAP.md`](./OUROBOROS_OPERATOR_MAP.md))
 - Multimodal Shahid (`table_figure_grounding`)
 
 ---

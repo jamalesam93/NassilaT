@@ -3,7 +3,7 @@
 **12B only.** Follow-up after **v1.13 NO-GO**.
 
 **Canonical runbook:** [`docs/V113_12B_REGRESSION_FIX_REPORT.md`](../docs/V113_12B_REGRESSION_FIX_REPORT.md)  
-**Context:** [`POST_V114_MAP.md`](./POST_V114_MAP.md), [`EVAL_GONOGO.md`](./EVAL_GONOGO.md)
+**Context:** [`OUROBOROS_OPERATOR_MAP.md`](./OUROBOROS_OPERATOR_MAP.md), [`EVAL_GONOGO.md`](./EVAL_GONOGO.md)
 
 **Ship decision:** select **12B v1.14** for `nassila-sanad-12b`. v1.12 remains the higher-combined fallback/reference.
 

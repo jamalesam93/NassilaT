@@ -1,8 +1,8 @@
-# HF release verification — Sanad v1.12 / v1.14
+# HF release verification — Sanad S12 / S14
 
 Checklist after **laptop smoke pass** ([`LAPTOP_SMOKE_TEST.md`](./LAPTOP_SMOKE_TEST.md), [`outputs/LAPTOP_SMOKE_SIGNOFF.md`](./outputs/LAPTOP_SMOKE_SIGNOFF.md)).
 
-Upload commands: [`HF_PUBLISH.md`](./HF_PUBLISH.md)
+Upload commands: [`HF_PUBLISH.md`](./HF_PUBLISH.md). Checkpoint naming: [`OUROBOROS_OPERATOR_MAP.md`](./OUROBOROS_OPERATOR_MAP.md) § Sanad checkpoint naming.
 
 ---
 
@@ -10,10 +10,10 @@ Upload commands: [`HF_PUBLISH.md`](./HF_PUBLISH.md)
 
 | HF repo | GGUF file | Checkpoint | Gate | Combined | Quote (holdout) | False-supported |
 |---------|-----------|------------|------|----------|-----------------|-----------------|
-| `QinEmPeRoR93/nassila-sanad-e4b` | `nassila-sanad-e4b-q6_k.gguf` | **v1.12** | E4B default-tier | **89.27%** | **92.98%** | **3.81%** |
-| `QinEmPeRoR93/nassila-sanad-12b` | `nassila-sanad-12b-q6_k.gguf` | **v1.14** | Tier 2 | **90.43%** | **100%** | **2.86%** |
+| `QinEmPeRoR93/nassila-sanad-e4b` | `nassila-sanad-e4b-q6_k.gguf` | **S12** *(legacy v1.12)* | E4B default-tier | **89.27%** | **92.98%** | **3.81%** |
+| `QinEmPeRoR93/nassila-sanad-12b` | `nassila-sanad-12b-q6_k.gguf` | **S14** *(legacy v1.14)* | Tier 2 | **90.43%** | **100%** | **2.86%** |
 
-**Do not publish** v1.13 12B. v1.12 12B remains higher-combined fallback/reference only.
+**Do not publish** v1.13 / S13 12B. v1.12 12B remains higher-combined fallback/reference only.
 
 ---
 
@@ -58,11 +58,11 @@ Fast size-only (skip hashing ~16 GB):
 
 - [x] Laptop smoke **PASS** for E4B and 12B (sign-off filled — RTX 4060 8 GB, 2026-06-21)
 - [x] E4B metrics in model card + HF README match table above
-- [x] 12B metrics in model card + HF README match table above (v1.14, not v1.12)
+- [x] 12B metrics in model card + HF README match table above (S14, not S12 12B)
 - [x] HF README `base_model` correct (`google/gemma-4-E4B-it` / `google/gemma-4-12B-it`)
 - [x] GGUF filenames on HF match ship table
 - [x] v1.13 GGUF **not** uploaded under any tag
-- [x] Nassila `OUROBOROS_CONTEXT.md` / `PRODUCT.md` reference v1.12 E4B + v1.14 12B
+- [x] Nassila `OUROBOROS_CONTEXT.md` / `PRODUCT.md` reference S12 E4B + S14 12B
 - [x] Local GGUFs match HF (size + SHA256) — `outputs/hf_release_verify_report.json` (2026-06-21)
 
 ---
@@ -70,14 +70,14 @@ Fast size-only (skip hashing ~16 GB):
 ## Upload (if needed)
 
 ```bash
-# README only
+# README only (checkpoint label update — no GGUF re-upload)
 hf upload QinEmPeRoR93/nassila-sanad-e4b \
   training/hf_readmes/nassila-sanad-e4b/README.md README.md \
-  --repo-type model --commit-message "v1.12 E4B default tier"
+  --repo-type model --commit-message "Sanad S12 (legacy v1.12) — checkpoint label"
 
 hf upload QinEmPeRoR93/nassila-sanad-12b \
   training/hf_readmes/nassila-sanad-12b/README.md README.md \
-  --repo-type model --commit-message "v1.14 12B quality tier"
+  --repo-type model --commit-message "Sanad S14 (legacy v1.14) — checkpoint label"
 ```
 
 GGUF upload: see [`PHASE2_9_AB_PILOT_WALKTHROUGH.md`](./PHASE2_9_AB_PILOT_WALKTHROUGH.md) Part 9.
