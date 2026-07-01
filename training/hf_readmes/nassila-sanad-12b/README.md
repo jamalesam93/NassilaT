@@ -19,6 +19,8 @@ library_name: llama.cpp
 
 # Nassila Sanad 12B (quality tier)
 
+**Checkpoint:** **S14** *(legacy train label v1.14)*
+
 Local GGUF for **Sanad** in [Nassila](https://github.com/jamalesam93/Nassila) — checks manuscript claims against source excerpts and returns structured JSON with verdicts and verbatim quotes.
 
 **File:** `nassila-sanad-12b-q6_k.gguf` · Q6_K · ~9.1 GB  

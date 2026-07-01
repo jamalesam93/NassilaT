@@ -1,6 +1,6 @@
 # Nassila L3 grounding — training diagnosis
 
-> **Operator map:** [`training/POST_V114_MAP.md`](./training/POST_V114_MAP.md) · **GO/NO-GO:** [`training/EVAL_GONOGO.md`](./training/EVAL_GONOGO.md)  
+> **Operator map:** [`training/OUROBOROS_OPERATOR_MAP.md`](./training/OUROBOROS_OPERATOR_MAP.md) · **GO/NO-GO:** [`training/EVAL_GONOGO.md`](./training/EVAL_GONOGO.md)  
 > **Canonical themes** below for Sanad v1.0–v1.6; v1.10+ decisions in EVAL_GONOGO. Holdout matrix: [`training/reports/holdout_failure_matrix.md`](./training/reports/holdout_failure_matrix.md).
 
 ## Whack-a-mole (v1.0–v1.3)
@@ -260,7 +260,7 @@ Reports: `reports/ab_12b_q6_k_v114/`.
 
 **Decision:** select **12B v1.14** for `nassila-sanad-12b` because it preserves Tier 2 and fixes the subgroup split failure. Accept the combined-score regression versus v1.12 as a conscious product tradeoff; v1.12 remains the higher-combined fallback/reference.
 
-See [`training/POST_V114_MAP.md`](./training/POST_V114_MAP.md) and [`training/PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md`](./training/PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md).
+See [`training/OUROBOROS_OPERATOR_MAP.md`](./training/OUROBOROS_OPERATOR_MAP.md) and [`training/PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md`](./training/PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md).
 
 ## v1.11 fixes (E4B gap — trained, NO-GO)
 

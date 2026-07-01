@@ -2,7 +2,7 @@
 
 **North star:** one local model identity (**Ouroboros**) for all Nassila AI tasks, forged **one worker at a time**. **Agent brief:** [Nassila `docs/OUROBOROS_CONTEXT.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md). Vision: [`docs/OUROBOROS.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS.md).
 
-**Live operator map (checklist, ship status, next actions):** [`POST_V114_MAP.md`](./POST_V114_MAP.md) — prefer that file for day-to-day truth. This roadmap is the **long-horizon phase table** only.
+**Live operator map (checklist, ship status, next actions):** [`OUROBOROS_OPERATOR_MAP.md`](./OUROBOROS_OPERATOR_MAP.md) — prefer that file for day-to-day truth. This roadmap is the **long-horizon phase table** only.
 
 **Status (2026-06-28):** Sanad **E4B v1.12** + **12B v1.14** on HF; laptop smoke + HF verify **PASS**. Nassila desktop **v1.1.2** on GitHub (Manuscript loop + Bibliography, Sanad UX, bibliography bridge, PDF import parity, verify-via-IPC). **v1.13 NO-GO**; v1.14 selected for 12B Tier 2.
 
@@ -75,7 +75,7 @@ Planning: [`PHASE3_TIER3_GROUNDWORK.md`](./PHASE3_TIER3_GROUNDWORK.md). **Instit
 
 ## Nassila app integration (summary)
 
-Aligned with [`POST_V114_MAP.md`](./POST_V114_MAP.md) § C–D. Detail and checkboxes live there.
+Aligned with [`OUROBOROS_OPERATOR_MAP.md`](./OUROBOROS_OPERATOR_MAP.md) § C–D. Detail and checkboxes live there.
 
 | Component | Status |
 |-----------|--------|
@@ -102,7 +102,7 @@ Aligned with [`POST_V114_MAP.md`](./POST_V114_MAP.md) § C–D. Detail and check
 
 | Doc | Purpose |
 |-----|---------|
-| [`POST_V114_MAP.md`](./POST_V114_MAP.md) | **Current operator map** (done vs left) |
+| [`OUROBOROS_OPERATOR_MAP.md`](./OUROBOROS_OPERATOR_MAP.md) | **Current operator map** (done vs left) |
 | [`LAPTOP_SMOKE_TEST.md`](./LAPTOP_SMOKE_TEST.md) | Local GGUF acceptance |
 | [`HF_RELEASE_VERIFY.md`](./HF_RELEASE_VERIFY.md) | Post-smoke release checklist |
 | [`PHASE3_TIER3_GROUNDWORK.md`](./PHASE3_TIER3_GROUNDWORK.md) | Maktab/Masdar next |

@@ -62,7 +62,7 @@ ARM=12b PHASE=14 MULTI_SEED=1 bash training/scripts/run_ab_pilot_pipeline.sh
 
 **Ship selected:** E4B **v1.12**, 12B **v1.14**. v1.12 12B remains the higher-combined fallback/reference; v1.13 **NO-GO** — do not publish.
 
-**Active:** [`training/POST_V114_MAP.md`](../training/POST_V114_MAP.md) · [`training/PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md`](../training/PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md)
+**Active:** [`training/OUROBOROS_OPERATOR_MAP.md`](../training/OUROBOROS_OPERATOR_MAP.md) · [`training/PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md`](../training/PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md)
 
 **Archive:** v1.11–v1.13 walkthroughs in [`training/archive/`](../training/archive/).
 

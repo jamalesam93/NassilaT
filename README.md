@@ -7,7 +7,7 @@ The desktop app lives in [Nassila](https://github.com/jamalesam93/Nassila). This
 ## Start here
 
 1. [`training/README.md`](training/README.md) — training pack overview  
-2. [`training/POST_V114_MAP.md`](training/POST_V114_MAP.md) — **current arc** (v1.14 selected)  
+2. [`training/OUROBOROS_OPERATOR_MAP.md`](training/OUROBOROS_OPERATOR_MAP.md) — **current arc** (S12/S14 selected)  
 3. [`training/LAPTOP_SMOKE_TEST.md`](training/LAPTOP_SMOKE_TEST.md) — local GGUF acceptance  
 3. [`docs/DUAL_TIER_POLICY.md`](docs/DUAL_TIER_POLICY.md) — E4B default-tier vs Tier 2  
 4. [`training/PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md`](training/PHASE2_14_12B_MULTI_CLAIM_WALKTHROUGH.md) — v1.14 12B GO record  

@@ -4,7 +4,7 @@ Fast local acceptance for downloaded **`nassila-sanad-e4b-q6_k.gguf`** (v1.12) a
 
 This is **not** the full 115-row Tier 2 eval (that ran on Vast). It confirms LM Studio loads the GGUF, returns Sanad JSON, and passes four canonical rows including the v1.14 h-045 / h-088 subgroup fix.
 
-**Operator map:** [`POST_V114_MAP.md`](./POST_V114_MAP.md) · **LM Studio setup:** [`LM_STUDIO_INTEGRATION.md`](./LM_STUDIO_INTEGRATION.md)
+**Operator map:** [`OUROBOROS_OPERATOR_MAP.md`](./OUROBOROS_OPERATOR_MAP.md) · **LM Studio setup:** [`LM_STUDIO_INTEGRATION.md`](./LM_STUDIO_INTEGRATION.md)
 
 ---
 

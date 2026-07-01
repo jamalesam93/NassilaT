@@ -23,7 +23,7 @@ ARMS = {
     "e4b": {
         "repo_id": "QinEmPeRoR93/nassila-sanad-e4b",
         "gguf_name": "nassila-sanad-e4b-q6_k.gguf",
-        "checkpoint": "v1.12",
+        "checkpoint": "S12",
         "readme_source": TRAINING_DIR / "hf_readmes" / "nassila-sanad-e4b" / "README.md",
         "metrics": ("89.27%", "92.98%", "3.81%"),
         "forbidden_gguf_substrings": ("v1.13",),
@@ -31,7 +31,7 @@ ARMS = {
     "12b": {
         "repo_id": "QinEmPeRoR93/nassila-sanad-12b",
         "gguf_name": "nassila-sanad-12b-q6_k.gguf",
-        "checkpoint": "v1.14",
+        "checkpoint": "S14",
         "readme_source": TRAINING_DIR / "hf_readmes" / "nassila-sanad-12b" / "README.md",
         "metrics": ("90.43%", "100%", "2.86%"),
         "forbidden_gguf_substrings": ("v1.13",),

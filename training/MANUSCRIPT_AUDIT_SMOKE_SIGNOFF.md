@@ -25,7 +25,7 @@
 2. **Verify**, autocorrect, dedupe, attach missing DOIs in Raqim.
 3. Return to **Manuscript** and run audit on a manuscript whose reference *section* matches the curated library (or re-paste after export).
 
-This is **Bibliography-first**, not a model failure. Automated “export refs → Raqim” and “audit from store” are **P1** backlog ([`POST_V114_MAP.md`](./POST_V114_MAP.md) § D).
+This is **Bibliography-first**, not a model failure. Automated “export refs → Raqim” and “audit from store” are **P1** backlog ([`OUROBOROS_OPERATOR_MAP.md`](./OUROBOROS_OPERATOR_MAP.md) § D).
 
 ## Institutional access (not Unpaywall email)
 
