@@ -110,7 +110,7 @@ Local acceptance **PASS** (2026-06-21, RTX 4060 8 GB): [`outputs/LAPTOP_SMOKE_SI
 
 HF verify **PASS**: [`HF_RELEASE_VERIFY.md`](./HF_RELEASE_VERIFY.md) · [`outputs/hf_release_verify_report.json`](./outputs/hf_release_verify_report.json).
 
-**Current focus:** App **1.2.1 Masdar UX** — **shipped 2026-07-17** ([v1.2.1](https://github.com/jamalesam93/Nassila/releases/tag/v1.2.1)) (#4b, #4c, #8, icon **I2**). **Deferred:** #5 attach PDF, #6 quote chip → later 1.2.x. **Next ship:** **1.2.2** concurrency (#7). App stays **MIT / free**. Models **S12 / S14**; **S15+** parked.
+**Current focus:** App **1.2.1** shipped. **Next:** **1.2.2 Throughput** (#7 only). Then **1.2.3 Quote chip** (#6+#15) → **1.2.4 Masdar attach** (#5) → **1.2.5–1.2.6** Raqim → TBD **1.2.7–9** → **1.3.0 Sharh-lite**. **∥ Parallel:** Maktab OCR **O2**; **S15+** (NassilaT). App stays **MIT / free**. Models **S12 / S14**.
 
 ---
 
@@ -182,7 +182,7 @@ Upload (UI)
 
 **Operator rule (unchanged):** chaotic embedded refs → **Bibliography first** (import → verify → repair → re-audit).
 
-### R1 — Engine hardening (deterministic) → **1.2.3 Raqim Repair**
+### R1 — Engine hardening (deterministic) → **1.2.5 Raqim Repair**
 
 | Item | Regression case | Code touchpoints |
 |------|-----------------|------------------|
@@ -197,7 +197,7 @@ Upload (UI)
 | **Kaggle dataset URL lookup** | Hospital Admissions, CKD datasets | new resolver + `enhance.ts` (stretch) |
 | **Regression fixtures** | all operator cases below | `tests/unit/` |
 
-### R2 — Repair UX (product) → **1.2.4 Raqim Resolve**
+### R2 — Repair UX (product) → **1.2.6 Raqim Resolve**
 
 | Item | Regression case | Surface |
 |------|-----------------|---------|
@@ -205,7 +205,7 @@ Upload (UI)
 | **Manual lookup key** | user override | paste/type title, DOI, PMID, PMCID, or URL → **Verify** / **Autocorrect** on that row |
 | **Manuscript-context ranking** *(stretch)* | co-cited disambiguation | boost suggestions from library context → **1.3.0** optional |
 
-### R3 — Gray-lit host lookup (ML/AI audience) → **1.2.4** (with R2)
+### R3 — Gray-lit host lookup (ML/AI audience) → **1.2.6** (with R2)
 
 | Item | Regression case | Notes |
 |------|-----------------|-------|
@@ -250,11 +250,16 @@ Shipped with models **S12** (E4B) + **S14** (12B) — independent of app patch n
 |---------|----------|------------|---------|
 | **1.1.3** | **Polish** | #1, #2 | **Shipped** — notifications + Sanad modal → website docs |
 | **1.1.3 stretch** | *(optional)* | — | SourceFetchSettings troubleshooting link; AboutModal docs link |
-| **1.2.1** | **Masdar UX** | #4b, #4c, #8, #13 | **Shipped 2026-07-17** — in-progress panel; **DOI↔title manual-only**; shortcuts + **icon I2** (#5/#6 deferred) |
-| **1.2.2** | **Throughput** | #7 (+ optional #5/#6) | Bounded concurrency; optional attach PDF / quote chip |
-| **1.2.3** | **Raqim Repair** | #14 | PMCID L1, arXiv DOI, OUP URLs, parser guards, type/volume fixes (R1) |
-| **1.2.4** | **Raqim Resolve** | #14b | Suggested matches + manual lookup key; HF Hub + Kaggle gray-lit (R2–R3) |
-| **1.3.0** | **Sharh-lite** | #9, #10, #11 | Deterministic summaries, Help → website, cancel granularity; optional R2 manuscript-context ranking |
+| **1.2.1** | **Masdar UX** | #4b, #4c, #8, #13 | **Shipped 2026-07-17** — in-progress panel; **DOI↔title manual-only**; shortcuts + **icon I2** |
+| **1.2.2** | **Throughput** | #7 | Bounded concurrency (registry vs LLM pools) |
+| **1.2.3** | **Quote chip** | #6, #15 | Per-claim quote-verification chip; drop redundant header wordmark |
+| **1.2.4** | **Masdar attach** | #5 | Per-reference source PDF attach + re-audit this reference |
+| **1.2.5** | **Raqim Repair** | #14 | PMCID L1, arXiv DOI, OUP URLs, parser guards, type/volume fixes (R1) |
+| **1.2.6** | **Raqim Resolve** | #14b | Suggested matches + manual lookup key; HF Hub + Kaggle gray-lit (R2–R3) |
+| **1.2.7–1.2.9** | *(TBD)* | — | Not yet scoped |
+| **1.3.0** | **Sharh-lite** | #9, #10, #11 | Deterministic summaries, Help → website, cancel granularity |
+
+**Parallel (not numbered):** **Maktab OCR O2** (fixtures/smoke, any 1.2.x); **S15+** Sanad refinement on NassilaT.
 
 Cross-repo optional: **#12** Sanad metrics on `nassila-web` `local-models` page (anytime after 1.1.3).
 
@@ -274,14 +279,15 @@ Optional later work: recover v1.12-level combined score while preserving S14 (v1
 | **UI icon track (I0–I2)** | Nassila `react-icons/lu`, `src/renderer/components/ui/icon.tsx` | **I0–I2 done** — **1.2.0** / **1.2.1** |
 | **HF / model cards** | `MODEL_CARD_sanad_*.md`, lean HF READMEs | After smoke pass; see [`HF_PUBLISH.md`](./HF_PUBLISH.md) |
 | **Maktab / Masdar corpus** | [`PHASE3_TIER3_GROUNDWORK.md`](./PHASE3_TIER3_GROUNDWORK.md), [`CORPUS_PIPELINE.md`](./CORPUS_PIPELINE.md) | After Tier 2 stable; unblocks Tier 3 |
-| **Maktab OCR (Tesseract)** | Nassila [`docs/MAKTAB_OCR.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/MAKTAB_OCR.md), `src/engine/maktab/` | **O0–O1 done**; O2 planned |
-| **Raqim resolver & repair (R1–R3)** | Nassila `src/engine/manuscript/verify.ts`, `autocorrect/enhance.ts`, `parser/plain-text.ts` | **R1 → 1.2.3** · **R2–R3 → 1.2.4** — see § Raqim track |
+| **Maktab OCR (Tesseract)** | Nassila [`docs/MAKTAB_OCR.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/MAKTAB_OCR.md), `src/engine/maktab/` | **O0–O1 done**; **O2 parallel** (any 1.2.x) |
+| **Raqim resolver & repair (R1–R3)** | Nassila `src/engine/manuscript/verify.ts`, `autocorrect/enhance.ts`, `parser/plain-text.ts` | **R1 → 1.2.5** · **R2–R3 → 1.2.6** — see § Raqim track |
+| **S15+ Sanad** | NassilaT training | Parallel with late 1.2.x / 1.3.0 when Tier 3 corpus exists |
 
 ---
 
 ## Phase checklist — done vs left
 
-**Last updated:** 2026-07-18 (1.2.1 shipped on GitHub; next 1.2.2 Throughput)
+**Last updated:** 2026-07-18 (locked train 1.2.2→1.3.0; OCR O2 + S15+ parallel)
 
 Use this as the operator map after v1.14 ship. Detail lives in linked docs; check boxes here only.
 
@@ -335,9 +341,9 @@ Use this as the operator map after v1.14 ship. Detail lives in linked docs; chec
 - [x] **Loop evidence UX** — passage window, source excerpt, verbatim quotes, and OA link in `LoopAuditDetail`; `sourceExcerpt` stored per cite site in audit engine
 - [x] **DOCX references fallback** — numbered bibliography block detected when no `References` / `Bibliography` heading ([`segments.ts`](https://github.com/jamalesam93/Nassila/blob/main/src/engine/manuscript/segments.ts); `tests/unit/manuscript-segments.test.ts`)
 - [x] **L1 multi-registry fallback (phase 1)** — DOI: Crossref/DataCite → OpenAlex → PubMed-by-DOI; PMID: PubMed → OpenAlex; DOI+PMID cross-fallback; identifier normalization (`verify.ts`, `tests/unit/manuscript-verify-registry.test.ts`)
-- [ ] **Raqim resolver hardening (phase 2, R1)** — PMCID L1; arXiv URL→DOI; OUP `article-abstract`; Springer chapter; DeLong-class parser; registry title repair; software false-positive; genre-aware APA; Kaggle stretch → **1.2.3** (#14)
-- [ ] **Raqim repair UX (R2)** — suggested matches + manual lookup key (title/DOI/PMID/PMCID/URL) → per-row Verify/Autocorrect → **1.2.4** (#14b)
-- [ ] **Gray-lit host lookup (R3)** — Hugging Face Hub (models/datasets for ML/AI cites) + Kaggle; manual-add fallback → **1.2.4**
+- [ ] **Raqim resolver hardening (phase 2, R1)** — PMCID L1; arXiv URL→DOI; OUP `article-abstract`; Springer chapter; DeLong-class parser; registry title repair; software false-positive; genre-aware APA; Kaggle stretch → **1.2.5** (#14)
+- [ ] **Raqim repair UX (R2)** — suggested matches + manual lookup key (title/DOI/PMID/PMCID/URL) → per-row Verify/Autocorrect → **1.2.6** (#14b)
+- [ ] **Gray-lit host lookup (R3)** — Hugging Face Hub (models/datasets for ML/AI cites) + Kaggle; manual-add fallback → **1.2.6**
 - [ ] **Raqim regression fixtures** — operator manuscript cases (OUP, PMC, arXiv, DeLong, Gemma, Kaggle, Dwork, Nature/npj) in `tests/unit/`
 - [x] **OA fetch hardening** — `oa:fetchOaUrl` allows public `http://` Unpaywall links, soft-fails invalid URLs (no main-process throw spam), tries PDF → URL → landing-page candidates (`ipc-oa.ts`, `use-manuscript-audit.ts`)
 - [x] **Real manuscript audit smoke** — full run on operator DOCX (~76 cites, Sanad E4B on); sign-off [`MANUSCRIPT_AUDIT_SMOKE_SIGNOFF.md`](./MANUSCRIPT_AUDIT_SMOKE_SIGNOFF.md). **Operator rule:** chaotic or unverified embedded references → **Bibliography first** (import, verify, dedupe, attach DOIs), then re-audit.
@@ -383,11 +389,15 @@ Use this as the operator map after v1.14 ship. Detail lives in linked docs; chec
 - [x] **Icon system I0/I1** — `react-icons` Lucide; `Icon` + `SeverityIcon`; `IssuePanel` / `OutputPanel` / `TargetSelector` (**1.2.0**)
 - [x] **1.2.1 Masdar UX** — #4b, #4c, #8, icon I2; **shipped 2026-07-17** ([v1.2.1](https://github.com/jamalesam93/Nassila/releases/tag/v1.2.1))
   - [x] **Icon system I2** — toast/toolbar/external-link affordances (#13)
-- [ ] **Later 1.2.x** — attach PDF (#5), quote chip (#6)
-- [ ] **1.2.2 Throughput** — bounded concurrency (#7); split registry vs LLM pools
-- [ ] **1.2.3 Raqim Repair** — resolver/parser/type fixes (#14, R1)
-- [ ] **1.2.4 Raqim Resolve** — repair panel + HF/Kaggle gray-lit (#14b, R2–R3)
+- [ ] **1.2.2 Throughput** — bounded concurrency (#7)
+- [ ] **1.2.3 Quote chip** — quote-verification chip (#6) + header wordmark (#15)
+- [ ] **1.2.4 Masdar attach** — per-reference PDF attach (#5) + re-audit
+- [ ] **1.2.5 Raqim Repair** — resolver/parser/type fixes (#14, R1)
+- [ ] **1.2.6 Raqim Resolve** — repair panel + HF/Kaggle gray-lit (#14b, R2–R3)
+- [ ] **1.2.7–1.2.9** — TBD
 - [ ] **1.3.0 Sharh-lite** — deterministic summaries (#9), Help deep links (#11), cancel granularity (#10)
+- [ ] **∥ Maktab OCR O2** — golden fixtures + hardware smoke (parallel, any 1.2.x)
+- [ ] **∥ S15+** — NassilaT parallel with late 1.2.x / 1.3.0
 
 ### F. Tier 3+ (future — after Tier 2 product stable)
 
@@ -400,11 +410,13 @@ Use this as the operator map after v1.14 ship. Detail lives in linked docs; chec
 
 **Suggested next actions (ordered):**
 
-1. **App (P0):** **1.2.2 Throughput** — bounded audit concurrency (#7); optionally #5/#6.
-2. **App (P1):** **1.2.3 Raqim Repair** — operator bibliography regression (#14, R1).
-3. **App (P1):** **1.2.4 Raqim Resolve** — suggested matches + manual lookup + HF/Kaggle (#14b, R2–R3).
-4. **Product (Tier 3):** **Institutional access** design — proxy prefix or login webview for paywalled full text (not Unpaywall email).
-5. **Training (P2):** Park **S15+** until Tier 3 corpus; Maktab **M01** after Masdar corpus groundwork.
+1. **App (P0):** **1.2.2 Throughput** — bounded audit concurrency (#7) only.
+2. **App (P1):** **1.2.3 Quote chip** — #6 + #15.
+3. **App (P1):** **1.2.4 Masdar attach** — #5 + re-audit this reference.
+4. **App (P1):** **1.2.5–1.2.6** Raqim Repair / Resolve (#14 / #14b).
+5. **App:** **1.2.7–1.2.9** TBD → **1.3.0 Sharh-lite**.
+6. **∥ Parallel:** **Maktab OCR O2** (any 1.2.x); **S15+** when Tier 3 corpus exists.
+7. **Product (Tier 3):** **Institutional access** design — proxy prefix or login webview for paywalled full text (not Unpaywall email).
 
 ---
 
@@ -422,7 +434,7 @@ Use this as the operator map after v1.14 ship. Detail lives in linked docs; chec
 | Nassila `OUROBOROS_CONTEXT.md` | Workers + tiers |
 | Nassila `docs/MAKTAB_OCR.md` | Maktab OCR phases (EN/AR/FR, on-device) |
 | Nassila `LOOP.md` | Engineering loop + gates |
-| Nassila `CHANGELOG.md` | **1.2.1** public ship + deferred #5/#6; next **1.2.2** |
+| Nassila `CHANGELOG.md` | Locked train **1.2.2→1.3.0**; OCR O2 + S15+ parallel |
 | Nassila `docs/FEATURES-AND-TWEAKS.md` | **#14** Raqim Repair · **#14b** Raqim Resolve (acceptance) |
 
 Historical walkthroughs: [`archive/`](./archive/).
