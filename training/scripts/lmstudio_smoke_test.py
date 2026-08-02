@@ -38,6 +38,8 @@ def chat_completion(
     temperature: float = 0.2,
     timeout: int = 180,
     seed: int | None = None,
+    chat_template_kwargs: dict[str, object] | None = None,
+    max_tokens: int | None = None,
 ) -> str:
     base = base_url.rstrip("/")
     url = f"{base}/v1/chat/completions"
@@ -52,10 +54,23 @@ def chat_completion(
     }
     if seed is not None:
         payload["seed"] = seed
+    if max_tokens is not None:
+        payload["max_tokens"] = max_tokens
+    if chat_template_kwargs:
+        payload["chat_template_kwargs"] = chat_template_kwargs
     resp = requests.post(url, headers=headers, json=payload, timeout=timeout)
     resp.raise_for_status()
     data = resp.json()
-    content = data.get("choices", [{}])[0].get("message", {}).get("content")
+    msg = data.get("choices", [{}])[0].get("message", {})
+    content = msg.get("content")
+    if not content:
+        reasoning = msg.get("reasoning_content", "")
+        if reasoning and "{" in reasoning:
+            # Find first { and last }
+            start = reasoning.find("{")
+            end = reasoning.rfind("}")
+            if start != -1 and end > start:
+                content = reasoning[start : end + 1]
     if not content:
         raise RuntimeError("Empty response content")
     return content
@@ -109,14 +124,27 @@ def main() -> int:
     parser.add_argument(
         "--chat-template",
         action="store_true",
-        help="Send system+user messages matching QLoRA train layout",
+        help="Deprecated compatibility flag; production system+user messages are always used",
+    )
+    parser.add_argument(
+        "--disable-thinking",
+        action="store_true",
+        help="Pass chat_template_kwargs enable_thinking=false (Nanbeige / reasoning models)",
     )
     args = parser.parse_args()
+
+    template_kwargs = {"enable_thinking": False} if args.disable_thinking else None
 
     if args.task == "ping":
         messages = [{"role": "user", "content": "Reply with the single word: ok"}]
         print(f"POST {args.base_url}/v1/chat/completions model={args.model!r}")
-        content = chat_completion(args.base_url, args.model, messages, args.api_key)
+        content = chat_completion(
+            args.base_url,
+            args.model,
+            messages,
+            args.api_key,
+            chat_template_kwargs=template_kwargs,
+        )
         print("Response:", content.strip()[:200])
         return 0 if "ok" in content.lower() else 1
 
@@ -150,7 +178,13 @@ def main() -> int:
     last_err: str | None = None
     last_repaired = False
     for attempt in range(1, attempts + 1):
-        last_raw = chat_completion(args.base_url, args.model, messages, args.api_key)
+        last_raw = chat_completion(
+            args.base_url,
+            args.model,
+            messages,
+            args.api_key,
+            chat_template_kwargs=template_kwargs,
+        )
         ok, err, repaired = parse_grounding(last_raw, args.repair)
         last_err, last_repaired = err, repaired
         suffix = " (after repair)" if repaired and ok else ""
