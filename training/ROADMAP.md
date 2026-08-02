@@ -4,7 +4,7 @@
 
 **Live operator map (checklist, ship status, next actions):** [`OUROBOROS_OPERATOR_MAP.md`](./OUROBOROS_OPERATOR_MAP.md) — prefer that file for day-to-day truth. This roadmap is the **long-horizon phase table** only.
 
-**Status (2026-06-28):** Sanad **E4B v1.12** + **12B v1.14** on HF; laptop smoke + HF verify **PASS**. Nassila desktop **v1.1.2** on GitHub (Manuscript loop + Bibliography, Sanad UX, bibliography bridge, PDF import parity, verify-via-IPC). **v1.13 NO-GO**; v1.14 selected for 12B Tier 2.
+**Status (2026-08):** Sanad **S15** (`Qwen/Qwen3.5-4B`) + **12B S14** (`nassila-sanad-12b`) on HF; laptop smoke + HF verify **PASS**. Nassila desktop **v1.5.0** (Raqim Web, Tier A Rust WASM engine, Wayback archive, metadata resolver).
 
 ---
 
@@ -16,15 +16,15 @@
 | **0.5** | App guardrails | — | JSON repair, retry, caps | — (app code) | Shipped in Nassila |
 | **1** | Cloud QLoRA setup | `l3_grounding` | Smoke LoRA on Vast | E4B | Done |
 | **1.5** | Paper corpus (PC) | — | `paper_corpus_enriched.jsonl` | — | In progress |
-| **2** | L3 Sanad train/eval | `l3_grounding` | `nassila-sanad-e4b` / `nassila-sanad-12b` | E4B / 12B | **Shipped** (v1.12 / v1.14) |
-| **2b** | 12B multi_claim loop | `l3_grounding` | v1.14 selected; v1.15+ optional | 12B | v1.14 **GO**; v1.13 **NO-GO** |
-| **3** | Manuscript ingest (**Maktab**) | `doc_extract` | Facet or agent merge | E4B → 12B | **P1** — app stubs → loop-fed |
-| **3b** | Cited PDF text (**Masdar**) | `source_pdf_extract` | Same | E4B | **P1** — Tier 3; corpus deferred |
+| **2** | L3 Sanad train/eval | `l3_grounding` | `nassila-sanad-4b` (S15) / `nassila-sanad-12b` (S14) | Qwen3.5 4B / 12B | **Shipped** (S15 / S14) |
+| **2b** | 12B multi_claim loop | `l3_grounding` | S14 12B selected; S15 default tier live | Qwen3.5 4B / 12B | S15 **GO**; S14 **GO**; v1.13 **NO-GO** |
+| **3** | Manuscript ingest (**Maktab**) | `doc_extract` | `@firecrawl/pdf-inspector-wasm` + WASM extract | Rust WASM | **Shipped** (v1.5.0) |
+| **3b** | Cited PDF text (**Masdar**) | `source_pdf_extract` | Same | E4B / Qwen | **P1** — Tier 3; corpus in progress |
 | **4** | Tables / figures (**Shahid**) | `table_figure_grounding` | `nassila-agent-e12b-v1` | 12B multimodal | Future (Tier 3+) |
-| **5** | Webpage AI | `webpage_*`, `issue_explain` | Merge into agent | E4B / 12B | Future |
+| **5** | Webpage AI | `webpage_*`, `issue_explain` | Metadata resolver + host extractors | Deterministic + LLM | **Shipped** (v1.5.0) |
 | **6** | Multi-task merge | All | Single `nassila-agent-*` GGUF | Best fit | Research track |
 
-**Deterministic (not trained):** Crossref / PubMed / OpenAlex L1+L2, citeproc, predatory lists, pdf.js manuscript extract (Marker removed from Nassila).
+**Deterministic (not trained):** Crossref / PubMed / OpenAlex L1+L2, citeproc, predatory lists, webpage metadata resolver, WASM PDF extract.
 
 ---
 
@@ -32,15 +32,14 @@
 
 | Milestone | Status |
 |-----------|--------|
-| E4B v1.12 default-tier | **GO** — [`nassila-sanad-e4b`](https://huggingface.co/QinEmPeRoR93/nassila-sanad-e4b) |
-| 12B v1.14 Tier 2 | **GO** — [`nassila-sanad-12b`](https://huggingface.co/QinEmPeRoR93/nassila-sanad-12b) (h-045 / h-088 fix) |
+| Qwen3.5 4B S15 default-tier | **GO** — [`nassila-sanad-4b`](https://huggingface.co/QinEmPeRoR93/nassila-sanad-4b) (94.48% combined, 100% quote) |
+| 12B S14 Tier 2 | **GO** — [`nassila-sanad-12b`](https://huggingface.co/QinEmPeRoR93/nassila-sanad-12b) (h-045 / h-088 fix) |
 | 12B v1.13 multi_claim boost | **NO-GO** — do not publish |
-| 12B v1.12 | Higher-combined **fallback/reference** only |
-| Laptop smoke + HF verify | **PASS** (2026-06-21) — [`outputs/LAPTOP_SMOKE_SIGNOFF.md`](./outputs/LAPTOP_SMOKE_SIGNOFF.md) |
+| Laptop smoke + HF verify | **PASS** — [`outputs/LAPTOP_SMOKE_SIGNOFF.md`](./outputs/LAPTOP_SMOKE_SIGNOFF.md) |
 | Nassila Sanad product UX | **Shipped** — Passage grounding, Set up Sanad, tier chips, loop Sanad bar |
-| Nassila app release | **v1.1.2** — [release notes](https://github.com/jamalesam93/Nassila/blob/main/release-artifacts/v1.1.2-RELEASE_NOTES.md) |
-| Tier 3 (full-text Sanad) | **Not met** — needs Masdar + harness; see [`PHASE3_TIER3_GROUNDWORK.md`](./PHASE3_TIER3_GROUNDWORK.md) |
-| v1.15+ refinement | **Parked** until Tier 3 corpus |
+| Nassila app release | **v1.5.0** — [release notes](https://github.com/jamalesam93/Nassila/blob/main/CHANGELOG.md) |
+| Tier 3 (full-text Sanad) | **Not met** (product) — PDF-body **draft** scored S14 Ollama 2026-07-22: 84 rows, parse 98.8%, expect/quote 96.4%; freeze + quote ≥98% + e2e still open — [`EVAL_GONOGO_TIER3_MEMO.md`](./EVAL_GONOGO_TIER3_MEMO.md) |
+| v1.15+ refinement | **Parked** until Tier 3 corpus / go-no-go |
 
 Historical v1.0–v1.13 walkthroughs: [`archive/`](./archive/).
 
@@ -52,7 +51,7 @@ Historical v1.0–v1.13 walkthroughs: [`archive/`](./archive/).
 |------|----------------|
 | Ingest | [`CORPUS_PIPELINE.md`](./CORPUS_PIPELINE.md), `scripts/build_paper_corpus.py` |
 | Abstract backfill | `scripts/enrich_corpus_abstracts.py` |
-| Fulltext PDF fetch | **Deferred** — before Phase 3b / Masdar training |
+| Fulltext PDF fetch | **In progress** — OA pilot + `cache/oa_fulltext/pdfs/`; body draft via `draft_body_holdout_from_pdfs.py` |
 
 **Exit:** `data/paper_corpus_enriched.jsonl` with ≥2,000 papers, abstract ≥120 chars.
 
