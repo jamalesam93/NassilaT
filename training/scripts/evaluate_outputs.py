@@ -12,6 +12,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import html
 import json
 import re
 import sys
@@ -30,6 +31,33 @@ L3_VERDICTS = frozenset(
 
 def normalize_ws(text: str) -> str:
     return re.sub(r"\s+", " ", text.strip())
+
+
+def normalize_quote_cmp(text: str) -> str:
+    """Normalize PDF/XML artifacts for quote↔excerpt comparison."""
+    out = html.unescape(text)
+    out = out.replace("\u00ad", "")
+    out = re.sub(r"[\u2010-\u2015\u2212]", "-", out)
+    return normalize_ws(out)
+
+
+def collapse_letter_spaces(text: str) -> str:
+    """Join soft-hyphen leftovers like 'r esults' / 'ne glected' for cmp only."""
+    return re.sub(r"(?<=[A-Za-z]) (?=[A-Za-z])", "", text)
+
+
+def is_substring_quote(quote: str, excerpt: str) -> bool:
+    # Models often echo XML-escaped prompt text (&lt; / &gt; / &amp;).
+    candidates = [quote, html.unescape(quote)]
+    excerpt_norm = normalize_quote_cmp(excerpt)
+    excerpt_collapsed = collapse_letter_spaces(excerpt_norm)
+    for candidate in candidates:
+        cand_norm = normalize_quote_cmp(candidate)
+        if cand_norm in excerpt_norm:
+            return True
+        if collapse_letter_spaces(cand_norm) in excerpt_collapsed:
+            return True
+    return False
 
 
 def parse_grounding_json(
@@ -67,12 +95,6 @@ def parse_grounding_json(
         clean_claims.append(item)
     parsed["claims"] = clean_claims
     return True, parsed, None, repaired
-
-
-def is_substring_quote(quote: str, excerpt: str) -> bool:
-    if quote in excerpt:
-        return True
-    return normalize_ws(quote) in normalize_ws(excerpt)
 
 
 def load_jsonl_by_id(path: Path) -> dict[str, dict[str, Any]]:

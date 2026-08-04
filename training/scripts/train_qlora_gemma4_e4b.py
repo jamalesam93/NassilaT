@@ -36,7 +36,11 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 TRAINING_DIR = SCRIPT_DIR.parent
 sys.path.insert(0, str(SCRIPT_DIR))
 
-from validate_dataset import build_grounding_user_prompt, load_jsonl  # noqa: E402
+from validate_dataset import (  # noqa: E402
+    GROUNDING_SYSTEM_MESSAGE,
+    build_grounding_user_prompt,
+    load_jsonl,
+)
 
 # --- Configuration ---
 BASE_MODEL = "google/gemma-4-E4B-it"
@@ -123,7 +127,7 @@ def records_to_chat_jsonl(input_path: Path, output_path: Path) -> int:
                 "messages": [
                     {
                         "role": "system",
-                        "content": "You are a strict academic citation grounding assistant.",
+                        "content": GROUNDING_SYSTEM_MESSAGE,
                     },
                     {"role": "user", "content": user},
                     {"role": "assistant", "content": assistant},

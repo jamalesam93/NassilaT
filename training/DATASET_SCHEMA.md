@@ -11,8 +11,8 @@ Task ids are defined in [`src/shared/nassila-agent-tasks.ts`](../src/shared/nass
 | Task id | Phase | Schema section below | Training status |
 |---------|-------|----------------------|-----------------|
 | `l3_grounding` | 1 | Yes | **Active** — v1 ship target |
-| `doc_extract` | 2+ | Stub | Planned — manuscript PDF/DOCX → text |
-| `source_pdf_extract` | 2+ | Stub | Planned — cited OA PDF → text |
+| `doc_extract` | 2+ | **Locked (v1)** | Planned — manuscript PDF/DOCX → text |
+| `source_pdf_extract` | 2+ | **Locked (v1)** | Planned — cited OA PDF → text |
 | `table_figure_grounding` | 3+ | Stub | Planned — multimodal |
 | `webpage_metadata` | 2+ | Yes | Planned |
 | `webpage_classify` | 2+ | Yes | Planned |
@@ -122,53 +122,91 @@ Optional `output.overallVerdict`:
 
 ---
 
-## Task: `doc_extract` (planned — Tier 3)
+## Task: `doc_extract` (Tier 3 — schema v1)
 
 Manuscript ingest: PDF or DOCX → structured plain text for downstream L3. **Not** a replacement for Marker or layout engines; complements pdfjs/mammoth.
 
 **Planning:** [`PHASE3_TIER3_GROUNDWORK.md`](./PHASE3_TIER3_GROUNDWORK.md) (NassilaT).
 
-### Input fields (draft)
+### Input fields (v1)
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `document_kind` | string | yes | `pdf` \| `docx` |
-| `raw_text_or_pages` | string or array | yes | Extracted text (page-bounded optional) |
+| `source_path` | string | no | Original path (not embedded in JSONL for privacy) |
+| `raw_text` | string | yes | Full extracted plain text |
+| `page_boundaries` | array | no | `[{ "page": 1, "start": 0, "end": 1234 }]` |
 
-### Output object (draft)
+### Output object (v1)
 
 ```json
 {
-  "sections": [{ "heading": "Introduction", "text": "..." }],
-  "warnings": ["scanned_pdf_low_confidence"]
+  "sections": [{ "heading": "Introduction", "text": "...", "page_hint": "p. 2" }],
+  "warnings": ["scanned_pdf_low_confidence"],
+  "page_count": 12
 }
 ```
 
-Full schema TBD when Phase 3 dataset work starts.
+### Validation rules
+
+1. `sections[].text` must be verbatim substrings of `raw_text` (whitespace normalization optional in validator).
+2. Record `label_provenance` in `meta` when human-curated.
 
 ---
 
-## Task: `source_pdf_extract` (planned — Tier 3)
+## Task: `source_pdf_extract` (Tier 3 — schema v1)
 
 Cited open-access PDF → excerpt text for L3 when HTML/abstract is insufficient.
 
-**Planning:** [`PHASE3_TIER3_GROUNDWORK.md`](./PHASE3_TIER3_GROUNDWORK.md) (NassilaT). OA full-text fetch deferred in [`CORPUS_PIPELINE.md`](./CORPUS_PIPELINE.md) until this task starts.
+**Pilot fetch:** [`scripts/fetch_oa_fulltext.py`](./scripts/fetch_oa_fulltext.py). **Eval holdout:** `data/eval_holdout_body_pilot.jsonl`.
 
-### Input fields (draft)
+### Input fields (v1)
 
-| Field | Type | Required |
-|-------|------|----------|
-| `url` | string | yes |
-| `pdf_text` | string | yes |
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `url` | string | yes | OA or attached source URL |
+| `doi` | string | no | Canonical DOI when known |
+| `pdf_text` | string | no | Full extracted text (when available) |
 
-### Output object (draft)
+### Output object (v1)
 
 ```json
 {
   "excerpt": "verbatim passage suitable for grounding",
-  "page_hint": "p. 12"
+  "page_hint": "p. 12",
+  "fetch_status": "pdf_verified",
+  "pdf_bytes": 842112,
+  "pdf_path": "cache/oa_fulltext/pdfs/051_10.1063_1.1316015.pdf",
+  "notes": "optional operator notes"
 }
 ```
+
+**`fetch_status` values** (honest provenance — do not label paywalls as OA):
+
+| Value | Meaning |
+|-------|---------|
+| `pdf_verified` | Live probe returned PDF bytes from the selected URL |
+| `pdf_filed` | Operator attached a local PDF (`file_operator_pdf.py`) |
+| `paywall_or_auth` | Login/purchase wall or 401/403 |
+| `html_only` | Landing page without automatable PDF |
+| `url_resolved` | URL chosen but not verified (`--no-probe` legacy) |
+
+**`meta.access_tier`** (how bytes were obtained):
+
+| Value | Meaning |
+|-------|---------|
+| `oa_unpaywall_verified` | Unpaywall candidate + verified PDF |
+| `oa_unpaywall_url_only` | Unpaywall URL, probe failed |
+| `operator_override_verified` | Operator URL override + verified PDF |
+| `operator_override_url_only` | Operator URL override, not verified |
+| `operator_attached_pdf` | Local PDF filed for training |
+| `operator_grey_mirror` | Training-only grey mirror PDF (not product path) |
+
+### Validation rules
+
+1. `excerpt` must be a verbatim substring of `pdf_text` when `pdf_text` is present.
+2. `excerpt` length ≤ 4200 chars (app `GROUNDING_EXCERPT_MAX_CHARS`).
+3. Never mix boost rows from this task into `eval_holdout_body_*.jsonl`.
 
 ---
 

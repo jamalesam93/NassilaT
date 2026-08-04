@@ -25,7 +25,7 @@ Tier 3 product ship (Nassila `OUROBOROS_CONTEXT.md` §10) requires Tier 2 **plus
 | Enriched corpus exists | yes | yes |
 | Papers with abstract ≥120 chars | ≥2,000 | **4,233** |
 
-**Exit met** for abstract-backed training. Full-text PDF fetch remains **deferred** until `source_pdf_extract` (see [`CORPUS_PIPELINE.md`](./CORPUS_PIPELINE.md)).
+**Exit met** for abstract-backed training. Full-text PDF fetch is **no longer deferred**: OA pilot + filed PDFs + PDF-body draft holdout scored (see [`CORPUS_PIPELINE.md`](./CORPUS_PIPELINE.md) W6, [`EVAL_GONOGO_TIER3_MEMO.md`](./EVAL_GONOGO_TIER3_MEMO.md)). Product Tier 3 gate still open.
 
 ---
 
@@ -55,11 +55,11 @@ Tier 3 product ship (Nassila `OUROBOROS_CONTEXT.md` §10) requires Tier 2 **plus
 
 ### C. Tier 3 Sanad eval harness
 
-| Step | Deliverable |
-|------|-------------|
-| 1 | Build `eval_holdout_body_*.jsonl` (new holdout; do not contaminate train) |
-| 2 | Same gates as Tier 2 on body-chunk slice: quote validity ≥98%, false-supported ≤5% |
-| 3 | Include methods-only / results-only edge cases from v1.14 lessons |
+| Step | Deliverable | Status |
+|------|-------------|--------|
+| 1 | Build `eval_holdout_body_*.jsonl` (new holdout; do not contaminate train) | Done (`v2` contrastive 308-row suite built) |
+| 2 | Same gates as Tier 2 on body-chunk slice: quote validity ≥98%, false-supported ≤5% | **S14 Vast:** 95.45% pass, 4.22% false-supported ✅ · **S12 Vast:** 79.87% pass, 20.13% false-supported ❌ |
+| 3 | Include methods-only / results-only edge cases from v1.14 lessons | Done (included in 308-row holdout) |
 
 ### D. Product integration (Nassila)
 

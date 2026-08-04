@@ -32,10 +32,15 @@ _TRAILING_COMMA_RE = re.compile(r",\s*([\]}])")
 _PREMATURE_ROOT_CLOSE_RE = re.compile(r'"\]\}\}\],\s*"overallVerdict"')
 # Model closed claim before rationale array: ..."text"}], "overallVerdict"
 _UNCLOSED_RATIONALE_ARRAY_RE = re.compile(r"\"\}\],\s*\"overallVerdict\"")
+_CHANNEL_PREFIX_RE = re.compile(r"^<channel\|?>", re.IGNORECASE)
 
 
 def strip_code_fences(text: str) -> str:
     return _FENCE_RE.sub("", text).replace("```", "")
+
+
+def strip_channel_prefix(text: str) -> str:
+    return _CHANNEL_PREFIX_RE.sub("", text.lstrip()).lstrip()
 
 
 def slice_outer_object(text: str) -> str:
@@ -72,6 +77,7 @@ def repair_json_text(raw: str) -> str:
     if not raw:
         return raw
     out = raw.strip()
+    out = strip_channel_prefix(out)
     out = strip_code_fences(out)
     out = slice_outer_object(out)
     out = remove_optional_key_markers(out)
@@ -82,7 +88,7 @@ def repair_json_text(raw: str) -> str:
 
 def parse_strict_json(raw: str) -> tuple[bool, Any, str | None]:
     """Parse without repair. Validates root object and claims array."""
-    sliced = slice_outer_object(strip_code_fences(raw or "").strip())
+    sliced = slice_outer_object(strip_code_fences(strip_channel_prefix(raw or "")).strip())
     if not sliced:
         return False, None, "No JSON object"
     try:
@@ -98,7 +104,7 @@ def parse_strict_json(raw: str) -> tuple[bool, Any, str | None]:
 
 def try_parse_first_object(raw: str) -> tuple[bool, Any, str | None]:
     """If the model appended junk after a valid object, parse the first one only."""
-    text = strip_code_fences(raw or "").strip()
+    text = strip_code_fences(strip_channel_prefix(raw or "")).strip()
     start = text.find("{")
     if start == -1:
         return False, None, "No JSON object"

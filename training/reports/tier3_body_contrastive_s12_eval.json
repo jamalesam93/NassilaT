@@ -1,0 +1,980 @@
+{
+  "eval_file": "data\\eval_holdout_body_contrastive_draft.jsonl",
+  "total_l3_rows": 84,
+  "json_parse_rate_strict": 1.0,
+  "json_parse_rate_with_repair": 1.0,
+  "repair_used_count": 0,
+  "expect_checks_pass_rate": 0.8095,
+  "quote_validity_rate": null,
+  "false_supported_rate": 0.1905,
+  "category_pass_rates": {
+    "contradicted": 0.5357,
+    "not_in_source": 0.9464
+  },
+  "per_row": [
+    {
+      "id": "bh-fs-v1-001",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-002",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "any_claim_verdict missing ['contradicted', 'weak', 'not_in_source']",
+        "forbidden verdict present: ['supported']"
+      ],
+      "failure_mode": "wrong_verdict",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-003",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "forbidden verdict present: ['supported']"
+      ],
+      "failure_mode": "forbidden_verdict",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-004",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-005",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-006",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-007",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-008",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-009",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-010",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-011",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-012",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-013",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-014",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-015",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "forbidden verdict present: ['supported']"
+      ],
+      "failure_mode": "forbidden_verdict",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-016",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-017",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-018",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-019",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-020",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-021",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-022",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "forbidden verdict present: ['supported']"
+      ],
+      "failure_mode": "forbidden_verdict",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-023",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-024",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-025",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-026",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-027",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "any_claim_verdict missing ['not_in_source', 'insufficient_evidence', 'weak', 'contradicted']",
+        "forbidden verdict present: ['supported']"
+      ],
+      "failure_mode": "wrong_verdict",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-028",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-029",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-030",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-031",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "any_claim_verdict missing ['contradicted', 'weak', 'not_in_source']",
+        "forbidden verdict present: ['supported']"
+      ],
+      "failure_mode": "wrong_verdict",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-032",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-033",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "forbidden verdict present: ['supported']"
+      ],
+      "failure_mode": "forbidden_verdict",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-034",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "any_claim_verdict missing ['contradicted', 'weak', 'not_in_source']",
+        "forbidden verdict present: ['supported']"
+      ],
+      "failure_mode": "wrong_verdict",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-035",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-036",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-037",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "forbidden verdict present: ['supported']"
+      ],
+      "failure_mode": "forbidden_verdict",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-038",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-039",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-040",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-041",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-042",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-043",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-044",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-045",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-046",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "any_claim_verdict missing ['contradicted', 'weak', 'not_in_source']",
+        "forbidden verdict present: ['supported']"
+      ],
+      "failure_mode": "wrong_verdict",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-047",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-048",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-049",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-050",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "forbidden verdict present: ['supported']"
+      ],
+      "failure_mode": "forbidden_verdict",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-051",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-052",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-053",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-054",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-055",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "forbidden verdict present: ['supported']"
+      ],
+      "failure_mode": "forbidden_verdict",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-056",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-057",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-058",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-059",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-060",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "any_claim_verdict missing ['contradicted', 'weak', 'not_in_source']",
+        "forbidden verdict present: ['supported']"
+      ],
+      "failure_mode": "wrong_verdict",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-061",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-062",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "forbidden verdict present: ['supported']"
+      ],
+      "failure_mode": "forbidden_verdict",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-063",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-064",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-065",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-066",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-067",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-068",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-069",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-070",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-071",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-072",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-073",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "any_claim_verdict missing ['not_in_source', 'insufficient_evidence', 'weak', 'contradicted']",
+        "forbidden verdict present: ['supported']"
+      ],
+      "failure_mode": "wrong_verdict",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-074",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-075",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-076",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-077",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-078",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-079",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-080",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    },
+    {
+      "id": "bh-fs-v1-081",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-082",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "any_claim_verdict missing ['contradicted', 'weak', 'not_in_source']",
+        "forbidden verdict present: ['supported']"
+      ],
+      "failure_mode": "wrong_verdict",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-083",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "contradicted"
+    },
+    {
+      "id": "bh-fs-v1-084",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "not_in_source"
+    }
+  ]
+}

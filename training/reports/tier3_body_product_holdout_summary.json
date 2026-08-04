@@ -1,0 +1,88 @@
+{
+  "note": "Support scores from frozen v4; multiclaim from bh-mc slice (same rows in v5). No support re-score.",
+  "freeze_v5_rows": 408,
+  "min_claim_floor": 508,
+  "support_v4": {
+    "eval": "data/eval_holdout_body_scale_frozen_v4.jsonl",
+    "s12": {
+      "label": "S12 support",
+      "rows": 308,
+      "parse": 1.0,
+      "expect": 0.9968,
+      "quote": 0.9968,
+      "false_supported": null,
+      "category_pass_rates": {},
+      "fail_ids": [
+        "bh-sv4-227"
+      ]
+    },
+    "s14": {
+      "label": "S14 support",
+      "rows": 308,
+      "parse": 1.0,
+      "expect": 0.9935,
+      "quote": 0.9935,
+      "false_supported": null,
+      "category_pass_rates": {},
+      "fail_ids": [
+        "bh-sv4-050",
+        "bh-sv4-213"
+      ]
+    }
+  },
+  "multiclaim": {
+    "eval": "data/eval_holdout_body_multiclaim_frozen_v1.jsonl",
+    "s12": {
+      "label": "S12 multiclaim",
+      "rows": 100,
+      "parse": 1.0,
+      "expect": 0.85,
+      "quote": 0.85,
+      "false_supported": null,
+      "category_pass_rates": {
+        "multi_claim": 0.85
+      },
+      "fail_ids": [
+        "bh-mc-011",
+        "bh-mc-012",
+        "bh-mc-013",
+        "bh-mc-017",
+        "bh-mc-039",
+        "bh-mc-042",
+        "bh-mc-044",
+        "bh-mc-049",
+        "bh-mc-053",
+        "bh-mc-056",
+        "bh-mc-069",
+        "bh-mc-074",
+        "bh-mc-083",
+        "bh-mc-092",
+        "bh-mc-096"
+      ]
+    },
+    "s14": {
+      "label": "S14 multiclaim",
+      "rows": 100,
+      "parse": 1.0,
+      "expect": 0.89,
+      "quote": 0.89,
+      "false_supported": null,
+      "category_pass_rates": {
+        "multi_claim": 0.89
+      },
+      "fail_ids": [
+        "bh-mc-003",
+        "bh-mc-007",
+        "bh-mc-017",
+        "bh-mc-023",
+        "bh-mc-044",
+        "bh-mc-052",
+        "bh-mc-069",
+        "bh-mc-078",
+        "bh-mc-085",
+        "bh-mc-093",
+        "bh-mc-097"
+      ]
+    }
+  }
+}

@@ -233,3 +233,55 @@ def evaluate_e4b_default_gates(
         ),
     }
     return result
+
+
+def evaluate_tier3_body_gates(
+    *,
+    holdout: dict[str, Any],
+    combined_totals: dict[str, Any],
+    pilot: bool = True,
+) -> dict[str, Any]:
+    """Tier 3 body-chunk Sanad gate — same quote/expect bar as Tier 2 on body holdout."""
+    min_rows = 5 if pilot else 30
+    holdout_per = holdout.get("per_row", [])
+    quote_holdout = holdout.get("quote_validity_rate")
+    false_supported_holdout = holdout.get("false_supported_rate")
+    expect_rate = holdout.get("expect_checks_pass_rate", combined_totals.get("expect_checks_pass_rate", 0))
+
+    gates = {
+        "body_holdout_min_rows": {
+            "value": len(holdout_per),
+            "min": min_rows,
+            "passed": len(holdout_per) >= min_rows,
+        },
+        "body_expect_pass": {
+            "value": expect_rate,
+            "min": TIER2_EXPECT_PASS_MIN,
+            "passed": expect_rate >= TIER2_EXPECT_PASS_MIN,
+        },
+        "quote_validity_holdout": {
+            "value": quote_holdout,
+            "min": TIER2_QUOTE_VALIDITY_MIN,
+            "passed": quote_holdout is not None and quote_holdout >= TIER2_QUOTE_VALIDITY_MIN,
+        },
+        "false_supported_holdout": {
+            "value": false_supported_holdout,
+            "max": TIER2_FALSE_SUPPORTED_MAX,
+            "passed": false_supported_holdout is not None
+            and false_supported_holdout <= TIER2_FALSE_SUPPORTED_MAX,
+        },
+        "preserve_h045_h088": {
+            "description": "Manual check — h-045/h-088 parity rows must not regress to parse_json failures",
+            "evaluated_in_app": False,
+            "not_scored_here": True,
+        },
+    }
+
+    return {
+        "tier": 3,
+        "tier_label": "body_chunk_product",
+        "canonical_doc": "Nassila docs/OUROBOROS_CONTEXT.md §10 + eval_holdout_body_*.jsonl",
+        "model_gates_passed": all(g.get("passed", True) for g in gates.values() if "passed" in g),
+        "gates": gates,
+        "pilot_mode": pilot,
+    }

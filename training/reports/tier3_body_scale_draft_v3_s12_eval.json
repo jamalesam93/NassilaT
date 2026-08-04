@@ -1,0 +1,3281 @@
+{
+  "eval_file": "data\\eval_holdout_body_scale_draft_v3.jsonl",
+  "total_l3_rows": 326,
+  "json_parse_rate_strict": 0.9969,
+  "json_parse_rate_with_repair": 0.9969,
+  "repair_used_count": 1,
+  "expect_checks_pass_rate": 0.9877,
+  "quote_validity_rate": 0.9877,
+  "false_supported_rate": null,
+  "category_pass_rates": {},
+  "per_row": [
+    {
+      "id": "bh-scale3-001",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-002",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-003",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-004",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-005",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-006",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-007",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-008",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-009",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-010",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-011",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-012",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-013",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-014",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-015",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-016",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-017",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-018",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-019",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-020",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-021",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-022",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-023",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-024",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-025",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-026",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-027",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-028",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-029",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-030",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-031",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-032",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-033",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-034",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-035",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-036",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-037",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-038",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-039",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-040",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-041",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-042",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-043",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-044",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-045",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-046",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-047",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-048",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-049",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-050",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-051",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-052",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-053",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-054",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-055",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-056",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-057",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-058",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-059",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-060",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-061",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-062",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-063",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-064",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-065",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-066",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-067",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-068",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-069",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-070",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-071",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-072",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-073",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-074",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-075",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-076",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-077",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-078",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-079",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-080",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-081",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-082",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-083",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-084",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-085",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-086",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-087",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-088",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-089",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-090",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-091",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-092",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-093",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-094",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-095",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-096",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-097",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-098",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-099",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-100",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-101",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-102",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-103",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-104",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-105",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-106",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-107",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-108",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-109",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-110",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-111",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-112",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-113",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-114",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-115",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-116",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-117",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-118",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-119",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-120",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-121",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-122",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-123",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-124",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-125",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-126",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-127",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-128",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-129",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-130",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-131",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-132",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-133",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-134",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-135",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-136",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-137",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-138",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-139",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-140",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-141",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-142",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-143",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-144",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-145",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-146",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-147",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-148",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-149",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-150",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-151",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-152",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-153",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-154",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-155",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-156",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-157",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-158",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-159",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-160",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-161",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-162",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-163",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-164",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-165",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-166",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-167",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-168",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-169",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-170",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-171",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-172",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-173",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-174",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-175",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-176",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-177",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-178",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-179",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-180",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-181",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-182",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-183",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-184",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-185",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "invalid quote substring: 'Speci\ufb01cally, the HEDIS measures assess w'"
+      ],
+      "failure_mode": "quote_invalid"
+    },
+    {
+      "id": "bh-scale3-186",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-187",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-188",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-189",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-190",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-191",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-192",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-193",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-194",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-195",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "any_claim_verdict missing ['supported', 'weak']"
+      ],
+      "failure_mode": "wrong_verdict"
+    },
+    {
+      "id": "bh-scale3-196",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-197",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-198",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-199",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-200",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-201",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-202",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-203",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-204",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-205",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-206",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-207",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-208",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-209",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-210",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-211",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-212",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-213",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-214",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-215",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-216",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-217",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-218",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-219",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-220",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-221",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-222",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-223",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-224",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-225",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-226",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-227",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-228",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-229",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-230",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-231",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-232",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-233",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-234",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-235",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-236",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-237",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-238",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-239",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-240",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "any_claim_verdict missing ['supported', 'weak']"
+      ],
+      "failure_mode": "wrong_verdict"
+    },
+    {
+      "id": "bh-scale3-241",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-242",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-243",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-244",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-245",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-246",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-247",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-248",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-249",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-250",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-251",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-252",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-253",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-254",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-255",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-256",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-257",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-258",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-259",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-260",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-261",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-262",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-263",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-264",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-265",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-266",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-267",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-268",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-269",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-270",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-271",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-272",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-273",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-274",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-275",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-276",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-277",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-278",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-279",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-280",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-281",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-282",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-283",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-284",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-285",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-286",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-287",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-288",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-289",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-290",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-291",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-292",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-293",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-294",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-295",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-296",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-297",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-298",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-299",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-300",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-301",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-302",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-303",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-304",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-305",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-306",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-307",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-308",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-309",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-310",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-311",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-312",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-313",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-314",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-315",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-316",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-317",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-318",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-319",
+      "parsed": false,
+      "parsed_strict": false,
+      "repaired_used": true,
+      "parse_error": "Invalid JSON after repair: Expecting ',' delimiter",
+      "checks_passed": false,
+      "failures": [
+        "must_parse_json"
+      ],
+      "failure_mode": "parse_json"
+    },
+    {
+      "id": "bh-scale3-320",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-321",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-322",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-323",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-324",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-325",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    },
+    {
+      "id": "bh-scale3-326",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass"
+    }
+  ]
+}

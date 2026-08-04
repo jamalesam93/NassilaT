@@ -24,7 +24,11 @@ sys.path.insert(0, str(SCRIPT_DIR))
 
 from corpus_utils import read_jsonl, write_jsonl  # noqa: E402
 from generate_l3_from_corpus import capped_abstract_excerpt  # noqa: E402
-from validate_dataset import build_grounding_user_prompt, validate_l3_record  # noqa: E402
+from validate_dataset import (  # noqa: E402
+    GROUNDING_SYSTEM_MESSAGE,
+    build_grounding_user_prompt,
+    validate_l3_record,
+)
 
 DEFAULT_IN = TRAINING_DIR / "data" / "l3_grounding_train.jsonl"
 DEFAULT_OUT = TRAINING_DIR / "data" / "l3_grounding_train_v14a.jsonl"
@@ -51,7 +55,7 @@ def chat_token_count(row: dict, tokenizer) -> int:
     )
     assistant = json.dumps(row["output"], ensure_ascii=False)
     messages = [
-        {"role": "system", "content": "You are a strict academic citation grounding assistant."},
+        {"role": "system", "content": GROUNDING_SYSTEM_MESSAGE},
         {"role": "user", "content": user},
         {"role": "assistant", "content": assistant},
     ]

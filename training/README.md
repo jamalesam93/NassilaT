@@ -48,6 +48,7 @@ training/
   CORPUS_PIPELINE.md
   LM_STUDIO_INTEGRATION.md
   LLAMA_CPP_VAST.md
+  NANBEIGE_VAST_PROBE.md          ← Nanbeige4.2-3B zero-shot probe (inference only)
   HF_PUBLISH.md
   archive/                      ← v1.4–v1.13 completed walkthroughs
   scripts/

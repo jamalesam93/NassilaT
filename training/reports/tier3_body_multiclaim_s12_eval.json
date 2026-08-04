@@ -1,0 +1,1145 @@
+{
+  "eval_file": "data\\eval_holdout_body_multiclaim_draft.jsonl",
+  "total_l3_rows": 100,
+  "json_parse_rate_strict": 1.0,
+  "json_parse_rate_with_repair": 1.0,
+  "repair_used_count": 0,
+  "expect_checks_pass_rate": 0.85,
+  "quote_validity_rate": 0.85,
+  "false_supported_rate": null,
+  "category_pass_rates": {
+    "multi_claim": 0.85
+  },
+  "per_row": [
+    {
+      "id": "bh-mc-001",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-002",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-003",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-004",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-005",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-006",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-007",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-008",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-009",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-010",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-011",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "min_claims:1<2"
+      ],
+      "failure_mode": "min_claims",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-012",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "min_claims:1<2"
+      ],
+      "failure_mode": "min_claims",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-013",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "min_claims:1<2"
+      ],
+      "failure_mode": "min_claims",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-014",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-015",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-016",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-017",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "min_claims:1<2"
+      ],
+      "failure_mode": "min_claims",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-018",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-019",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-020",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-021",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-022",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-023",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-024",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-025",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-026",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-027",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-028",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-029",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-030",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-031",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-032",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-033",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-034",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-035",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-036",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-037",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-038",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-039",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "min_claims:1<2"
+      ],
+      "failure_mode": "min_claims",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-040",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-041",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-042",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "min_claims:1<2"
+      ],
+      "failure_mode": "min_claims",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-043",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-044",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "min_claims:1<2"
+      ],
+      "failure_mode": "min_claims",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-045",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-046",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-047",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-048",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-049",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "invalid quote substring: 'Full-text ambulatory medical records, ph'"
+      ],
+      "failure_mode": "quote_invalid",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-050",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-051",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-052",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-053",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "invalid quote substring: 'We excluded cases and controls (2) who h'"
+      ],
+      "failure_mode": "quote_invalid",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-054",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-055",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-056",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "min_claims:1<2"
+      ],
+      "failure_mode": "min_claims",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-057",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-058",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-059",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-060",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-061",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-062",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-063",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-064",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-065",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-066",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-067",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-068",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-069",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "min_claims:1<2"
+      ],
+      "failure_mode": "min_claims",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-070",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-071",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-072",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-073",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-074",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "min_claims:1<2"
+      ],
+      "failure_mode": "min_claims",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-075",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-076",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-077",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-078",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-079",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-080",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-081",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-082",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-083",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "min_claims:1<2"
+      ],
+      "failure_mode": "min_claims",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-084",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-085",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-086",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-087",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-088",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-089",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-090",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-091",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-092",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "invalid quote substring: 'It is also unclear whether disease manag'"
+      ],
+      "failure_mode": "quote_invalid",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-093",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-094",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-095",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-096",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": false,
+      "failures": [
+        "invalid quote substring: 'Mobile van site users in this study were'"
+      ],
+      "failure_mode": "quote_invalid",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-097",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-098",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-099",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    },
+    {
+      "id": "bh-mc-100",
+      "parsed": true,
+      "parsed_strict": true,
+      "repaired_used": false,
+      "parse_error": null,
+      "checks_passed": true,
+      "failures": [],
+      "failure_mode": "pass",
+      "category": "multi_claim"
+    }
+  ]
+}

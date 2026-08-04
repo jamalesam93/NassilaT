@@ -45,6 +45,21 @@ def _mock_slices(*, combined: float, quote: float, false_sup: float) -> tuple[di
     return legacy, extended, holdout, combined_totals
 
 
+def test_tier3_body_gates_pilot_passes_with_mock_holdout() -> None:
+    from tier_gates import evaluate_tier3_body_gates
+
+    holdout = {
+        "per_row": [{"id": f"bh-{i:03d}", "checks_passed": True} for i in range(1, 6)],
+        "expect_checks_pass_rate": 0.95,
+        "quote_validity_rate": 0.99,
+        "false_supported_rate": 0.02,
+    }
+    combined = {"expect_checks_pass_rate": 0.95, "json_parse_rate_with_repair": 1.0}
+    result = evaluate_tier3_body_gates(holdout=holdout, combined_totals=combined, pilot=True)
+    assert result["tier"] == 3
+    assert result["model_gates_passed"] is True
+
+
 def test_v110_e4b_passes_default_tier_not_tier2() -> None:
     legacy, extended, holdout, combined_totals = _mock_slices(
         combined=0.8812, quote=0.8947, false_sup=0.0657
