@@ -16,8 +16,8 @@
 | **0.5** | App guardrails | — | JSON repair, retry, caps | — (app code) | Shipped in Nassila |
 | **1** | Cloud QLoRA setup | `l3_grounding` | Smoke LoRA on Vast | E4B | Done |
 | **1.5** | Paper corpus (PC) | — | `paper_corpus_enriched.jsonl` | — | In progress |
-| **2** | L3 Sanad train/eval | `l3_grounding` | `nassila-sanad-4b` (S15) / `nassila-sanad-12b` (S14) | Qwen3.5 4B / 12B | **Shipped** (S15 / S14) |
-| **2b** | 12B multi_claim loop | `l3_grounding` | S14 12B selected; S15 default tier live | Qwen3.5 4B / 12B | S15 **GO**; S14 **GO**; v1.13 **NO-GO** |
+| **2** | L3 Sanad train/eval | `l3_grounding` | `nassila-sanad-4b` (S15) / `nassila-sanad-12b` (S14) | Qwen3.5 4B / Gemma 4 12B | **Shipped** (S15 / S14) |
+| **2b** | 12B multi_claim loop | `l3_grounding` | S14 12B selected; S15 default tier live | Qwen3.5 4B / Gemma 4 12B | S15 **GO**; S14 **GO**; v1.13 **NO-GO** |
 | **3** | Manuscript ingest (**Maktab**) | `doc_extract` | `@firecrawl/pdf-inspector-wasm` + WASM extract | Rust WASM | **Shipped** (v1.5.0) |
 | **3b** | Cited PDF text (**Masdar**) | `source_pdf_extract` | Same | E4B / Qwen | **P1** — Tier 3; corpus in progress |
 | **4** | Tables / figures (**Shahid**) | `table_figure_grounding` | `nassila-agent-e12b-v1` | 12B multimodal | Future (Tier 3+) |
