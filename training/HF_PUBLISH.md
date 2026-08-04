@@ -1,17 +1,16 @@
 # Hugging Face publish — `nassila-sanad-*`
 
-**Current HF repos:** `QinEmPeRoR93/nassila-sanad-e4b`, `QinEmPeRoR93/nassila-sanad-12b` (see [`MODEL_CARD_sanad_e4b.md`](./MODEL_CARD_sanad_e4b.md), [`MODEL_CARD_sanad_12b.md`](./MODEL_CARD_sanad_12b.md)). Pipeline: [`PHASE2_9_AB_PILOT_WALKTHROUGH.md`](./PHASE2_9_AB_PILOT_WALKTHROUGH.md).
+**Current HF repos:** `QinEmPeRoR93/nassila-sanad-4b` (default, S15), `QinEmPeRoR93/nassila-sanad-12b` (quality, S14), `QinEmPeRoR93/nassila-sanad-e4b` (retired S12). Cards: [`hf_readmes/nassila-sanad-4b/README.md`](./hf_readmes/nassila-sanad-4b/README.md), [`MODEL_CARD_sanad_12b.md`](./MODEL_CARD_sanad_12b.md), [`MODEL_CARD_sanad_e4b.md`](./MODEL_CARD_sanad_e4b.md). Pipeline: [`PHASE2_9_AB_PILOT_WALKTHROUGH.md`](./PHASE2_9_AB_PILOT_WALKTHROUGH.md).
 
 **HF README sources (upload these):**
 
 | Repo | README on disk | GGUF file |
 |------|----------------|-----------|
-| `nassila-sanad-e4b` | [`hf_readmes/nassila-sanad-e4b/README.md`](./hf_readmes/nassila-sanad-e4b/README.md) | `nassila-sanad-e4b-q6_k.gguf` (v1.12) |
+| `nassila-sanad-4b` | [`hf_readmes/nassila-sanad-4b/README.md`](./hf_readmes/nassila-sanad-4b/README.md) | `nassila-sanad-4b-q6_k.gguf` (S15 / v1.15) |
 | `nassila-sanad-12b` | [`hf_readmes/nassila-sanad-12b/README.md`](./hf_readmes/nassila-sanad-12b/README.md) | `nassila-sanad-12b-q6_k.gguf` (v1.14) |
+| `nassila-sanad-e4b` | [`hf_readmes/nassila-sanad-e4b/README.md`](./hf_readmes/nassila-sanad-e4b/README.md) | `nassila-sanad-e4b-q6_k.gguf` (v1.12, **RETIRED**) |
 
-One repo per tier — do not mix E4B and 12B GGUFs in the same repo.
-
-One repo per tier — do not mix E4B and 12B GGUFs in the same repo.
+One repo per tier/artifact — do not mix 4B, 12B, and E4B GGUFs in the same repo.
 
 After laptop smoke pass, verify release with [`HF_RELEASE_VERIFY.md`](./HF_RELEASE_VERIFY.md).
 
@@ -76,13 +75,17 @@ Replace `SEE_TRAIN_JSONL_COUNT` and eval table after Phase 2.4.
 **README only (write token required):**
 
 ```bash
-hf upload QinEmPeRoR93/nassila-sanad-e4b \
-  training/hf_readmes/nassila-sanad-e4b/README.md README.md \
-  --repo-type model --commit-message "v1.12 E4B default tier model card"
+hf upload QinEmPeRoR93/nassila-sanad-4b \
+  training/hf_readmes/nassila-sanad-4b/README.md README.md \
+  --repo-type model --commit-message "S15 4B default tier model card (v1.15)"
 
 hf upload QinEmPeRoR93/nassila-sanad-12b \
   training/hf_readmes/nassila-sanad-12b/README.md README.md \
   --repo-type model --commit-message "v1.14 12B quality tier model card"
+
+hf upload QinEmPeRoR93/nassila-sanad-e4b \
+  training/hf_readmes/nassila-sanad-e4b/README.md README.md \
+  --repo-type model --commit-message "S12 E4B retired — legacy default tier card"
 ```
 
 **GGUF + adapter (legacy example):**

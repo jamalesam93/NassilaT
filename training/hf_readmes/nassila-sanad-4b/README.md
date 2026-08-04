@@ -26,15 +26,17 @@ Local GGUF for **Sanad** in [Nassila](https://github.com/jamalesam93/Nassila) �
 **File:** `nassila-sanad-4b-q6_k.gguf` · Q6_K · ~3.3 GB  
 **Quality tier:** [`nassila-sanad-12b`](https://huggingface.co/QinEmPeRoR93/nassila-sanad-12b)
 
-Part of [Nassila Ouroboros](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS.md) — see the E4B model card for the seven-worker overview.
+Part of [Nassila Ouroboros](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS.md) — see [`nassila-sanad-12b`](https://huggingface.co/QinEmPeRoR93/nassila-sanad-12b) for the quality tier.
 
 **Sanad today:** validated on abstract excerpts (Tier 2). Full paper body text is planned (Tier 3).
 
-| Combined | Quote validity | False-supported |
-|----------|----------------|-----------------|
-| **94.48%** | **100%** | **4.87%** |
+| Combined expect | JSON (repair) | False-supported | Contradicted | Not-in-source | Quote validity |
+|-----------------|---------------|-----------------|--------------|---------------|----------------|
+| **94.48%** | **99.35%** | **4.87%** | **85.83%** | **100%** | *pending local verify* |
 
-Default-tier validation: **PASS**
+*Provenance: single-run eval on `eval_holdout_body_contrastive_frozen_v2` (308 rows). Quote validity is not measured on that harness and will be backfilled after a local laptop eval. Training data = same 874-row `l3_grounding_train_v114.jsonl` used for checkpoint S14 (v1.14).*
+
+Default-tier validation: **PASS** (false-supported ≤5%)
 
 ## Usage
 

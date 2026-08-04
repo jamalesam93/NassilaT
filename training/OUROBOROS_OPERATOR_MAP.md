@@ -60,7 +60,7 @@ GGUF filenames on Hub: `nassila-sanad-4b-q6_k.gguf` and `nassila-sanad-12b-q6_k.
 | v1.12 | **S12** | `nassila-sanad-e4b` | E4B default-tier ship (89.27%) |
 | v1.13 | — | — | **NO-GO** — do not publish; no S13 on Hub |
 | v1.14 | **S14** | `nassila-sanad-12b` | 12B quality Tier 2 (90.43%) |
-| v1.15 | **S15** | — | Parked until Tier 3 corpus and holdout |
+| v1.15 | **S15** | `nassila-sanad-4b` | **Default-tier ship** — Qwen 3.5 4B (94.48% combined expect, 4.87% false-sup; quote pending local verify) |
 
 **SNN is not one linear counter per GGUF file.** S12 and S14 label **separate ship artifacts** (E4B default vs 12B quality) that share legacy `v1.NN` train numbering.
 
@@ -110,7 +110,7 @@ Local acceptance **PASS** (2026-06-21, RTX 4060 8 GB): [`outputs/LAPTOP_SMOKE_SI
 
 HF verify **PASS**: [`HF_RELEASE_VERIFY.md`](./HF_RELEASE_VERIFY.md) · [`outputs/hf_release_verify_report.json`](./outputs/hf_release_verify_report.json).
 
-**Current focus:** App **1.3.0** implemented locally (Phase 0 → Sharh-lite). **Next:** packaged smoke + GitHub release cut; NassilaT field-note curation / `PROMPT_CONTRACT_REEVAL.md`; **S15 parked**. App stays **MIT / free**. Models **S12 / S14**.
+**Current focus:** App **1.6.0 Maktab Loop**; NassilaT field-note curation / `PROMPT_CONTRACT_REEVAL.md`. App stays **MIT / free**. Models **S15** (4B default) + **S14** (12B quality).
 
 ---
 
@@ -127,7 +127,7 @@ Upload (UI)
         └─ reuses Maktab `extractFromPdf` (1.2.0 Masdar-lite)
   └─► Raqim — L1/L2 verify + CSL records (live)
   └─► Tasnif — dedupe, predatory, type rules (live)
-  └─► Sanad — L3 grounding JSON (live; S12/S14)
+  └─► Sanad — L3 grounding JSON (live; S15/S14)
   └─► Sharh — explain findings (deterministic today)
   └─► Shahid — tables/figures (Tier 3+, planned)
   └─► Export — citeproc + audit report (live)
@@ -273,13 +273,13 @@ Default-tier Sanad **S15** trained on `Qwen/Qwen3.5-4B` base (combined 94.48%, 1
 | **Maktab / Masdar corpus** | [`PHASE3_TIER3_GROUNDWORK.md`](./PHASE3_TIER3_GROUNDWORK.md), [`CORPUS_PIPELINE.md`](./CORPUS_PIPELINE.md) | After Tier 2 stable; unblocks Tier 3 |
 | **Maktab OCR (Tesseract)** | Nassila [`docs/MAKTAB_OCR.md`](https://github.com/jamalesam93/Nassila/blob/main/docs/MAKTAB_OCR.md), `src/engine/maktab/` | **O0–O1 done**; **O2 parallel** (any 1.2.x) |
 | **Raqim resolver & repair (R1–R3)** | Nassila `src/engine/manuscript/verify.ts`, `autocorrect/enhance.ts`, `parser/plain-text.ts` | **R1 → 1.2.4** · **R2–R3 → 1.2.6** — see § Raqim track |
-| **Tier 3 data / S15** | NassilaT training | **W3 done** (49/49 field notes → boost JSONL) · **W4 done** (100 OA DOIs) · **W6 draft** (5 pilot + ≤100 abstract-proxy rows) · **S15 parked** until post–1.7 go/no-go |
+| **Tier 3 data / S15+** | NassilaT training | **W3 done** (49/49 field notes → boost JSONL) · **W4 done** (100 OA DOIs) · **W6 draft** (5 pilot + ≤100 abstract-proxy rows) · **S15 shipped** on Qwen 3.5 4B (contrastive v2 single-run); S15+ refinement awaits product-scale body holdout |
 
 ---
 
 ## Phase checklist — done vs left
 
-**Last updated:** 2026-07-27 (Tier 3 body evals → Vast-first; S14 contrastive v2 in flight; S15 parked)
+**Last updated:** 2026-08-05 (S15 shipped on Qwen 3.5 4B; E4B S12 retired)
 
 Use this as the operator map after v1.14 ship. Detail lives in linked docs; check boxes here only.
 
@@ -287,11 +287,12 @@ Use this as the operator map after v1.14 ship. Detail lives in linked docs; chec
 
 - [x] v1.13 declared **NO-GO** (Tier 2 fail, parse/quote regressions)
 - [x] v1.14 12B trained + selected (h-045 / h-088 fix, multi_claim 84.62%)
-- [x] v1.12 E4B remains **default-tier ship** (89.27% combined)
+- [x] **S15 4B trained + shipped** (`nassila-sanad-4b`, Qwen 3.5 4B) — contrastive v2 **94.48%** combined / **4.87%** false-supported (quote pending local verify)
+- [x] E4B **S12 retired** as default tier (legacy HF download only)
 - [x] Tier 2 §10 pass on selected 12B (v1.14)
 - [x] Dual-tier policy recorded ([`DUAL_TIER_POLICY.md`](../docs/DUAL_TIER_POLICY.md))
 - [x] GO/NO-GO log updated ([`EVAL_GONOGO.md`](./EVAL_GONOGO.md))
-- [ ] **S15** refinement — **parked** (field notes **49/49** exported; body holdout draft ready; awaiting post–1.7 measurements + go/no-go)
+- [ ] **S15+ refinement** — product-scale body holdout + multi-seed/quote re-verify (laptop eval)
 
 ### B. Release & Hugging Face (NassilaT)
 
@@ -310,7 +311,7 @@ Use this as the operator map after v1.14 ship. Detail lives in linked docs; chec
 
 - [x] Hydra-style worker tabs / Debug Model Sandbox **removed**
 - [x] **Settings → Passage grounding** — local runners (LM Studio, Ollama, vLLM, Custom) + universal **Cloud API** (key-inferred endpoint)
-- [x] Nassila tier chips (E4B / 12B) on **all local runners**; defaults to `nassila-sanad-e4b` / `nassila-sanad-12b`
+- [x] Nassila tier chips (4B / 12B) on **all local runners**; defaults to `nassila-sanad-4b` / `nassila-sanad-12b`
 - [x] No generic Qwen / Together / DashScope cloud presets; no maintainer wall-of-text in Settings
 - [x] `ensureLlmKeyReady` before audit LLM calls; localhost placeholder key auto-save
 - [x] **Set up Sanad** modal — HF links, runner links, Ollama copy command ([`src/shared/sanad-setup-links.ts`](https://github.com/jamalesam93/Nassila/blob/main/src/shared/sanad-setup-links.ts))
@@ -391,7 +392,7 @@ Use this as the operator map after v1.14 ship. Detail lives in linked docs; chec
 - [ ] **1.2.8 OCR O2 + a11y**
 - [ ] **1.2.9 Preflight + quality ledger**
 - [ ] **1.3.0 Sharh-lite** — #9–#11 remainder
-- [ ] **∥ NassilaT data** — field-note curation / Tier 3 data; **S15 parked**
+- [ ] **∥ NassilaT data** — field-note curation / Tier 3 data; **S15 shipped** (Qwen 3.5 4B), S15+ gated
 
 ### F. Tier 3+ (future — after Tier 2 product stable)
 
@@ -409,7 +410,7 @@ Use this as the operator map after v1.14 ship. Detail lives in linked docs; chec
 3. **App:** **1.2.4 Raqim Repair** (#14 R1) before source attachment.
 4. **App:** **1.2.5 Masdar attach** (#5 + re-audit) → **1.2.6 Raqim Resolve** (#14b).
 5. **App:** **1.2.7 Projects + Help + onboarding** → **1.2.8 OCR O2 + a11y** → **1.2.9 Preflight + quality ledger** → **1.3.0 Sharh-lite**.
-6. **∥ NassilaT:** curate field notes and Tier 3 data; keep **S15 parked**.
+6. **∥ NassilaT:** run laptop S15 quote/multi-seed verify; curate field notes and Tier 3 data; keep **S15+** gated on product-scale holdout.
 7. **Product (Tier 3):** **Institutional access** design — proxy prefix or login webview for paywalled full text (not Unpaywall email).
 
 ---
@@ -428,7 +429,7 @@ Use this as the operator map after v1.14 ship. Detail lives in linked docs; chec
 | Nassila `OUROBOROS_CONTEXT.md` | Workers + tiers |
 | Nassila `docs/MAKTAB_OCR.md` | Maktab OCR phases (EN/AR/FR, on-device) |
 | Nassila `LOOP.md` | Engineering loop + gates |
-| Nassila `CHANGELOG.md` | Locked train starts with **Phase 0**, then **1.2.2→1.3.0**; S15 parked |
+| Nassila `CHANGELOG.md` | Locked train starts with **Phase 0**, then **1.2.2→1.3.0**; S15+ refinement gated on product-scale holdout |
 | Nassila `docs/FEATURES-AND-TWEAKS.md` | **#14** Raqim Repair · **#14b** Raqim Resolve (acceptance) |
 
 Historical walkthroughs: [`archive/`](./archive/).

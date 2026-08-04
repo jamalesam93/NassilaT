@@ -8,16 +8,20 @@ __pycache__/
 # Training artifacts (generated on Vast or locally)
 training/outputs/
 training/cache/
-training/data/l3_grounding_candidates.jsonl
-training/data/paper_corpus*.jsonl
-training/data/OpenAlex_*.json
-training/data/Semantic_*.json
-training/data/l3_grounding_chat_v*.jsonl
-training/data/l3_review_*.csv
+
+# Dataset secrecy — never upload training/eval data or field notes
+training/data/
+training/field-notes/
+
 training/reports/**/seed_*_predictions.jsonl
 training/reports/*_predictions.jsonl
+training/reports/*_predictions*.jsonl
+training/reports/tier3_*_predictions*.jsonl
 training/reports/ab_*_v110/seed_*_combined_report.json
 *.log
+
+# Generated codebase dump (repomix-style) — regenerate as needed, keep out of git
+codebase.txt
 
 # Secrets
 .env

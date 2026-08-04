@@ -1,0 +1,34 @@
+---
+description: Tier 3 Sanad body evals run on Vast by default (speed); S15 (4B) is the shipped default tier
+alwaysApply: true
+---
+
+# Vast-first body eval (standing policy)
+
+From 2026-07-27: **Tier 3 Sanad body evaluation batches run on Vast**, not the laptop, unless the user explicitly asks for a local smoke. **S15 (Qwen 3.5 4B) is shipped as the default tier** (2026-08); E4B S12 is retired.
+
+## Do
+
+- Prefer the existing **RTX 4090** instance when running; reuse build artifacts (`/workspace/llama.cpp`, downloaded GGUFs).
+- SSH via **WSL** to direct IP+port (Windows OpenSSH publickey often fails on this box).
+- Runtime: **llama.cpp `llama-server` + HF GGUF** — not Ollama install on Vast (install curl often resets).
+- Models (pull GGUF from HF on Vast):
+  - **S15** (4B default): https://huggingface.co/QinEmPeRoR93/nassila-sanad-4b → `nassila-sanad-4b-q6_k.gguf`
+    - Eval: `run_l3_eval_batch.py --disable-thinking` (Qwen thinking mode truncates output; `/no_think` fast path)
+  - **S14** (12B quality): https://huggingface.co/QinEmPeRoR93/nassila-sanad-12b → `nassila-sanad-12b-q6_k.gguf`
+    - Script: `training/scripts/run_s14_contrastive_vast.sh` · log `outputs/s14_contrastive_run.log`
+- Sync kit with `training/scripts/vast_s14_contrastive_sync.ps1` (or scp via WSL paths with spaces: `/mnt/e/Cursor Projects/...`).
+- Report **by slice** (support / multiclaim / contrastive). Do **not** re-score support freeze v4’s 308 rows.
+
+## Do not
+
+- Ask the user again for the Vast API key if CLI already has `~/.config/vastai/vast_api_key`.
+- Use `pkill -f <scriptname>` in an SSH one-liner that contains that same string (kills the SSH session).
+- Run long body evals on the laptop when Vast is available.
+
+## Live pointers
+
+- Runbook: `training/S14_CONTRASTIVE_VAST.md`
+- Policy + scores: `training/TIER3_PARALLEL_TRACK.md`
+- Remote path: `/workspace/nassila-s14/training`
+- Log: `outputs/s14_contrastive_run.log`

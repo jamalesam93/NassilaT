@@ -2,7 +2,7 @@
 
 **Canonical gates:** [Nassila `docs/OUROBOROS_CONTEXT.md` §10](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md). Do not duplicate thresholds here — use §10 and `scripts/tier_gates.py`.
 
-**Ship checkpoints:** E4B **v1.12** (default-tier), 12B **v1.14** (Tier 2 + h-045/h-088 split fix). See [`OUROBOROS_OPERATOR_MAP.md`](./OUROBOROS_OPERATOR_MAP.md).
+**Ship checkpoints:** S15 **4B** (`nassila-sanad-4b`, Qwen 3.5 4B — default-tier), 12B **v1.14** (`nassila-sanad-12b` — Tier 2 + h-045/h-088 split fix). E4B **S12** retired as default. See [`OUROBOROS_OPERATOR_MAP.md`](./OUROBOROS_OPERATOR_MAP.md).
 
 ## Baseline reference
 
@@ -43,7 +43,9 @@ Read `reports/v1_8_eval_combined_report.json` → `tier2_gates.model_gates_passe
 
 Plus manual review of 20 hard holdout rows.
 
-### E4B default-tier — `nassila-sanad-e4b` ship
+### E4B default-tier — `nassila-sanad-e4b` ship → **RETIRED** (replaced by S15 4B)
+
+> **Status (2026-08):** E4B **S12 retired** as the default tier. The app/website now default to `nassila-sanad-4b` (**S15**, Qwen 3.5 4B). E4B remains published on HF for legacy users only.
 
 | Gate | Target |
 |------|--------|
@@ -170,3 +172,45 @@ Multi-seed mean (Q6_K): **90.43%** combined, **100%** quote, **2.86%** false-sup
 | Tier 2 pass | 3/3 | **3/3** | PASS |
 
 **Publish:** `exports/nassila-sanad-12b-q6_k.gguf` from **v1.14** → `QinEmPeRoR93/nassila-sanad-12b`. v1.12 remains the higher-combined fallback/reference.
+
+### S15 4B — **GO** (ship `nassila-sanad-4b`, default-tier, 2026-08)
+
+QLoRA fine-tune of **`Qwen/Qwen3.5-4B`** on the same **874-row `l3_grounding_train_v114.jsonl`** used for v1.14 (no new S15 boost data). Training converged at epoch 1.73, step 193/330: loss **0.3464**, token acc **91.90%**. Eval with **thinking disabled** (llama.cpp `/no_think`; Qwen thinking mode truncates output).
+
+**Eval (single run):** `eval_holdout_body_contrastive_frozen_v2` (308 rows):
+
+| Metric | S15 4B | Gate |
+|--------|--------|------|
+| Combined expect | **94.48%** | ≥88 default |
+| JSON (with repair) | **99.35%** | ≥98% |
+| False-supported | **4.87%** | ≤5% ✓ |
+| Contradicted | 85.83% | monitor |
+| Not-in-source | 100% | monitor |
+| Quote validity | *not measured on this harness* | **pending local verify** |
+
+**Provenance caveat:** this is a **single-run** contrastive body eval. No multi-seed abstract-harness run or quote measurement exists for S15 yet — backfill those with a local laptop eval (`llama-server` + `run_l3_eval_batch.py --disable-thinking`) before presenting the card quote figure as verified.
+
+**Nanbeige 3B probe:** failed (34.42% false-supported, fine-tuned) — **NO-GO, archived**. See [`NANBEIGE_VAST_PROBE.md`](./NANBEIGE_VAST_PROBE.md).
+
+**Publish:** `exports/nassila-sanad-4b-q6_k.gguf` → `QinEmPeRoR93/nassila-sanad-4b`. Model card: [`hf_readmes/nassila-sanad-4b/README.md`](./hf_readmes/nassila-sanad-4b/README.md).
+
+---
+
+## Tier 3 prep — **S15 SHIPPED** (2026-08); body grooming continues
+
+**Status:** S15 (Qwen 3.5 4B) trained and shipped on the same v1.14 data; body contrastive harness `frozen_v2` is the new default-tier eval. W7+ / Maktab-M11 / institutional access still parked.
+
+| Gate | Artifact | Status |
+|------|----------|--------|
+| Field-note boosts | `data/l3_grounding_masdar_lite_boost.jsonl` | **Complete** (49/49 masdar-lite-jul13) |
+| Body holdout pilot | `eval_holdout_body_pilot.jsonl` (5) + `eval_holdout_body_draft.jsonl` (78 proxy) + combined draft | Structure validated; operator review + model scoring pending |
+| **Body contrastive v2** | `eval_holdout_body_contrastive_frozen_v2.jsonl` (308) | **S15 ship evidence** (single run) |
+| Schemas | `DATASET_SCHEMA.md` (`doc_extract`, `source_pdf_extract`) | Locked v1 |
+| OA pilot script | `scripts/fetch_oa_fulltext.py` | Ready; operator runs W4 |
+| Body gate scorer | `scripts/score_body_holdout_pilot.py` + `tier_gates.evaluate_tier3_body_gates` | Ready |
+| Product measurements | Post–1.7 manuscript reruns | **Not started** |
+| Go/no-go memo | [`S15_UNPARK_CRITERIA.md`](./S15_UNPARK_CRITERIA.md) | **S15 criteria MET** — see S15 entry above |
+
+**Decision (2026-08):** S15 shipped as default tier on contrastive v2 single-run. **Recommendation:** run a committed multi-seed + quote-bearing laptop eval to close the provenance gap before marketing the quote figure; keep S14 quality tier unchanged.
+
+**Next operator steps:** continue field-note labels; run W4 OA pilot; grow body holdout toward 100 docs / 400–500 claims; cut app **1.4.0 Raqim Statute**.

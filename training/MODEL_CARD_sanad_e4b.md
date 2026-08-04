@@ -17,14 +17,16 @@ language:
 library_name: llama.cpp
 ---
 
-# Nassila Sanad E4B (default tier)
+# Nassila Sanad E4B — **RETIRED** (legacy)
 
 **Checkpoint:** **S12** *(legacy train label v1.12)*
+
+> **Status (2026-08):** E4B **S12 retired** as the default tier — replaced by [`nassila-sanad-4b`](https://huggingface.co/QinEmPeRoR93/nassila-sanad-4b) (**S15**, Qwen 3.5 4B). Card kept for legacy users of the published E4B GGUF; no new trains.
 
 Local GGUF for **Sanad** in [Nassila](https://github.com/jamalesam93/Nassila) — checks manuscript claims against source excerpts and returns structured JSON with verdicts and verbatim quotes.
 
 **File:** `nassila-sanad-e4b-q6_k.gguf` · Q6_K · ~5.8 GB  
-**Quality tier:** [`nassila-sanad-12b`](https://huggingface.co/QinEmPeRoR93/nassila-sanad-12b)
+**Default tier (now):** [`nassila-sanad-4b`](https://huggingface.co/QinEmPeRoR93/nassila-sanad-4b) · **Quality tier:** [`nassila-sanad-12b`](https://huggingface.co/QinEmPeRoR93/nassila-sanad-12b)
 
 Part of [Nassila Ouroboros](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS.md) — seven workers with deterministic checks plus optional local models.
 

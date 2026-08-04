@@ -1,6 +1,6 @@
 # Evaluation Guide
 
-How to measure whether your fine-tuned **Nassila grounding** model is good enough to use — and better than stock Gemma 4 E4B Q6_K.
+How to measure whether your fine-tuned **Nassila grounding** model is good enough to use — and better than stock Qwen 3.5 4B Q6_K (the current default; stock Gemma 4 E4B Q6_K was the earlier baseline).
 
 **Canonical go/no-go gates:** [Nassila `docs/OUROBOROS_CONTEXT.md` §10](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS_CONTEXT.md) (Tier 2 model gates + Tier 2b product-safety in app). This file describes *how* to measure; §10 is the single source for *thresholds*.
 
@@ -138,8 +138,8 @@ See [DATASET_SCHEMA.md](./DATASET_SCHEMA.md). Supported checks in [`scripts/eval
 
 Run the **same** eval set twice:
 
-1. **Baseline** — stock LM Studio Gemma 4 E4B Q6_K
-2. **Tuned** — `nassila-grounding-e4b-v1` GGUF
+1. **Baseline** — stock LM Studio Qwen 3.5 4B Q6_K (or legacy Gemma 4 E4B Q6_K)
+2. **Tuned** — `nassila-sanad-4b` GGUF
 
 Record a table:
 

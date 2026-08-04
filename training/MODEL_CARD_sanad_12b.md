@@ -24,9 +24,9 @@ library_name: llama.cpp
 Local GGUF for **Sanad** in [Nassila](https://github.com/jamalesam93/Nassila) — checks manuscript claims against source excerpts and returns structured JSON with verdicts and verbatim quotes.
 
 **File:** `nassila-sanad-12b-q6_k.gguf` · Q6_K · ~9.1 GB  
-**Default tier:** [`nassila-sanad-e4b`](https://huggingface.co/QinEmPeRoR93/nassila-sanad-e4b)
+**Default tier:** [`nassila-sanad-4b`](https://huggingface.co/QinEmPeRoR93/nassila-sanad-4b) (S15, Qwen 3.5 4B)
 
-Part of [Nassila Ouroboros](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS.md) — see the E4B model card for the seven-worker overview.
+Part of [Nassila Ouroboros](https://github.com/jamalesam93/Nassila/blob/main/docs/OUROBOROS.md) — see the 4B model card for the seven-worker overview.
 
 **Sanad today:** validated on abstract excerpts (Tier 2). Full paper body text is planned (Tier 3).
 

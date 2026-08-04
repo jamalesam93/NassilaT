@@ -1,8 +1,10 @@
 # Laptop smoke test — Sanad GGUF acceptance
 
-Fast local acceptance for downloaded **`nassila-sanad-e4b-q6_k.gguf`** (v1.12) and **`nassila-sanad-12b-q6_k.gguf`** (v1.14) before marking the HF release as verified.
+Fast local acceptance for downloaded **`nassila-sanad-4b-q6_k.gguf`** (S15, Qwen 3.5 4B — default), **`nassila-sanad-12b-q6_k.gguf`** (v1.14, quality), and legacy **`nassila-sanad-e4b-q6_k.gguf`** (v1.12, **retired**) before marking the HF release as verified.
 
 This is **not** the full 115-row Tier 2 eval (that ran on Vast). It confirms LM Studio loads the GGUF, returns Sanad JSON, and passes four canonical rows including the v1.14 h-045 / h-088 subgroup fix.
+
+> **S15 note (2026-08):** S15 is a **Qwen 3.5 4B** fine-tune — run Qwen with **thinking disabled** (chat template `enable_thinking: ` false or `/no_think`) or it burns tokens / truncates. The contrastive-v2 S15 eval is single-run; **quote validity still needs a laptop re-verify** before it's treated as measured (see [`HF_RELEASE_VERIFY.md`](./HF_RELEASE_VERIFY.md)).
 
 **Operator map:** [`OUROBOROS_OPERATOR_MAP.md`](./OUROBOROS_OPERATOR_MAP.md) · **LM Studio setup:** [`LM_STUDIO_INTEGRATION.md`](./LM_STUDIO_INTEGRATION.md)
 
@@ -10,10 +12,11 @@ This is **not** the full 115-row Tier 2 eval (that ran on Vast). It confirms LM 
 
 ## Prerequisites
 
-1. **LM Studio** with llama.cpp **2.10.1+** (Gemma 4 / `gemma4_unified`).
+1. **LM Studio** with llama.cpp **2.10.1+** (Gemma 4 / `gemma4_unified`; Qwen 3.5 chat template on 4B).
 2. GGUF downloaded from Hugging Face:
-   - [`QinEmPeRoR93/nassila-sanad-e4b`](https://huggingface.co/QinEmPeRoR93/nassila-sanad-e4b)
+   - [`QinEmPeRoR93/nassila-sanad-4b`](https://huggingface.co/QinEmPeRoR93/nassila-sanad-4b) (S15, default)
    - [`QinEmPeRoR93/nassila-sanad-12b`](https://huggingface.co/QinEmPeRoR93/nassila-sanad-12b)
+   - [`QinEmPeRoR93/nassila-sanad-e4b`](https://huggingface.co/QinEmPeRoR93/nassila-sanad-e4b) (legacy, retired)
 3. Python env:
 
 ```powershell
@@ -27,8 +30,9 @@ pip install -r requirements.txt
 
 | Model | VRAM guidance |
 |-------|---------------|
-| E4B Q6_K | ~8 GB |
-| 12B Q6_K | ~12 GB+ (unload E4B first) |
+| 4B (S15) Q6_K | ~3.3 GB |
+| 12B (S14) Q6_K | ~12 GB+ |
+| E4B (S12) Q6_K | ~8 GB |
 
 ---
 
