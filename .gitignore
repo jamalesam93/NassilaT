@@ -18,6 +18,8 @@ training/reports/*_predictions.jsonl
 training/reports/*_predictions*.jsonl
 training/reports/tier3_*_predictions*.jsonl
 training/reports/ab_*_v110/seed_*_combined_report.json
+training/reports/**/*_predictions.jsonl
+training/reports/**/*_predictions*.jsonl
 *.log
 
 # Generated codebase dump (repomix-style) — regenerate as needed, keep out of git

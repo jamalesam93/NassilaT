@@ -1,0 +1,195 @@
+{
+  "predictions_file": "training\\reports\\laptop_s15_quoteeval\\contrastive_v2_predictions.jsonl",
+  "repair_allowed": true,
+  "legacy_core_eval": {
+    "eval_file": "E:\\Cursor Projects\\NassilaT\\training\\data\\eval_samples.jsonl",
+    "total_l3_rows": 0,
+    "json_parse_rate_strict": 0,
+    "json_parse_rate_with_repair": 0,
+    "repair_used_count": 0,
+    "expect_checks_pass_rate": 0,
+    "quote_validity_rate": null,
+    "false_supported_rate": null,
+    "category_pass_rates": {}
+  },
+  "extended_core_eval": {
+    "eval_file": "E:\\Cursor Projects\\NassilaT\\training\\data\\eval_samples_extended.jsonl",
+    "total_l3_rows": 0,
+    "json_parse_rate_strict": 0,
+    "json_parse_rate_with_repair": 0,
+    "repair_used_count": 0,
+    "expect_checks_pass_rate": 0,
+    "quote_validity_rate": null,
+    "false_supported_rate": null,
+    "category_pass_rates": {}
+  },
+  "holdout_eval": {
+    "eval_file": "training\\data\\eval_holdout_body_contrastive_frozen_v2.jsonl",
+    "total_l3_rows": 308,
+    "json_parse_rate_strict": 0.8247,
+    "json_parse_rate_with_repair": 0.8831,
+    "repair_used_count": 54,
+    "expect_checks_pass_rate": 0.75,
+    "quote_validity_rate": null,
+    "false_supported_rate": 0.1331,
+    "category_pass_rates": {
+      "contradicted": 0.5083,
+      "not_in_source": 0.9043
+    }
+  },
+  "combined_totals": {
+    "total_l3_rows": 308,
+    "legacy_core_rows": 0,
+    "extended_core_rows": 0,
+    "holdout_rows": 308,
+    "expect_checks_pass_rate": 0.75,
+    "json_parse_rate_strict": 0.8247,
+    "json_parse_rate_with_repair": 0.8831,
+    "quote_validity_by_slice": {
+      "legacy_core": null,
+      "extended_core": null,
+      "holdout": null
+    },
+    "false_supported_by_slice": {
+      "legacy_core": null,
+      "extended_core": null,
+      "holdout": 0.1331
+    }
+  },
+  "tier2_gates": {
+    "tier": 2,
+    "tier_label": "quality_tier",
+    "canonical_doc": "Nassila docs/OUROBOROS_CONTEXT.md \u00a710 (12B / 31B premium)",
+    "model_gates_passed": false,
+    "gates": {
+      "combined_expect_pass": {
+        "value": 0.75,
+        "min": 0.9,
+        "passed": false,
+        "buffer_target": 0.92,
+        "buffer_met": false
+      },
+      "json_parse_with_repair": {
+        "value": 0.8831,
+        "min": 0.98,
+        "passed": false
+      },
+      "supported_h001_h010": {
+        "value": 0,
+        "min": 8,
+        "passed": false
+      },
+      "core_legacy_5": {
+        "value": 0,
+        "min": 5,
+        "passed": false
+      },
+      "quote_validity_holdout": {
+        "value": null,
+        "min": 0.98,
+        "passed": false
+      },
+      "false_supported_holdout": {
+        "value": 0.1331,
+        "max": 0.05,
+        "passed": false,
+        "note": "Gated on holdout slice only; monitor extended_core false_supported separately."
+      }
+    },
+    "slice_metrics": {
+      "legacy_core": {
+        "expect_checks_pass_rate": 0,
+        "quote_validity_rate": null,
+        "false_supported_rate": null
+      },
+      "extended_core": {
+        "expect_checks_pass_rate": 0,
+        "quote_validity_rate": null,
+        "false_supported_rate": null
+      },
+      "holdout": {
+        "expect_checks_pass_rate": 0.75,
+        "quote_validity_rate": null,
+        "false_supported_rate": 0.1331
+      }
+    },
+    "product_safety_gate": {
+      "description": "0 false pass after engine quote-substring guardrail (Nassila grounding-llm.ts)",
+      "evaluated_in_app": true,
+      "not_scored_here": true
+    }
+  },
+  "e4b_default_gates": {
+    "tier": 1,
+    "tier_label": "e4b_default",
+    "canonical_doc": "NassilaT docs/DUAL_TIER_POLICY.md (E4B default tier)",
+    "model_gates_passed": false,
+    "gates": {
+      "combined_expect_pass": {
+        "value": 0.75,
+        "min": 0.88,
+        "passed": false
+      },
+      "json_parse_with_repair": {
+        "value": 0.8831,
+        "min": 0.98,
+        "passed": false
+      },
+      "supported_h001_h010": {
+        "value": 0,
+        "min": 8,
+        "passed": false
+      },
+      "core_legacy_5": {
+        "value": 0,
+        "min": 5,
+        "passed": false
+      },
+      "quote_validity_holdout": {
+        "value": null,
+        "min": 0.88,
+        "passed": false
+      },
+      "false_supported_holdout": {
+        "value": 0.1331,
+        "max": 0.07,
+        "passed": false,
+        "note": "Gated on holdout slice only; monitor extended_core false_supported separately."
+      }
+    },
+    "slice_metrics": {
+      "legacy_core": {
+        "expect_checks_pass_rate": 0,
+        "quote_validity_rate": null,
+        "false_supported_rate": null
+      },
+      "extended_core": {
+        "expect_checks_pass_rate": 0,
+        "quote_validity_rate": null,
+        "false_supported_rate": null
+      },
+      "holdout": {
+        "expect_checks_pass_rate": 0.75,
+        "quote_validity_rate": null,
+        "false_supported_rate": 0.1331
+      }
+    },
+    "product_safety_gate": {
+      "description": "0 false pass after engine quote-substring guardrail (Nassila grounding-llm.ts)",
+      "evaluated_in_app": true,
+      "not_scored_here": true
+    },
+    "v110_baseline_beat": {
+      "reference": "E4B v1.10 Q6_K multi-seed mean",
+      "baseline": {
+        "combined_expect": 0.8812,
+        "quote_validity_holdout": 0.8947,
+        "false_supported_holdout": 0.0657
+      },
+      "combined_expect_met": false,
+      "quote_validity_met": false,
+      "false_supported_met": false,
+      "all_met": false
+    }
+  }
+}
